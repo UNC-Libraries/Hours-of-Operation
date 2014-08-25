@@ -23,10 +23,7 @@
  */
 
 // quit if called directly
-if ( !function_exists( 'add_action' )) {
-  echo "Hi!  I'm goin going to quit now.  Bye!";
-  exit;
-}
+defined( 'ABSPATH' ) or die();
 
 define( 'HOO_VERSION', '0.0.1' );
 define( 'HOO__PLUGIN_URL', plugin_dir_url( __FILE__ ) );

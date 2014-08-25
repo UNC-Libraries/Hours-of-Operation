@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) or die();
+
 class HoO_Admin {
 
   protected static $instance = null;
