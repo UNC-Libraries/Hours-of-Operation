@@ -3,10 +3,7 @@
 defined( 'ABSPATH' ) or die();
 
 class HoO_DB {
-
-  public function __construct() {
-  }
-
+  
   public static function create_tables() {
     global $wpdb;
 
@@ -45,7 +42,23 @@ SQL;
     foreach( array( $locations_sql, $addresses_sql ) as $table ) {
       $status = $wpdb->query( $table );
     }
+  }
+  
+  public static function locations( $id = null ) {
+    global $wpdb;
+    
+    $query = <<<SQL
+    SELECT * FROM `hoo_locations` hl
+    JOIN `hoo_addresses` ha ON hl.id = ha.id
+SQL;
 
+    if ( $id ) {
+      $query .= ' WHERE `hl`.`id` = %s';
+      return $wpdb->get_row( $wpdb->prepare( $query, $id ), ARRAY_A );
+    }
+    else {
+      return $wpdb->get_results( $query, ARRAY_A );
+    }
   }
 }
 ?>

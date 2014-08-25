@@ -1,17 +1,17 @@
 <?php
 
-include 'class-hoo-db.php';
+require_once 'includes/class-hoo-db.php';
+require_once 'includes/class-hoo-ical.php';
 
 class HoO {
 
   const VERSION = '0.0.1';
 
-  protected static $instance = null;
   protected $plugin_slug = 'hoo';
+  protected static $instance = null;
 
   private function __construct() {
     self::init_hooks();
-
   }
 
   public function init_hooks() {
@@ -22,10 +22,9 @@ class HoO {
   }
 
   public static function deactivate() {
-    // tidy up
   }
 
-  function public get_plugin_slug() {
+  public function get_plugin_slug() {
     return $this->plugin_slug;
   }
 
