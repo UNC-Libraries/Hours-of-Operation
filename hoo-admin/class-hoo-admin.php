@@ -41,7 +41,8 @@ class HoO_Admin {
       __( 'Hours of Operation', $this->plugin_slug ),
       'manage_options',
       $this->plugin_slug,
-      array( $this, 'display_admin_page' ) );
+      array( $this, 'display_admin_page' ),
+      HOO__PLUGIN_URL . 'hoo-admin/assets/images/hoo-20.png' );
   }
 
   public function add_action_links( $links ) {

@@ -41,6 +41,7 @@ register_deactivation_hook( __FILE__, array( 'HoO', 'deactivate' ) );
 
 add_action( 'plugins_loaded', array( 'HoO', 'get_instance' ) );
 
+// admin
 if ( is_admin() ) {
   require_once ( HOO__PLUGIN_ADMIN_DIR . 'class-hoo-admin.php' );
   add_action( 'plugins_loaded', array( 'HoO_Admin', 'get_instance' ) );
