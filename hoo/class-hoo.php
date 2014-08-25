@@ -1,28 +1,31 @@
-<?php 
+<?php
+
+include 'class-hoo-db.php';
 
 class HoO {
 
   const VERSION = '0.0.1';
 
-  protected $plugin_slug = 'hoo';
   protected static $instance = null;
+  protected $plugin_slug = 'hoo';
 
   private function __construct() {
     self::init_hooks();
+
   }
-  
+
   public function init_hooks() {
   }
-  
+
   public static function activate() {
-    // set some things up :) 
+    HoO_DB::create_tables();
   }
-  
+
   public static function deactivate() {
     // tidy up
   }
-  
-  public function get_plugin_slug() {
+
+  function public get_plugin_slug() {
     return $this->plugin_slug;
   }
 
