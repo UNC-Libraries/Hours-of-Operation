@@ -3,10 +3,10 @@
  * Hours of Operation
  *
  * @package   HoO
- * @author    UNCLibraries
+ * @author    UNC Libraries
  * @license   GPL-3.0+
  * @link      http://library.unc.edu
- * @copyright 2014 UNCLibraries
+ * @copyright 2014 UNC Libraries
  *
  * @wordpress-plugin
  * Plugin Name:       Hours of Operation
