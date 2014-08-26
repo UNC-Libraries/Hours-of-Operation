@@ -27,21 +27,21 @@ defined( 'ABSPATH' ) or die();
 
 define( 'HOO_VERSION', '0.0.1' );
 define( 'HOO__PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'HOO__PLUGIN_DIR', plugin_dir_path( __FILE__ ) . 'hoo/' );
-define( 'HOO__PLUGIN_ADMIN_DIR', plugin_dir_path( __FILE__ ) . 'hoo-admin/' );
+define( 'HOO__PLUGIN_ASSETS_URL', HOO__PLUGIN_URL . 'assets/');
 
-// public facing app
-require_once( HOO__PLUGIN_DIR . 'class-hoo.php' );
+define( 'HOO__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'HOO__PLUGIN_VIEWS_DIR', HOO__PLUGIN_DIR . 'src/views/');
 
-register_activation_hook( __FILE__, array( 'HoO', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'HoO', 'deactivate' ) );
+require_once( HOO__PLUGIN_DIR . 'vendor/autoload.php' );
 
-add_action( 'plugins_loaded', array( 'HoO', 'get_instance' ) );
+register_activation_hook( __FILE__, array( 'Controller', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'Controller', 'deactivate' ) );
 
-// admin
 if ( is_admin() ) {
-  require_once ( HOO__PLUGIN_ADMIN_DIR . 'class-hoo-admin.php' );
-  add_action( 'plugins_loaded', array( 'HoO_Admin', 'get_instance' ) );
-}
+  new Hoo\Admin\Controller();
+} else {
+  new Hoo\Controller();
+} 
+
 
 ?>

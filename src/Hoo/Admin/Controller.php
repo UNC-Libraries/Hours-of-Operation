@@ -1,28 +1,22 @@
 <?php
 
+namespace Hoo\Admin;
+
 defined( 'ABSPATH' ) or die();
 
-class HoO_Admin {
+class Controller {
 
   protected static $instance = null;
   protected $screen_hook_suffix = null;
 
-  private function __construct() {
-    $plugin = HoO::get_instance();
-    $this->plugin_slug = $plugin->get_plugin_slug();
+  public function __construct() {
+//    $plugin = HoO::get_instance();
+    $this->plugin_slug = 'hoo';
     
 
     $this->init_hooks();
 
   }
-
-  public static function get_instance() {
-    if ( null == self::$instance ) {
-      self::$instance = new self();
-    }
-    return self::$instance;
-  }
-
 
   public function init_hooks() {
     // style
@@ -32,8 +26,8 @@ class HoO_Admin {
     // menus
     add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 
-    $plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
-    add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
+  //  $plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
+   // add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
   }
 
 
@@ -45,7 +39,7 @@ class HoO_Admin {
       'manage_options',
       $this->plugin_slug,
       array( $this, 'display_admin_page' ),
-      HOO__PLUGIN_URL . 'hoo-admin/assets/images/hoo-20.png' );
+      HOO__PLUGIN_URL . 'assets/images/hoo-20.png' );
   }
 
   public function add_action_links( $links ) {
@@ -68,9 +62,9 @@ class HoO_Admin {
     if ( $this->screen_hook_suffix == $screen->id ) {
       wp_enqueue_style(
         $this->plugin_slug . '-admin-styles',
-        plugins_url( 'assets/admin.css', __FILE__ ),
+        HOO__PLUGIN_URL . 'assets/css/admin.css',
         array(),
-        HoO::VERSION );
+        \Hoo\Controller::VERSION );
     }
   }
 
@@ -78,7 +72,7 @@ class HoO_Admin {
   }
 
   public function display_admin_page() {
-    include_once( 'views/admin.php' );
+    include_once( HOO__PLUGIN_VIEWS_DIR . 'admin/index.php');
   }
 }
 
