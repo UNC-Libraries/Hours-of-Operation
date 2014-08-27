@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * Hours of Operation
  *
@@ -32,16 +32,34 @@ define( 'HOO__PLUGIN_ASSETS_URL', HOO__PLUGIN_URL . 'assets/');
 define( 'HOO__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'HOO__PLUGIN_VIEWS_DIR', HOO__PLUGIN_DIR . 'src/views/');
 
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\EntityManager;
+
 require_once( HOO__PLUGIN_DIR . 'vendor/autoload.php' );
 
-register_activation_hook( __FILE__, array( 'Controller', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'Controller', 'deactivate' ) );
+
+$db_params = array(
+  'driver' => 'pdo_mysql',
+  'user' => DB_USER,
+  'password' => DB_PASSWORD,
+  'host' => DB_HOST,
+  'dbname' => DB_NAME );
+
+$is_dev_mode = true;
+
+$config = Setup::createAnnotationMetadataConfiguration( array( HOO__PLUGIN_DIR . 'Hoo/Model' ), $is_dev_mode );
+$entity_manager = EntityManager::create( $db_params, $config );
+
+$activator = new Hoo\Activator($entity_manager);
+register_activation_hook( __FILE__, array( $activator, 'activate' ) );
+register_deactivation_hook( __FILE__, array( $activator, 'deactivate' ) );
+
 
 if ( is_admin() ) {
-  new Hoo\Admin\Controller();
+  new Hoo\Admin\Controller($entity_manager);
 } else {
-  new Hoo\Controller();
-} 
+  new Hoo\Controller($entity_manager);
+}
 
 
 ?>

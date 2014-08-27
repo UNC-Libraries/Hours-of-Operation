@@ -5,15 +5,11 @@ namespace Hoo\Admin;
 defined( 'ABSPATH' ) or die();
 
 class Controller {
-
-  protected static $instance = null;
   protected $screen_hook_suffix = null;
 
-  public function __construct() {
-//    $plugin = HoO::get_instance();
-    $this->plugin_slug = 'hoo';
-    
-
+  public function __construct($entity_manager) {
+    $this->entity_manager = $entity_manager;
+    $this->plugin_slug = \Hoo\Controller::SLUG;
     $this->init_hooks();
 
   }
@@ -26,10 +22,9 @@ class Controller {
     // menus
     add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 
-  //  $plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
-   // add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
+    $plugin_basename = HOO__PLUGIN_DIR .\Hoo\Controller::SLUG;
+    add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
   }
-
 
   public function add_admin_menu() {
 
