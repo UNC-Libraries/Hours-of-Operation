@@ -12,12 +12,15 @@ class Activator {
     $schema_tool = new \Doctrine\ORM\Tools\SchemaTool( $this->entity_manager );
     $schema_manager = $this->entity_manager->getConnection()->getSchemaManager();
 
-    if ( $schema_manager->tablesExist( array( 'hoo_locations' ) ) ) {
+    // @TODO: check each table one at a time?
+    if ( $schema_manager->tablesExist( array( 'hoo_locations', 'hoo_addresses' ) ) ) {
       // update schema?
     }
     else {
       $entities = array(
-        $this->entity_manager->getClassMetadata( '\\Hoo\\Model\\Location' ) );
+        $this->entity_manager->getClassMetadata( '\\Hoo\\Model\\Location' ),
+        $this->entity_manager->getClassMetadata( '\\Hoo\\Model\\Address' )
+      );
 
       $schema_tool->createSchema( $entities );
     }
