@@ -2,8 +2,7 @@
 
 namespace Hoo;
 
-class View implements \ArrayAccess
-{
+class View implements \ArrayAccess {
   
   private $views_path;
   /**
@@ -29,11 +28,9 @@ class View implements \ArrayAccess
    *
    * @param string $file file to include
    */
-  public function __construct($file)
-  {
+  public function __construct( $file ) {
     $this->file = $file;
     $this->views_path = HOO__PLUGIN_DIR . 'src/views/';
-
   }
 
   /**
@@ -49,8 +46,7 @@ class View implements \ArrayAccess
    * @param array $data
    * @return void>
    */
-  public function render( $data = null )
-  {
+  public function render( $data = null ) {
     $this->data = ( null === $data ) ? array() : $data;
     $this->layout = null;
 
@@ -59,14 +55,12 @@ class View implements \ArrayAccess
     include( $this->views_path . $this->file . '.php' );
 
     // did we set a layout?
-    if ( null === $this->layout )
-    {
+    if ( null === $this->layout ) {
       ob_end_flush();
     }
-    else
-    {
+    else {
       ob_end_clean();
-      $this->include_file($this->layout);
+      $this->include_file( $this->layout );
     }
   }
 
@@ -83,8 +77,7 @@ class View implements \ArrayAccess
    * @param array $data
    * @return string The rendered view content
    */
-  public function fetch( $data = null )
-  {
+  public function fetch( $data = null ) {
     ob_start();
     $this->render( $data );
     return ob_get_clean();
@@ -110,8 +103,7 @@ class View implements \ArrayAccess
    *
    * @return array
    */
-  public function get_data()
-  {
+  public function get_data() {
     return $this->data;
   }
 
@@ -133,10 +125,9 @@ class View implements \ArrayAccess
    * @param string $file
    * @return void
    */
-  protected function include_file($file)
-  {
-    $v = new View($file);
-    $v->render($this->data);
+  protected function include_file($file) {
+    $v = new View( $file );
+    $v->render( $this->data );
     $this->data = $v->get_data();
   }
 
@@ -170,8 +161,7 @@ class View implements \ArrayAccess
    * @param string $file
    * @return void
    */
-  protected function set_layout($file)
-  {
+  protected function set_layout( $file ) {
     $this->layout = $file;
   }
 
@@ -202,8 +192,7 @@ class View implements \ArrayAccess
    *
    * @return void
    */
-  protected function capture()
-  {
+  protected function capture() {
     ob_start();
   }
 
@@ -232,9 +221,8 @@ class View implements \ArrayAccess
    * @param string $name
    * @return void
    */
-  protected function end_capture($name)
-  {
-    $this->data[$name] = ob_get_clean();
+  protected function end_capture( $name ) {
+    $this->data[ $name ] = ob_get_clean();
   }
 
   /*
@@ -248,11 +236,21 @@ class View implements \ArrayAccess
    *  <?php $this['foo'] = 'bar' ?>
    * </code>
    */
-  public function offsetExists($offset)      { return isset($this->data[$offset]); }
-  public function offsetGet($offset)         { return $this->data[$offset]; }
-  public function offsetSet($offset, $value) { $this->data[$offset] = $value; }
-  public function offsetUnset($offset)       { unset($this->data[$offset]); }
+  public function offsetExists( $offset ) {
+    return isset( $this->data[ $offset ] );
+  }
 
+  public function offsetGet( $offset ) {
+    return $this->data[ $offset ];
+  }
+
+  public function offsetSet( $offset, $value ) {
+    $this->data[ $offset ] = $value;
+  }
+
+  public function offsetUnset( $offset ) {
+    unset( $this->data[ $offset ] );
+  }
 }
 
 ?>

@@ -10,7 +10,10 @@ use \Doctrine\ORM\EntityManager;
 class Loader {
 
   const SLUG = 'hoo';
-
+  
+  /**
+     Responsible for setting up database access and choosing correct controller
+   */
   public function __construct() {
 
     $db_params = array(
@@ -39,7 +42,13 @@ class Loader {
 
 
   }
+  
+  /**
+     activate the plugin
 
+     load the model and create the db schema from annotations
+     @return void
+  */
   public function activate() {
     $schema_tool = new \Doctrine\ORM\Tools\SchemaTool( $this->entity_manager );
     $schema_manager = $this->entity_manager->getConnection()->getSchemaManager();
@@ -62,6 +71,11 @@ class Loader {
   public function deactivate() {
   }
 
+  
+  /**
+     register all the global admin hooks like adding the admin menus
+     @return void
+  */
   private function init_admin_hooks() {
 
     // menus
@@ -72,6 +86,11 @@ class Loader {
 
   }
 
+  
+  /**
+     add the menus to the admin section
+     @return void
+   */
   public function add_admin_menus() {
     $this->screen_hook_suffix = add_menu_page(
       __( 'Hours of Operation', Loader::SLUG ),
