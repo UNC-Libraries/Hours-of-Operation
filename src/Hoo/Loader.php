@@ -25,7 +25,7 @@ class Loader {
 
     $is_dev_mode = true;
 
-    $config = ORMSetup::createAnnotationMetadataConfiguration( array( HOO__PLUGIN_DIR . 'Hoo/Model' ), $is_dev_mode );
+    $config = ORMSetup::createAnnotationMetadataConfiguration(array( HOO__PLUGIN_DIR . 'Hoo/Model' ), $is_dev_mode, null, null, false );
     $entity_manager = EntityManager::create( $db_params, $config );
 
     $this->entity_manager = $entity_manager;
@@ -59,8 +59,8 @@ class Loader {
     }
     else {
       $entities = array(
-        $this->entity_manager->getClassMetadata( '\\Hoo\\Model\\Location' ),
-        $this->entity_manager->getClassMetadata( '\\Hoo\\Model\\Address' )
+        $this->entity_manager->getClassMetadata( '\Hoo\Model\Location' ),
+        $this->entity_manager->getClassMetadata( '\Hoo\Model\Address' )
       );
 
       $schema_tool->createSchema( $entities );
