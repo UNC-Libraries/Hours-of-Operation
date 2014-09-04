@@ -17,9 +17,7 @@
 
     ],
     "autoload": {
-        "psr-0": {
-            "Hoo": "src/"
-        }
+        "psr-0": { "Hoo": "src/" }
     },
     "repositories":[
         {
@@ -30,10 +28,6 @@
     "require": {
         "php": ">=5.3.0",
         "simshaun/recurr": "0.3",
-        "doctrine/orm": "*",
-        "symfony/yaml": "*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "4.1.*"
+        "doctrine/orm": "~2.2,>=2.2.3"
     }
 }
