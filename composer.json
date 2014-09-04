@@ -2,7 +2,7 @@
     "name": "unclibraries/hoo",
     "description": "Some description @TODO",
     "keywords": ["wordpress", "plugin", "unc", "hours", "dates"],
-    "homepage": "@TODO",
+    "homepage": "http://www.example.com",
     "type": "wordpress-plugin",
     "license": "GPL-3.0+",
     "authors": [
@@ -12,7 +12,7 @@
         },
         {
             "name": "Steve Segedy",
-            "email": "@TODO"
+            "email": "segedy@email.unc.edu"
         }
 
     ],
