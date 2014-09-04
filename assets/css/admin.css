@@ -2,3 +2,6 @@
     float: left;
     margin: 5px;
 }
+#wphead {
+    display: inline-block;
+}
