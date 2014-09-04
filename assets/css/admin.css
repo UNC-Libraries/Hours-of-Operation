@@ -1,7 +1,33 @@
+.hoo-head {
+    display: table;
+    width: 100%;
+}
 .hoo-head img {
-    float: left;
-    margin: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+    padding: 5px;
 }
 #wphead {
     display: inline-block;
+    vertical-align: middle;
+}
+
+#location_form ul {
+    border: 1px solid #e5e5e5;
+    padding: 10px;
+    background-color: #fff;
+    width: 60%;
+}
+#location_form label {
+    display: inline-block;
+    width: 25%;
+}
+
+#location_form textarea {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+}
+
 }

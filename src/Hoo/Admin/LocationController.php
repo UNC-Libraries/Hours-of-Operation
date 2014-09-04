@@ -28,15 +28,33 @@ class LocationController {
   }
 
   public function index() {
+    $tes = new Location();
+    $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+    $locations = $locations_repo->findAll();
+    
 
+  }
+  
+  public function edit() {
+
+    $view = new View( 'admin/location/edit' );
+
+    $view->render( 
+      array( 
+        'title' => 'Edit a Location',
+        'location' => $location
+      )
+    );
   }
   
   public function add() {
     $view = new View( 'admin/location/add' );
-    
+
     $view->render( 
       array( 
-        'title' => 'Add a Location' ) ) ;
+        'title' => 'Add a Location'
+      )
+    );
 
   }
 
