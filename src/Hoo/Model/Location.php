@@ -21,7 +21,7 @@ class Location {
   /**
      @ORM\Column(type="string", length=256)
    */
-  public $name;
+  protected $name;
 
   /**
      @ORM\Column(name="alternate_name", type="string", length=256)
@@ -60,7 +60,7 @@ class Location {
      @ORM\ManyToOne(targetEntity="Location", inversedBy="sublocations")
      @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
    */
-  protected $parent;
+  private $parent;
 
   /** @ORM\Column(name="created_at", type="datetime") */
   private $createdAt;
@@ -80,6 +80,45 @@ class Location {
 
   public function __toString(){
     return $this->name;
+  }
+  
+  /**
+     a little getter/setter magic
+     doctrine wants protected properties
+     this tries to preserve accessibility a little bit by making private non-accessible
+   */
+  public function __get( $property ) {
+    // can't get private properties
+    $protected = \ReflectionProperty::IS_PROTECTED;
+    $reflector = new \ReflectionClass( $this );
+    $protected_props = $reflector->getProperties( $protected );
+
+    foreach( $protected_props as $prop ) {
+      if ( $prop->getName() == $property ) {
+        return $this->$property;
+      }
+    }
+    trigger_error( "Can't access property " . get_class( $this ) . ':' . $property, E_USER_ERROR );
+    
+  }
+  
+  public function __set( $property, $value ) {
+    // can't set private properties
+    $protected = \ReflectionProperty::IS_PROTECTED;
+    $reflector = new \ReflectionClass( $this );
+    $protected_props = $reflector->getProperties( $protected );
+
+    foreach( $protected_props as $prop ) {
+      if ( $prop->getName() == $property ) {
+        $this->$property = $value;
+      }
+    }
+    if ( isset ( $this->$property ) ) {
+      return $this; // allow chaining
+    } else {
+      trigger_error( "Can't access property " . get_class( $this ) . ':' . $property, E_USER_ERROR );
+    }
+    
   }
   
   public function __construct() {
