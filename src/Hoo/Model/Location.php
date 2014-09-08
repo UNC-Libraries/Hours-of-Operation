@@ -4,14 +4,14 @@ namespace Hoo\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/** 
+/**
    @ORM\Entity
    @ORM\Table(name="hoo_locations")
    @ORM\HasLifecycleCallbacks
  */
 class Location {
 
-  /** 
+  /**
      @ORM\Id
      @ORM\Column(type="integer")
      @ORM\GeneratedValue
@@ -47,12 +47,12 @@ class Location {
   protected $isHandicapAccessible;
 
   /**
-     @ORM\Column(name="address_id", type="integer") 
+     @ORM\Column(name="address_id", type="integer")
      @ORM\OneToOne(targetEntity="Address")
      @ORM\joinColumn(name="location_id", referencedColumnName="id")
    */
   protected $address;
-  
+
   /** @ORM\OneToMany(targetEntity="Location", mappedBy="parent") */
   protected $sublocations;
 
@@ -81,27 +81,17 @@ class Location {
   public function __toString(){
     return $this->name;
   }
-  
+
   /**
      a little getter/setter magic
-     doctrine wants protected properties
-     this tries to preserve accessibility a little bit by making private non-accessible
    */
   public function __get( $property ) {
-    // can't get private properties
-    $protected = \ReflectionProperty::IS_PROTECTED;
-    $reflector = new \ReflectionClass( $this );
-    $protected_props = $reflector->getProperties( $protected );
 
-    foreach( $protected_props as $prop ) {
-      if ( $prop->getName() == $property ) {
-        return $this->$property;
-      }
+    if ( property_exists( $this, $property ) ){
+      return $this->$property;
     }
-    trigger_error( "Can't access property " . get_class( $this ) . ':' . $property, E_USER_ERROR );
-    
   }
-  
+
   public function __set( $property, $value ) {
     // can't set private properties
     $protected = \ReflectionProperty::IS_PROTECTED;
@@ -118,9 +108,9 @@ class Location {
     } else {
       trigger_error( "Can't access property " . get_class( $this ) . ':' . $property, E_USER_ERROR );
     }
-    
+
   }
-  
+
   public function __construct() {
     $this->sublocations = new \Doctrine\Common\Collections\ArrayCollection();
   }

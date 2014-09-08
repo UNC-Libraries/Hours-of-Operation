@@ -93,20 +93,20 @@ class Loader {
    */
   public function add_admin_menus() {
     $this->screen_hook_suffix = add_menu_page(
-      __( 'Hours of Operation', Loader::SLUG ),
-      __( 'Hours of Operation', Loader::SLUG ),
+      __( 'Hours of Operation', 'hoo-location' ),
+      __( 'Hours of Operation', 'hoo-location' ),
       'manage_options',
-      Loader::SLUG,
-      array( $this->location_controller, 'index' ),
+      'hoo-location',
+      array( $this->location_controller, 'route' ),
       HOO__PLUGIN_URL . 'assets/images/hoo-20.png' );
 
     add_submenu_page(
-      Loader::SLUG,
-      __( 'Add New', LocationController::SLUG . '-add' ),
-      __( 'Add New', LocationController::SLUG . '-add' ),
+      'hoo-location',
+      __( 'Add New', 'hoo-location' ),
+      __( 'Add New', 'hoo-location' ),
       'manage_options',
-      LocationController::SLUG . '-add',
-      array($this->location_controller, 'add'));
+      'hoo-location-add',
+      array($this->location_controller, 'route'));
 
   }
 

@@ -9,15 +9,26 @@ defined( 'ABSPATH' ) or die();
 
 class LocationController {
   protected $screen_hook_suffix = null;
+  private $actions = array( 'add', 'edit', 'update', 'delete' );
   const SLUG = 'hoo-location';
 
   public function __construct($entity_manager) {
     $this->entity_manager = $entity_manager;
-    
+
+
+
     $this->init_hooks();
+
 
   }
 
+  public function route() {
+    if ( in_array( $_REQUEST['action'], $this->actions ) ) {
+      $this->$_REQUEST['action']();
+    } else {
+      $this->index();
+    }
+  }
   public function init_hooks() {
 
     wp_enqueue_style(
@@ -28,30 +39,39 @@ class LocationController {
   }
 
   public function index() {
-    $tes = new Location();
     $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
     $locations = $locations_repo->findAll();
-    
+
+    $locations_table = new LocationList( $this->entity_manager );
+
+    $locations_table->prepare_items();
+
+    $view = new View( 'admin/location/index' );
+    $view->render(
+      array(
+        'title' => 'Locations',
+        'locations-table' => $locations_table
+      ) );
 
   }
-  
+
   public function edit() {
 
     $view = new View( 'admin/location/edit' );
 
-    $view->render( 
-      array( 
+    $view->render(
+      array(
         'title' => 'Edit a Location',
         'location' => $location
       )
     );
   }
-  
+
   public function add() {
     $view = new View( 'admin/location/add' );
 
-    $view->render( 
-      array( 
+    $view->render(
+      array(
         'title' => 'Add a Location'
       )
     );
@@ -66,7 +86,7 @@ class LocationController {
       $links );
 
   }
-  
+
   public static function get_page_url() {
   }
 
