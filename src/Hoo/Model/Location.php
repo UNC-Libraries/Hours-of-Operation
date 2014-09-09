@@ -46,6 +46,12 @@ class Location {
   /** @ORM\Column(name="handicap_accessible", type="boolean") */
   protected $isHandicapAccessible;
 
+  /** @ORM\Column(name="is_visible", type="boolean") */
+  protected $isVisible;
+
+  /** @ORM\Column(name="position", type="integer") */
+  protected $position;
+
   /**
      @ORM\Column(name="address_id", type="integer")
      @ORM\OneToOne(targetEntity="Address")
@@ -55,6 +61,7 @@ class Location {
 
   /** @ORM\OneToMany(targetEntity="Location", mappedBy="parent") */
   protected $sublocations;
+  
 
   /**
      @ORM\ManyToOne(targetEntity="Location", inversedBy="sublocations")
