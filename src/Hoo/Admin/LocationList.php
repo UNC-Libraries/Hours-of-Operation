@@ -57,7 +57,7 @@ class LocationList extends \WP_List_Table {
   }
 
   public function no_items() {
-    __( ' There are no locations :( ' );
+    _e( ' There are no locations.  <a href="?page=hoo-location&action=add">Click Here</a> to add a location!' );
   }
 }
 
