@@ -10,7 +10,8 @@ use \Doctrine\ORM\EntityManager;
 class Loader {
 
   const SLUG = 'hoo';
-  
+  private $tables = array( 'hoo_locations' => 'Hoo\Model\Location', 'hoo_addresses' => 'Hoo\Model\Address' );
+
   /**
      Responsible for setting up database access and choosing correct controller
    */
@@ -42,40 +43,38 @@ class Loader {
 
 
   }
-  
+
   /**
      activate the plugin
 
      load the model and create the db schema from annotations
      @return void
-  */
+   */
   public function activate() {
     $schema_tool = new \Doctrine\ORM\Tools\SchemaTool( $this->entity_manager );
     $schema_manager = $this->entity_manager->getConnection()->getSchemaManager();
 
-    // @TODO: check each table one at a time?
-    if ( $schema_manager->tablesExist( array( 'hoo_locations', 'hoo_addresses' ) ) ) {
-      // update schema?
-    }
-    else {
-      $entities = array(
-        $this->entity_manager->getClassMetadata( '\Hoo\Model\Location' ),
-        $this->entity_manager->getClassMetadata( '\Hoo\Model\Address' )
-      );
+    foreach ( $this->tables as $table => $class_name ) {
+      $class = $this->entity_manager->getClassMetadata( $class_name );
 
-      $schema_tool->createSchema( $entities );
-    }
+      if ( $schema_manager->tablesExist( array( $class ) ) ) {
+        // update schema?
+      }
+      else {
+        $schema_tool->createSchema( array( $class ) );
+      }
 
+    }
   }
 
   public function deactivate() {
   }
 
-  
+
   /**
      register all the global admin hooks like adding the admin menus
      @return void
-  */
+   */
   private function init_admin_hooks() {
 
     // menus
@@ -86,7 +85,7 @@ class Loader {
 
   }
 
-  
+
   /**
      add the menus to the admin section
      @return void
@@ -106,7 +105,7 @@ class Loader {
       __( 'Add New', 'hoo-location' ),
       'manage_options',
       'hoo-location-add',
-      array($this->location_controller, 'route'));
+      array($this->location_controller, 'add'));
 
   }
 
