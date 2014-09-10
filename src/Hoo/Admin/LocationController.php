@@ -3,19 +3,20 @@
 namespace Hoo\Admin;
 
 use \Hoo\Model\Location;
+use \Hoo\Model\Address;
 use \Hoo\View;
 
 defined( 'ABSPATH' ) or die();
 
 class LocationController {
   protected $screen_hook_suffix = null;
-  private $actions = array( 'add', 'edit', 'update', 'delete' );
+
+  private $actions = array( 'add', 'create', 'edit', 'update', 'delete' );
+
   const SLUG = 'hoo-location';
 
   public function __construct($entity_manager) {
     $this->entity_manager = $entity_manager;
-
-
 
     $this->init_hooks();
 
@@ -39,8 +40,6 @@ class LocationController {
   }
 
   public function index() {
-    $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
-    $locations = $locations_repo->findAll();
 
     $locations_table = new LocationList( $this->entity_manager );
 
@@ -66,13 +65,29 @@ class LocationController {
       )
     );
   }
+  
+  public function create() {
 
-  public function add() {
+    $location = new Location();
+    $location = $location->fromArray( $_REQUEST['location'] );
+
+    $this->entity_manager->persist( $location );
+    $this->entity_manager->flush();
+    
+  }
+
+  public function add( $location = null) {
+    if( empty( $location ) ) {
+      $location = new Location();
+    } 
+    $address = new Address();
+
     $view = new View( 'admin/location/add' );
 
     $view->render(
       array(
-        'title' => 'Add a Location'
+        'title' => 'Add a Location',
+        'location' => $location
       )
     );
 
