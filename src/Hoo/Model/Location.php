@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
    @ORM\Entity
    @ORM\Table(name="hoo_locations")
-   @ORM\HasLifecycleCallbacks
+   @ORM\HasLifecycleCallbacks()
  */
 class Location {
 
@@ -26,40 +26,35 @@ class Location {
   /**
      @ORM\Column(name="alternate_name", type="string", length=256)
    */
-  protected $alternateName;
+  protected $alternate_name;
 
-  /** @ORM\Column(type="string", length=256) */
+  /** @ORM\Column(type="string", length=256, nullable=true) */
   protected $url;
 
-  /** @ORM\Column(type="string", length=256) */
+  /** @ORM\Column(type="string", length=256, nullable=true) */
   protected $phone;
 
-  /** @ORM\Column(type="decimal", precision=18, scale=15) */
-  protected $lat;
-
-  /** @ORM\Column(type="decimal", precision=18, scale=15) */
-  protected $lon;
-
-  /** @ORM\Column(type="text") */
+  /** @ORM\Column(type="text", nullable=true) */
   protected $description;
 
-  /** @ORM\Column(name="handicap_accessible", type="boolean") */
-  protected $isHandicapAccessible;
+  /** @ORM\Column(name="handicap_accessible", type="boolean", nullable=true, options={"default" = 1}) */
+  protected $is_handicap_accessible = true;
 
-  /** @ORM\Column(name="is_visible", type="boolean") */
-  protected $isVisible;
+  /** @ORM\Column(name="is_visible", type="boolean", nullable=true, options={"default" = 1}) */
+  protected $is_visible = true;
 
-  /** @ORM\Column(name="position", type="integer") */
+  /** @ORM\Column(name="position", type="integer", nullable=true) */
   protected $position;
 
   /**
-     @ORM\Column(name="address_id", type="integer")
-     @ORM\OneToOne(targetEntity="Address")
+     @ORM\OneToOne(targetEntity="Address", cascade={"all"})
      @ORM\joinColumn(name="location_id", referencedColumnName="id")
    */
   protected $address;
 
-  /** @ORM\OneToMany(targetEntity="Location", mappedBy="parent") */
+  /** 
+     @ORM\OneToMany(targetEntity="Location", mappedBy="parent") 
+   */
   protected $sublocations;
   
 
@@ -70,23 +65,46 @@ class Location {
   private $parent;
 
   /** @ORM\Column(name="created_at", type="datetime") */
-  private $createdAt;
+  private $created_at;
 
   /** @ORM\column(name="updated_at", type="datetime") */
-  private $updatedAt;
+  private $updated_at;
 
   /** @ORM\PrePersist */
   public function set_created_at() {
-    $this->createdAt = new \DateTime();
+    $datetime = new \DateTime();
+    $this->updated_at = $datetime;
+    $this->created_at = $datetime;
   }
 
   /** @ORM\PostUpdate */
   public function set_updated_at() {
-    $this->updatedAt = new \DateTime();
+    $this->updated_at = new \DateTime();
   }
 
   public function __toString(){
     return $this->name;
+  }
+  
+  /**
+
+   */
+  public function fromArray( $data ) {
+    foreach ( $data as $property => $value ) {
+      switch( $property ) {
+        case 'address':
+          $address = new Address();
+          $address = $address->fromArray( $value );
+
+          $this->address = $address;
+          break;
+          
+        default: 
+          $this->$property = $value;
+      }
+    }
+    
+    return $this;
   }
 
   /**
