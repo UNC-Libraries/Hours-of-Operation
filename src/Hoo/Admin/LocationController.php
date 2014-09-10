@@ -57,11 +57,15 @@ class LocationController {
   public function edit() {
 
     $view = new View( 'admin/location/edit' );
+    
+    $location = $this->entity_manager->find( '\Hoo\Model\Location', $_REQUEST['location_id'] );
 
     $view->render(
       array(
         'title' => 'Edit a Location',
-        'location' => $location
+        'location' => $location, 
+        'action' => 'update',
+        'action-display' => 'Update'
       )
     );
   }
@@ -87,7 +91,9 @@ class LocationController {
     $view->render(
       array(
         'title' => 'Add a Location',
-        'location' => $location
+        'location' => $location,
+        'action' => 'create',
+        'action-display' => 'Add'
       )
     );
 

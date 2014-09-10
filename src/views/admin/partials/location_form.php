@@ -1,4 +1,4 @@
-<form id="location_form" name="location_form" action="<?php echo esc_url( '?page=hoo-location&action=create' )?>" method="POST">
+<form id="location_form" name="location_form" action="<?php echo esc_url( '?page=hoo-location&action=' . $this['action'] )?>" method="POST">
   <ul>
     <li>
       <label for="location_name">Name</label>
@@ -77,6 +77,6 @@
     </li>
   </ul>
 
-  <?php submit_button( 'Add Location', 'primary', 'location_submit' )  ?>
+  <?php submit_button( sprintf( '%s Location', $this['action-display'] ), 'primary', 'location_submit' )  ?>
 
 </form>
