@@ -57,19 +57,35 @@ class LocationController {
   public function edit() {
 
     $view = new View( 'admin/location/edit' );
-    
+
     $location = $this->entity_manager->find( '\Hoo\Model\Location', $_REQUEST['location_id'] );
 
     $view->render(
       array(
         'title' => 'Edit a Location',
-        'location' => $location, 
+        'location' => $location,
         'action' => 'update',
         'action-display' => 'Update'
       )
     );
   }
-  
+
+  public function update() {
+
+    $view = new View( 'admin/location/edit' );
+
+    $location = $this->entity_manager->find( '\Hoo\Model\Location', $_REQUEST['location_id'] );
+
+    $view->render(
+      array(
+        'title' => 'Edit a Location',
+        'location' => $location,
+        'action' => 'update',
+        'action-display' => 'Update'
+      )
+    );
+  }
+
   public function create() {
 
     $location = new Location();
@@ -77,13 +93,13 @@ class LocationController {
 
     $this->entity_manager->persist( $location );
     $this->entity_manager->flush();
-    
+
   }
 
   public function add( $location = null) {
     if( empty( $location ) ) {
       $location = new Location();
-    } 
+    }
     $address = new Address();
 
     $view = new View( 'admin/location/add' );
@@ -110,7 +126,6 @@ class LocationController {
 
   public static function get_page_url() {
   }
-
 }
 
 ?>
