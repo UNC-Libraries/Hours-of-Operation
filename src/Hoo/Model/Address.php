@@ -17,7 +17,7 @@ class Address {
     @ORM\Column(type="integer") 
     @ORM\GeneratedValue 
   */
-  private $id;
+  protected $id;
 
   /** 
     @ORM\Column(name="line1", type="string", length=256, nullable=true) 
