@@ -64,6 +64,12 @@ class View implements \ArrayAccess {
     }
   }
 
+  public function render_metabox( $page = null, $data = null ) {
+
+    $this->render( $data['args'] );
+
+  }
+
   /**
    * fetch Fetches the view result intead of sending it to the output buffer
    *
