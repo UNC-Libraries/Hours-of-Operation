@@ -33,6 +33,13 @@ class Loader {
 
 
     if ( is_admin() ) {
+
+    wp_enqueue_style(
+      LocationController::SLUG . '-admin-styles',
+      HOO__PLUGIN_URL . 'assets/css/admin.css',
+      array(),
+      HOO_VERSION);
+
       $this->location_controller = new LocationController( $entity_manager );
       $this->init_admin_hooks();
 
@@ -57,7 +64,7 @@ class Loader {
     foreach ( $this->tables as $table => $class_name ) {
       $class = $this->entity_manager->getClassMetadata( $class_name );
 
-      if ( $schema_manager->tablesExist( array( $class ) ) ) {
+      if ( $schema_manager->tablesExist( array( $table ) ) ) {
         // update schema?
       }
       else {
@@ -77,35 +84,8 @@ class Loader {
    */
   private function init_admin_hooks() {
 
-    // menus
-    add_action( 'admin_menu', array( $this, 'add_admin_menus' ) );
-
     $plugin_basename = HOO__PLUGIN_DIR . SLUG;
     add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
-
-  }
-
-
-  /**
-     add the menus to the admin section
-     @return void
-   */
-  public function add_admin_menus() {
-    $this->screen_hook_suffix = add_menu_page(
-      __( 'Hours of Operation', 'hoo-location' ),
-      __( 'Hours of Operation', 'hoo-location' ),
-      'manage_options',
-      'hoo-location',
-      array( $this->location_controller, 'route' ),
-      HOO__PLUGIN_URL . 'assets/images/hoo-20.png' );
-
-    add_submenu_page(
-      'hoo-location',
-      __( 'Add New', 'hoo-location' ),
-      __( 'Add New', 'hoo-location' ),
-      'manage_options',
-      'hoo-location-add',
-      array($this->location_controller, 'add'));
 
   }
 
