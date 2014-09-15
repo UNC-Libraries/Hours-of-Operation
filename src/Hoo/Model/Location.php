@@ -24,7 +24,7 @@ class Location {
   protected $name;
 
   /**
-     @ORM\Column(name="alternate_name", type="string", length=256)
+     @ORM\Column(name="alternate_name", type="string", length=256, nullable=true)
    */
   protected $alternate_name;
 
@@ -37,26 +37,25 @@ class Location {
   /** @ORM\Column(type="text", nullable=true) */
   protected $description;
 
-  /** @ORM\Column(name="handicap_accessible", type="boolean", nullable=true, options={"default" = 1}) */
+  /** @ORM\Column(name="handicap_accessible", type="boolean", options={"default" = 1}) */
   protected $is_handicap_accessible = true;
 
-  /** @ORM\Column(name="is_visible", type="boolean", nullable=true, options={"default" = 1}) */
+  /** @ORM\Column(name="is_visible", type="boolean", options={"default" = 1}) */
   protected $is_visible = true;
 
-  /** @ORM\Column(name="position", type="integer", nullable=true) */
-  protected $position;
+  /** @ORM\Column(name="position", type="integer", options={"default" = 0}) */
+  protected $position = 0;
 
   /**
-     @ORM\OneToOne(targetEntity="Address", cascade={"all"})
-     @ORM\joinColumn(name="location_id", referencedColumnName="id")
+     @ORM\OneToOne(targetEntity="Address", cascade={"persist", "remove"})
    */
   protected $address;
 
-  /** 
-     @ORM\OneToMany(targetEntity="Location", mappedBy="parent") 
+  /**
+     @ORM\OneToMany(targetEntity="Location", mappedBy="parent")
    */
   protected $sublocations;
-  
+
 
   /**
      @ORM\ManyToOne(targetEntity="Location", inversedBy="sublocations")
@@ -77,7 +76,7 @@ class Location {
     $this->created_at = $datetime;
   }
 
-  /** @ORM\PostUpdate */
+  /** @ORM\PreUpdate */
   public function set_updated_at() {
     $this->updated_at = new \DateTime();
   }
@@ -85,7 +84,7 @@ class Location {
   public function __toString(){
     return $this->name;
   }
-  
+
   /**
 
    */
@@ -93,17 +92,18 @@ class Location {
     foreach ( $data as $property => $value ) {
       switch( $property ) {
         case 'address':
+
           $address = new Address();
           $address = $address->fromArray( $value );
-
+          $address->id = 7;
           $this->address = $address;
           break;
-          
-        default: 
+
+        default:
           $this->$property = $value;
       }
     }
-    
+
     return $this;
   }
 
@@ -118,21 +118,14 @@ class Location {
   }
 
   public function __set( $property, $value ) {
-    // can't set private properties
-    $protected = \ReflectionProperty::IS_PROTECTED;
-    $reflector = new \ReflectionClass( $this );
-    $protected_props = $reflector->getProperties( $protected );
 
-    foreach( $protected_props as $prop ) {
-      if ( $prop->getName() == $property ) {
-        $this->$property = $value;
-      }
-    }
-    if ( isset ( $this->$property ) ) {
-      return $this; // allow chaining
+    if ( property_exists( $this, $property ) ) {
+      $this->$property = $value;
     } else {
       trigger_error( "Can't access property " . get_class( $this ) . ':' . $property, E_USER_ERROR );
     }
+
+    return $this; // allow chaining
 
   }
 
