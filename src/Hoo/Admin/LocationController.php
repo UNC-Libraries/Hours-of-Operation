@@ -17,7 +17,7 @@ class LocationController {
     'add' => array(
       'parent' => 'hoo-location',
       'permissions' => 'manage_options',
-      'menu_title' => 'Add New'
+      'menu_title' => 'Add New Location'
     ),
     'edit' => array(
       'parent' => null,
@@ -79,17 +79,15 @@ class LocationController {
   }
 
   public function index() {
+    $view_options = array( 'title' => 'Locations' );
 
     $locations_table = new LocationList( $this->entity_manager );
 
     $locations_table->prepare_items();
+    $view_options['locations-table'] = $locations_table;
 
     $view = new View( 'admin/location/index' );
-    $view->render(
-      array(
-        'title' => 'Locations',
-        'locations-table' => $locations_table
-      ) );
+    $view->render( $view_options );
 
   }
 
@@ -132,23 +130,19 @@ class LocationController {
     $view = new View( 'admin/location/location' );
     $view_options = array(
       'title' => 'Edit a Location',
+      'action' => 'update',
       'page' => 'hoo-location-edit',
       'columns' => 2 );
 
     $location = $this->entity_manager->find( '\Hoo\Model\Location', $_REQUEST['location_id'] );
 
-    switch( $_REQUEST['action'] ) {
-      case 'update':
-        $location = $location->fromArray( $_REQUEST['location'] );
-        $view_options['location'] = $location;
-        $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Location updated' );
-        $this->entity_manager->flush();
-        break;
-
-      default:
-        $view_options['action'] = 'update';
-        $view_options['location'] = $location;
-
+    if ( $_REQUEST['action'] == 'update' ) {
+      $location = $location->fromArray( $_REQUEST['location'] );
+      $view_options['location'] = $location;
+      $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Location updated' );
+      $this->entity_manager->flush();
+    } else {
+      $view_options['location'] = $location;
     }
 
     $this->add_meta_boxes( $location );
@@ -169,28 +163,38 @@ class LocationController {
   public function add() {
     $location = new Location();
 
-
     if ( $_REQUEST['action'] == 'create' ) {
       $location = $location->fromArray( $_REQUEST['location'] );
       $this->entity_manager->persist( $location );
       $this->entity_manager->flush();
-      $this->index();
+
+      $locations_table = new LocationList( $this->entity_manager );
+      $locations_table->prepare_items();
+
+      $view_options = array(
+        'locations-table' => $locations_table,
+        'notification' => array( 'type' => 'updated', 'message' => 'Location Added' )
+      );
+
+      $view = new View( 'admin/location/index' );
+
     } else {
 
       $view = new View( 'admin/location/location' );
 
       $this->add_meta_boxes( $location );
-
-      $view->render(
-        array(
-          'title' => 'Add a Location',
-          'columns' => 2,
-          'location' => $location,
-          'page' => 'hoo-location-add',
-          'action' => 'create',
-          'action-display' => 'Add' )
+      $view_options = array(
+        'title' => 'Add a Location',
+        'columns' => 2,
+        'location' => $location,
+        'page' => 'hoo-location-add',
+        'action' => 'create',
+        'action-display' => 'Add'
       );
+
     }
+
+    $view->render( $view_options );
   }
 
   public function add_action_links( $links ) {
