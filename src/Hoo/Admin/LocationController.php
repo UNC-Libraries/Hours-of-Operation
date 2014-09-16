@@ -141,6 +141,7 @@ class LocationController {
       case 'update':
         $location = $location->fromArray( $_REQUEST['location'] );
         $view_options['location'] = $location;
+        $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Location updated' );
         $this->entity_manager->flush();
         break;
 

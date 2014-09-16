@@ -3,5 +3,5 @@
   <h2 id="wphead">
     <?php echo $this['title'] ?>
   </h2>
-  <?php echo Hoo\Admin\LocationController::get_page_url() ?>
+  <?php $this->include_file( 'admin/partials/notifications' ) ?>
 </div>
