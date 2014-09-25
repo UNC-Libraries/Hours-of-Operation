@@ -4,18 +4,6 @@
       <li>
         <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
           <div class="form-item form-item-textfield">
-            <label for="location_position">Position</label>
-            <input name="location[position]"
-                   type="text"
-                   size="4"
-                   id="location_position"
-                   value="<?php echo $this['location']->position ?>">
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
-          <div class="form-item form-item-textfield">
             <label for="location_is_visible">Visible</label>
             <input type="hidden" name="location[is_visible]" value="0"/>
             <input type="checkbox"
