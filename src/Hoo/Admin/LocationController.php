@@ -34,6 +34,7 @@ class LocationController {
     wp_register_style( 'location-admin', HOO__PLUGIN_URL . 'assets/css/admin.css', array(), HOO_VERSION );
 
     wp_register_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
+    wp_register_script( 'location-order', HOO__PLUGIN_URL . 'assets/js/location-order.js', array( 'jquery-ui-sortable' ) );
 
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -70,11 +71,15 @@ class LocationController {
     wp_localize_script( 'init-postbox', 'HOO', array( 'page' => $_REQUEST['page'] ) );
 
     wp_enqueue_style( 'location-admin' );
+
+    wp_enqueue_script( 'location-order' );
     wp_enqueue_script( 'init-postbox' );
 
   }
 
   public function init_hooks() {
+
+    add_action( 'wp_ajax_location_order', array( $this, 'ajax_location_order' ) );
 
   }
 
@@ -204,6 +209,21 @@ class LocationController {
         'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>' ),
       $links );
 
+  }
+  
+
+  public function ajax_location_order() {
+
+    $locations_order = $_POST['location'];
+    
+    foreach( $locations_order as $position => $location_id ) {
+      $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
+      $location->position = $position;
+      $this->entity_manager->flush();
+    }
+
+    wp_send_json_success();
+    exit;
   }
 
   public static function get_page_url() {
