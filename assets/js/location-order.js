@@ -10,9 +10,12 @@ jQuery(function($) {
                 url: ajaxurl,
                 type: 'POST',
                 data: $(this).sortable('serialize') + '&action=location_order',
-                success: function() {
-                    // have to redo odd/even row colors
+                success: function(response) {
+                    
                     $('.list-item').each(function(index, row) {
+                        // set position text
+                        $('.position', row).text( index );
+                        // set odd/even colors
                         if ( index % 2 == 0 ) {
                             $(row).addClass('alternate');
                         } else {
