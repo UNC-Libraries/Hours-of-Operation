@@ -19,7 +19,8 @@ class LocationList extends \WP_List_Table {
     return array(
       'name' => __( 'Name' ),
       'updated_at' => __( 'Modified Date' ),
-      'is_visible' => __( 'Visible?' )
+      'is_visible' => __( 'Visible?' ),
+      'position' => __( 'Position' )
     );
   }
 
@@ -27,6 +28,7 @@ class LocationList extends \WP_List_Table {
     return array(
       'name' => array( 'name', false ),
       'updated_at' => array( 'updated_at', false ),
+      'position' => array( 'position', true )
     );
   }
 
