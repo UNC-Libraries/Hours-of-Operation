@@ -37,4 +37,8 @@
     width: 60%;
 }
 
+.locations td.position {
+    cursor: move;
+}
+
 }
