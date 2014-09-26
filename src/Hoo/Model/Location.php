@@ -90,17 +90,10 @@ class Location {
    */
   public function fromArray( $data ) {
     foreach ( $data as $property => $value ) {
-      switch( $property ) {
-        case 'address':
-          if ( $this->address ) {
-            $this->address->fromArray( $value );
-          } else {
-            $this->address = new Address();
-          }
-          break;
-
-        default:
-          $this->$property = $value;
+      if ( property_exists( $this, $property ) ) {
+        $this->$property = $value;
+      } else {
+        trigger_error( "Can't access property " . get_class( $this ) . ':' . $property, E_USER_ERROR );
       }
     }
 
@@ -129,8 +122,14 @@ class Location {
 
   }
 
-  public function __construct() {
-    $this->sublocations = new \Doctrine\Common\Collections\ArrayCollection();
+  public function __construct( $initial_values = array() ) {
+    foreach ( $initial_values as $property => $value ) {
+      if ( property_exists( $this, $property ) ) {
+        $this->$property = $value;
+      }
+
+      $this->sublocations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
   }
 }
 
