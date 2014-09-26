@@ -33,4 +33,19 @@
       </div>
     </div>
   </li>
+  <li>
+    <div class="parent">
+      <div class="form-item form-item-select">
+        <label for="location_parent" class="wpt-form-label wpt-form-select-label">Parent Location</label>
+        <select name="location[parent]">
+          <option value="">None</option>
+          <?php foreach( $this['parent-locations'] as $parent_location ) : ?>
+            <option value="<?php echo $parent_location->id ?>" <?php echo $this['location']->parent == $parent_location ? 'selected' : '' ?>>
+              <?php echo $parent_location->name ?>
+            </option>
+          <? endforeach ?>
+        </select>
+      </div>
+    </div>
+  </li>
 </ul>

@@ -105,6 +105,7 @@ class LocationController {
     $location_publish_fields = new View( 'admin/partials/location_form_publish_fields' );
     $location_address_fields = new View( 'admin/partials/location_form_address_fields' );
 
+
     add_meta_box(
       'location-publish',
       'Publish',
@@ -114,13 +115,15 @@ class LocationController {
       'high',
       array( 'location' => $location ) );
 
+    $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+    $parent_locations = $locations_repo->findBy( array(), array( 'position' => 'asc' ) );
     add_meta_box(
       'location-info',
       'Location Info',
       array( $location_info_fields, 'render_metabox' ),
       'hoo-location-edit',
       'normal',
-      'high',array( 'location' => $location ) );
+      'high',array( 'location' => $location, 'parent-locations' => $parent_locations ) );
 
     add_meta_box(
       'location-address',
@@ -147,10 +150,22 @@ class LocationController {
 
     switch( $_POST['action'] ) {
       case 'update':
-        $location = $location->fromArray( $_REQUEST['location'] );
+        $location_data = $_REQUEST['location'];
+
+        // update associations first
+        $location->address->fromArray( $location_data['address'] );
+        $location->parent = $this->entity_manager->find( '\Hoo\Model\Location', $location_data['parent'] );
+
+        // don't pass association data to fromArray method for location
+        unset( $location_data['address'] ); unset( $location_data['parent'] );
+
+        // set main location data now
+        $location = $location->fromArray( $location_data );
+
         $view_options['location'] = $location;
         $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Location updated' );
         $this->entity_manager->flush();
+        $this->add_meta_boxes( $location );
         break;
 
       case 'delete':
@@ -168,23 +183,24 @@ class LocationController {
           'notification' => array( 'type' => 'updated', 'message' => 'Location Added' )
         );
         $view = new View( 'admin/location/index' );
-        $view->render( $view_options );
-        break;
-
       default:
-        $view_options['location'] = $location;
         $this->add_meta_boxes( $location );
-
-        $view->render( $view_options );
     }
+
+    $view_options['location'] = $location;
+    $view->render( $view_options );
 
   }
 
   public function add() {
-    $location = new Location();
 
     if ( $_REQUEST['action'] == 'create' ) {
-      $location = $location->fromArray( $_REQUEST['location'] );
+      $location_data = $_REQUEST['location'];
+
+      $location_data['address'] = new Address( $location_data['address'] );
+      $location_data['parent'] =  $this->entity_manager->find( '\Hoo\Model\Location', $location_data['parent'] );
+
+      $location = new Location( $location_data );
       $this->entity_manager->persist( $location );
       $this->entity_manager->flush();
 
@@ -199,8 +215,9 @@ class LocationController {
       $view = new View( 'admin/location/index' );
 
     } else {
-
+      $location = new Location();
       $view = new View( 'admin/location/location' );
+
 
       $this->add_meta_boxes( $location );
       $view_options = array(
@@ -247,7 +264,7 @@ class LocationController {
     $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
     $this->entity_manager->remove( $location );
     $this->entity_manager->flush();
-    
+
     wp_send_json_success();
     exit;
   }
