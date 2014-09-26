@@ -180,16 +180,6 @@ class LocationController {
 
   }
 
-  public function create() {
-
-    $location = new Location();
-    $location = $location->fromArray( $_REQUEST['location'] );
-
-    $this->entity_manager->persist( $location );
-    $this->entity_manager->flush();
-
-  }
-
   public function add() {
     $location = new Location();
 
