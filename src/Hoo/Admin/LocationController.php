@@ -140,6 +140,7 @@ class LocationController {
       'columns' => 2 );
 
     $location = $this->entity_manager->find( '\Hoo\Model\Location', $_REQUEST['location_id'] );
+    $this->entity_manager->persist( $location );
 
     if ( $_REQUEST['action'] == 'update' ) {
       $location = $location->fromArray( $_REQUEST['location'] );

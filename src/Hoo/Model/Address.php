@@ -101,22 +101,13 @@ class Address {
   }
   
   public function __set( $property, $value ) {
-    // can't set private properties
-    $protected = \ReflectionProperty::IS_PROTECTED;
-    $reflector = new \ReflectionClass( $this );
-    $protected_props = $reflector->getProperties( $protected );
-
-    foreach( $protected_props as $prop ) {
-      if ( $prop->getName() == $property ) {
-        $this->$property = $value;
-      }
-    }
-    if ( isset ( $this->$property ) ) {
-      return $this; // allow chaining
+    if ( property_exists( $this, $property ) ) {
+      $this->$property = $value;
     } else {
       trigger_error( "Can't access property " . get_class( $this ) . ':' . $property, E_USER_ERROR );
     }
-    
+
+    return $this; // allow chaining
   }
 
   public function __toString(){

@@ -92,11 +92,11 @@ class Location {
     foreach ( $data as $property => $value ) {
       switch( $property ) {
         case 'address':
-
-          $address = new Address();
-          $address = $address->fromArray( $value );
-          $address->id = 7;
-          $this->address = $address;
+          if ( $this->address ) {
+            $this->address->fromArray( $value );
+          } else {
+            $this->address = new Address();
+          }
           break;
 
         default:
