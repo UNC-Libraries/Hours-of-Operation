@@ -35,6 +35,7 @@ class LocationController {
 
     wp_register_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
     wp_register_script( 'location-order', HOO__PLUGIN_URL . 'assets/js/location-order.js', array( 'jquery-ui-sortable' ) );
+    wp_register_script( 'location-delete', HOO__PLUGIN_URL . 'assets/js/location-delete.js', array( 'jquery' ) );
 
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -72,6 +73,7 @@ class LocationController {
 
     wp_enqueue_style( 'location-admin' );
 
+    wp_enqueue_script( 'location-delete' );
     wp_enqueue_script( 'location-order' );
     wp_enqueue_script( 'init-postbox' );
 
@@ -80,6 +82,7 @@ class LocationController {
   public function init_hooks() {
 
     add_action( 'wp_ajax_location_order', array( $this, 'ajax_location_order' ) );
+    add_action( 'wp_ajax_location_delete', array( $this, 'ajax_location_delete' ) );
 
   }
 
@@ -142,18 +145,39 @@ class LocationController {
     $location = $this->entity_manager->find( '\Hoo\Model\Location', $_REQUEST['location_id'] );
     $this->entity_manager->persist( $location );
 
-    if ( $_REQUEST['action'] == 'update' ) {
-      $location = $location->fromArray( $_REQUEST['location'] );
-      $view_options['location'] = $location;
-      $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Location updated' );
-      $this->entity_manager->flush();
-    } else {
-      $view_options['location'] = $location;
+    switch( $_POST['action'] ) {
+      case 'update':
+        $location = $location->fromArray( $_REQUEST['location'] );
+        $view_options['location'] = $location;
+        $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Location updated' );
+        $this->entity_manager->flush();
+        break;
+
+      case 'delete':
+
+        $location_id = $_POST['location_id'];
+
+        $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
+        $this->entity_manager->persist( $location );
+
+        $location->remove();
+        $location->flush();
+
+        $view_options = array(
+          'locations-table' => $locations_table,
+          'notification' => array( 'type' => 'updated', 'message' => 'Location Added' )
+        );
+        $view = new View( 'admin/location/index' );
+        $view->render( $view_options );
+        break;
+
+      default:
+        $view_options['location'] = $location;
+        $this->add_meta_boxes( $location );
+
+        $view->render( $view_options );
     }
 
-    $this->add_meta_boxes( $location );
-
-    $view->render( $view_options );
   }
 
   public function create() {
@@ -211,18 +235,29 @@ class LocationController {
       $links );
 
   }
-  
+
 
   public function ajax_location_order() {
 
     $locations_order = $_POST['location'];
-    
+
     foreach( $locations_order as $position => $location_id ) {
       $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
       $location->position = $position;
       $this->entity_manager->flush();
     }
 
+    wp_send_json_success();
+    exit;
+  }
+
+  public function ajax_location_delete() {
+    $location_id = $_POST['location_id'];
+
+    $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
+    $this->entity_manager->remove( $location );
+    $this->entity_manager->flush();
+    
     wp_send_json_success();
     exit;
   }

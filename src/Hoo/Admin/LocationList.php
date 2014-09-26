@@ -54,7 +54,7 @@ class LocationList extends \WP_List_Table {
   public function column_name( $location ) {
     $actions = array(
       'edit' => sprintf( '<a href=?page=%s&location_id=%s>Edit</a>', 'hoo-location-edit', $location->id ),
-      'delete' => sprintf( '<a href=?page=%s&action=%s&location_id=%s>Delete</a>', 'hoo-location-edit', 'delete', $location->id )
+      'delete' => sprintf( '<a href=?page=%s&action=%s&location_id=%s class="location-delete">Delete</a>', 'hoo-location-edit', 'delete', $location->id )
     );
 
     return sprintf( '%1$s %2$s', $location->name, $this->row_actions( $actions ) );
