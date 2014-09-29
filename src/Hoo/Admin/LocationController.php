@@ -117,6 +117,7 @@ class LocationController {
 
     $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
     $parent_locations = $locations_repo->findBy( array(), array( 'position' => 'asc' ) );
+    $parent_locations = array_filter( $parent_locations, function( $p_location ) use ( $location ) { return $location->id != $p_location->id;  } ); // can't be own parent :D
     add_meta_box(
       'location-info',
       'Location Info',
