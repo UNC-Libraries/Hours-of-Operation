@@ -84,35 +84,6 @@ class CategoryController {
 
   private function add_meta_boxes( $category ) {
 
-    $category_info_fields = new View( 'admin/partials/category_form_category_info_fields' );
-    $category_publish_fields = new View( 'admin/partials/category_form_publish_fields' );
-    $category_address_fields = new View( 'admin/partials/category_form_address_fields' );
-
-    add_meta_box(
-      'category-publish',
-      'Publish',
-      array( $category_publish_fields, 'render_metabox' ),
-      'hoo-category-edit',
-      'side',
-      'high',
-      array( 'category' => $category ) );
-
-    add_meta_box(
-      'category-info',
-      'category Info',
-      array( $category_info_fields, 'render_metabox' ),
-      'hoo-category-edit',
-      'normal',
-      'high',array( 'category' => $category ) );
-
-    add_meta_box(
-      'category-address',
-      'category Address',
-      array( $category_address_fields, 'render_metabox' ),
-      'hoo-category-edit',
-      'normal',
-      'high',array( 'category' => $category ) );
-
   }
 
   public function edit() {
@@ -139,16 +110,6 @@ class CategoryController {
     $this->add_meta_boxes( $category );
 
     $view->render( $view_options );
-  }
-
-  public function create() {
-
-    $category = new category();
-    $category = $category->fromArray( $_REQUEST['category'] );
-
-    $this->entity_manager->persist( $category );
-    $this->entity_manager->flush();
-
   }
 
   public function add() {
