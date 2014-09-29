@@ -10,7 +10,11 @@ use \Doctrine\ORM\EntityManager;
 class Loader {
 
   const SLUG = 'hoo';
-  private $tables = array( 'hoo_locations' => 'Hoo\Model\Location', 'hoo_addresses' => 'Hoo\Model\Address' );
+  private $tables = array(
+    'hoo_locations' => 'Hoo\Model\Location',
+    'hoo_addresses' => 'Hoo\Model\Address',
+    'hoo_categories' => 'Hoo\Model\Category'
+  );
 
   /**
      Responsible for setting up database access and choosing correct controller
