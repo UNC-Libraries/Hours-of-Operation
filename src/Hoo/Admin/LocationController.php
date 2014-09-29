@@ -14,15 +14,23 @@ class LocationController {
   private $actions = array( 'add', 'create', 'edit', 'update', 'delete' );
 
   private $sub_pages = array(
-    'add' => array(
-      'parent' => 'hoo-location',
+    'index' => array(
+      'parent' => 'hoo',
       'permissions' => 'manage_options',
-      'menu_title' => 'Add New Location'
+      'menu_title' => 'Locations',
+      'slug' => 'hoo'
+    ),
+    'add' => array(
+      'parent' => 'hoo',
+      'permissions' => 'manage_options',
+      'menu_title' => 'Add New Location',
+      'slug' => 'hoo-location-add'
     ),
     'edit' => array(
       'parent' => null,
       'permissions' => 'manage_options',
-      'menu_title' => 'Edit Location'
+      'menu_title' => 'Edit Location',
+      'slug' => 'hoo-location-edit'
     )
   );
 
@@ -44,25 +52,14 @@ class LocationController {
   }
 
   public function add_menu_pages() {
-
-    $this->screen_hook_suffix = add_menu_page(
-      __( 'Hours of Operation', 'hoo-location' ),
-      __( 'Hours of Operation', 'hoo-location' ),
-      'manage_options',
-      'hoo-location',
-      array( $this, 'index' ),
-      HOO__PLUGIN_URL . 'assets/images/hoo-20.png' );
-
     foreach ( $this->sub_pages as $sub_page => $options ) {
       add_submenu_page(
         $options['parent'],
         __( $options['menu_title'], 'hoo-location' ),
         __( $options['menu_title'], 'hoo-location' ),
         $options['permissions'],
-        "hoo-location-$sub_page",
+        $options['slug'],
         array( $this, $sub_page ) );
-
-
     }
   }
 

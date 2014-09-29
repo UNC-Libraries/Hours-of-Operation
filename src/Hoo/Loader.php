@@ -38,14 +38,16 @@ class Loader {
 
     if ( is_admin() ) {
 
-    wp_enqueue_style(
-      LocationController::SLUG . '-admin-styles',
-      HOO__PLUGIN_URL . 'assets/css/admin.css',
-      array(),
-      HOO_VERSION);
+      wp_enqueue_style(
+        LocationController::SLUG . '-admin-styles',
+        HOO__PLUGIN_URL . 'assets/css/admin.css',
+        array(),
+        HOO_VERSION);
 
-      $this->location_controller = new LocationController( $entity_manager );
+
       $this->init_admin_hooks();
+
+      $this->init_controllers();
 
     } else {
       $this->init_public_hooks();
@@ -88,11 +90,34 @@ class Loader {
    */
   private function init_admin_hooks() {
 
+    add_action( 'admin_menu', array( $this, 'add_menu' ) );
+
     $plugin_basename = HOO__PLUGIN_DIR . SLUG;
     add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
 
   }
 
+  public function add_menu() {
+    add_menu_page(
+      __( 'Locations', 'hoo' ),
+      __( 'Hours of Operation', 'hoo' ),
+      'manage_options',
+      'hoo',
+      array( $this->location_controller, 'index' ),
+      HOO__PLUGIN_URL . 'assets/images/hoo-20.png' );
+  }
+
+  public function init_controllers() {
+    $controller_classes = array( 'LocationController', 'CategoryController' );
+    foreach ( $controller_classes as $class_name ) {
+      $property_name = strtolower( preg_replace( '/([a-z])([A-Z])/', '$1_$2', $class_name ) ); // convert to snake
+
+      $class_name = "\Hoo\Admin\\$class_name"; // need namespace I guess
+      $this->$property_name = new $class_name( $this->entity_manager );
+    }
+    
+
+  }
 
   private function init_public_hooks() {
   }

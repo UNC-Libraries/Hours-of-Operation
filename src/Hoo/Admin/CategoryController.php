@@ -14,14 +14,16 @@ class CategoryController {
 
   private $sub_pages = array(
     'add' => array(
-      'parent' => 'hoo-category',
+      'parent' => 'hoo',
       'permissions' => 'manage_options',
-      'menu_title' => 'Add New Category'
+      'menu_title' => 'Add New Category',
+      'slug' => 'hoo-category-add'
     ),
     'edit' => array(
       'parent' => null,
       'permissions' => 'manage_options',
-      'menu_title' => 'Edit Category'
+      'menu_title' => 'Edit Category',
+      'slug' => 'hoo-category-edit'
     )
   );
 
@@ -42,24 +44,14 @@ class CategoryController {
 
   public function add_menu_pages() {
 
-    $this->screen_hook_suffix = add_menu_page(
-      __( 'Hours of Operation', 'hoo-category' ),
-      __( 'Hours of Operation', 'hoo-category' ),
-      'manage_options',
-      'hoo-category',
-      array( $this, 'index' ),
-      HOO__PLUGIN_URL . 'assets/images/hoo-20.png' );
-
     foreach ( $this->sub_pages as $sub_page => $options ) {
       add_submenu_page(
         $options['parent'],
         __( $options['menu_title'], 'hoo-category' ),
         __( $options['menu_title'], 'hoo-category' ),
         $options['permissions'],
-        "hoo-category-$sub_page",
+        $options['slug'],
         array( $this, $sub_page ) );
-
-
     }
   }
 
