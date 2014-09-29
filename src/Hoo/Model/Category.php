@@ -79,7 +79,6 @@ class Category {
   }
 
   public function __construct() {
-    $this->sublocations = new \Doctrine\Common\Collections\ArrayCollection();
   }
 }
 
