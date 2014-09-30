@@ -43,7 +43,7 @@
             <option value="<?php echo $parent_location->id ?>" <?php echo $this['location']->parent == $parent_location ? 'selected' : '' ?>>
               <?php echo $parent_location->name ?>
             </option>
-          <? endforeach ?>
+          <?php endforeach ?>
         </select>
       </div>
     </div>
