@@ -11,8 +11,9 @@ class Loader {
 
   const SLUG = 'hoo';
   private $tables = array(
-    'hoo_locations' => 'Hoo\Model\Location',
-    'hoo_addresses' => 'Hoo\Model\Address',
+    'hoo_locations'  => 'Hoo\Model\Location',
+    'hoo_addresses'  => 'Hoo\Model\Address',
+    'hoo_events'     => 'Hoo\Model\Event',
     'hoo_categories' => 'Hoo\Model\Category'
   );
 
@@ -117,7 +118,7 @@ class Loader {
   }
 
   public function init_controllers() {
-    $controller_classes = array( 'LocationController', 'CategoryController' );
+    $controller_classes = array( 'LocationController', 'CategoryController', 'EventController' );
     foreach ( $controller_classes as $class_name ) {
       $property_name = strtolower( preg_replace( '/([a-z])([A-Z])/', '$1_$2', $class_name ) ); // convert to snake
 

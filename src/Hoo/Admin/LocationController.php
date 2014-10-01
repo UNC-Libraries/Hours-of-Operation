@@ -43,7 +43,6 @@ class LocationController {
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
     $this->init_hooks();
-
   }
 
   public function add_menu_pages() {
@@ -76,6 +75,9 @@ class LocationController {
   }
 
   public function init_hooks() {
+
+    add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
+    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
     add_action( 'wp_ajax_location_order', array( $this, 'ajax_location_order' ) );
     add_action( 'wp_ajax_location_delete', array( $this, 'ajax_location_delete' ) );

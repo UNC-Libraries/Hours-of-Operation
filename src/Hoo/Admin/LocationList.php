@@ -2,6 +2,8 @@
 
 namespace Hoo\Admin;
 
+use Hoo\Utils;
+
 class LocationList extends \WP_List_Table {
 
   public function __construct( $entity_manager ) {
@@ -53,9 +55,13 @@ class LocationList extends \WP_List_Table {
 
   public function column_name( $location ) {
     $actions = array(
-      'edit' => sprintf( '<a href=?page=%s&location_id=%s>Edit</a>', 'hoo-location-edit', $location->id ),
-      'delete' => sprintf( '<a href=?page=%s&action=%s&location_id=%s class="location-delete">Delete</a>', 'hoo-location-edit', 'delete', $location->id )
+      'edit' => sprintf( '<a href="?page=%s&location_id=%s">Edit</a>', 'hoo-location-edit', $location->id ),
+      'delete' => sprintf( '<a href="?page=%s&action=%s&location_id=%s" class="location-delete">Delete</a>', 'hoo-location-edit', 'delete', $location->id )
     );
+    
+    if ( Utils::check_user_role( 'manage_options' ) ) {
+      $actions['edit-hours'] = sprintf( '<a href="?page=%s&location_id=%s">Edit Hours</a>', 'hoo-location-events', $location->id  );
+    }
 
     return sprintf( '%1$s %2$s', $location->name, $this->row_actions( $actions ) );
   }

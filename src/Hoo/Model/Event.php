@@ -1,6 +1,8 @@
 <?php
 namespace Hoo\Model;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
    @ORM\Entity
    @ORM\Table(name="hoo_events")
@@ -13,18 +15,21 @@ class Event {
      @ORM\GeneratedValue
    */
   private $id;
+  
+  /** @ORM\OneToOne(targetEntity="Location") */
+  private $location;
 
   /** @ORM\Column(type="string", length=256) */
   protected $label;
 
   /** @ORM\Column(type="datetime") */
-  protected $start
+  protected $start;
 
   /** @ORM\Column(type="datetime") */
-  protected $end
+  protected $end;
 
   /** @ORM\OneToOne(targetEntity="Category") */
-  protected $category
+  protected $category;
 
   /** @ORM\Column(type="boolean", options={"default"=0}) */
   protected $is_all_day = false;
