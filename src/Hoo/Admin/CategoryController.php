@@ -13,6 +13,12 @@ class CategoryController {
   private $actions = array( 'add', 'create', 'edit', 'update', 'delete' );
 
   private $sub_pages = array(
+      'index' => array(
+      'parent' => 'hoo',
+      'permissions' => 'manage_options',
+      'menu_title' => 'Categories',
+      'slug' => 'hoo-category'
+    ),
     'add' => array(
       'parent' => 'hoo',
       'permissions' => 'manage_options',
