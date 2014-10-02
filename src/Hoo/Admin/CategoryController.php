@@ -106,32 +106,64 @@ class CategoryController {
 
     $view = new View( 'admin/category/category' );
     $view_options = array(
-      'title' => 'Edit a category',
+      'title' => 'Edit a Category',
       'action' => 'update',
       'page' => 'hoo-category-edit',
       'columns' => 2 );
 
     $category = $this->entity_manager->find( '\Hoo\Model\category', $_REQUEST['category_id'] );
+    $this->entity_manager->persist( $category );
 
-    if ( $_REQUEST['action'] == 'update' ) {
-      $category = $category->fromArray( $_REQUEST['category'] );
-      $view_options['category'] = $category;
-      $view_options['notification'] = array( 'type' => 'updated', 'message' => 'category updated' );
-      $this->entity_manager->flush();
-    } else {
-      $view_options['category'] = $category;
+    switch( $_POST['action'] ) {
+      case 'update':
+        $category_data = $_REQUEST['category'];
+
+        // update associations first
+        $category->address->fromArray( $category_data['address'] );
+        $category->parent = $this->entity_manager->find( '\Hoo\Model\category', $category_data['parent'] );
+
+        // don't pass association data to fromArray method for category
+        unset( $category_data['address'] ); unset( $category_data['parent'] );
+
+        // set main category data now
+        $category = $category->fromArray( $category_data );
+
+        $view_options['category'] = $category;
+        $view_options['notification'] = array( 'type' => 'updated', 'message' => 'category updated' );
+        $this->entity_manager->flush();
+        $this->add_meta_boxes( $category );
+        break;
+
+      case 'delete':
+
+        $category_id = $_POST['category_id'];
+
+        $category = $this->entity_manager->find( '\Hoo\Model\category', $category_id );
+        $this->entity_manager->persist( $category );
+
+        $category->remove();
+        $category->flush();
+
+        $view_options = array(
+          'categories-table' => $categories_table,
+          'notification' => array( 'type' => 'updated', 'message' => 'category Added' )
+        );
+        $view = new View( 'admin/category/index' );
+      default:
+        $this->add_meta_boxes( $category );
     }
 
-    $this->add_meta_boxes( $category );
-
+    $view_options['category'] = $category;
     $view->render( $view_options );
+
   }
 
   public function add() {
-    $category = new category();
 
     if ( $_REQUEST['action'] == 'create' ) {
-      $category = $category->fromArray( $_REQUEST['category'] );
+      $category_data = $_REQUEST['category'];
+
+      $category = new Category( $category_data );
       $this->entity_manager->persist( $category );
       $this->entity_manager->flush();
 
@@ -146,12 +178,12 @@ class CategoryController {
       $view = new View( 'admin/category/index' );
 
     } else {
-
+      $category = new Category();
       $view = new View( 'admin/category/category' );
 
       $this->add_meta_boxes( $category );
       $view_options = array(
-        'title' => 'Add a category',
+        'title' => 'Add a Category',
         'columns' => 2,
         'category' => $category,
         'page' => 'hoo-category-add',
