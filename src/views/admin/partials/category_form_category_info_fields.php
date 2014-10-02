@@ -3,9 +3,7 @@
     <div class="description wpt-form-description wpt-form-description-textarea description-textarea">
       <div class="form-item form-item-textarea">
         <label for="category_description" class="wpt-form-label wpt-form-textarea-label">Description</label>
-        <textarea name="category[description]" id="category_description" tabindex="4">
-          <?php echo $this['category']->description ?>
-        </textarea>
+        <textarea name="category[description]" id="category_description" tabindex="4"><?php echo $this['category']->description ?></textarea>
       </div>
     </div>
   </li>
