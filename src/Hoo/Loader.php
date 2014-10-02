@@ -90,6 +90,15 @@ class Loader {
    */
   private function init_admin_hooks() {
 
+    // let's register some scripts/styles
+    wp_register_style( 'location-admin', HOO__PLUGIN_URL . 'assets/css/admin.css', array(), HOO_VERSION );
+    wp_register_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
+
+    // location stuff
+    wp_register_script( 'location-order', HOO__PLUGIN_URL . 'assets/js/location-order.js', array( 'jquery-ui-sortable' ) );
+    wp_register_script( 'location-delete', HOO__PLUGIN_URL . 'assets/js/location-delete.js', array( 'jquery' ) );
+
+
     add_action( 'admin_menu', array( $this, 'add_menu' ) );
 
     $plugin_basename = HOO__PLUGIN_DIR . SLUG;
