@@ -39,14 +39,9 @@ class LocationController {
   public function __construct($entity_manager) {
     $this->entity_manager = $entity_manager;
 
-    wp_register_style( 'location-admin', HOO__PLUGIN_URL . 'assets/css/admin.css', array(), HOO_VERSION );
-
-    wp_register_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
-    wp_register_script( 'location-order', HOO__PLUGIN_URL . 'assets/js/location-order.js', array( 'jquery-ui-sortable' ) );
-    wp_register_script( 'location-delete', HOO__PLUGIN_URL . 'assets/js/location-delete.js', array( 'jquery' ) );
-
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
     $this->init_hooks();
 
   }
@@ -65,14 +60,18 @@ class LocationController {
 
 
   public function enqueue_scripts() {
+    $current_screen = get_current_screen();
 
-    wp_localize_script( 'init-postbox', 'HOO', array( 'page' => $_REQUEST['page'] ) );
+    // only enqueue for location pages
+    if ( preg_match( '/hoo(-location)?/i', $current_screen->id ) ) {
+      wp_localize_script( 'init-postbox', 'HOO', array( 'page' => $_REQUEST['page'] ) );
 
-    wp_enqueue_style( 'location-admin' );
+      wp_enqueue_style( 'location-admin' );
 
-    wp_enqueue_script( 'location-delete' );
-    wp_enqueue_script( 'location-order' );
-    wp_enqueue_script( 'init-postbox' );
+      wp_enqueue_script( 'location-delete' );
+      wp_enqueue_script( 'location-order' );
+      wp_enqueue_script( 'init-postbox' );
+    }
 
   }
 
