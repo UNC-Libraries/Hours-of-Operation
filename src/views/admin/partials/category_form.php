@@ -13,13 +13,13 @@
       <div id="post-body-content">
         <div id="titlediv">
           <div id="titlewrap">
-            <label for="label" class="screen-reader-text" id="title-prompt-text">Label</label>
+            <label for="title" class="screen-reader-text" id="title-prompt-text">Name</label>
             <input type="text"
-                   name="category[label]"
-                   id="label"
+                   name="category[name]"
+                   id="title"
                    autocomplete="off"
                    placeholder="Name"
-                   value="<?php echo $this['category']->label ?>"/>
+                   value="<?php echo $this['category']->name ?>"/>
           </div>
         </div>
       </div> <!-- /post-body-content -->

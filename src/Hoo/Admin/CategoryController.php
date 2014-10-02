@@ -56,7 +56,6 @@ class CategoryController {
     }
   }
 
-
   public function enqueue_scripts() {
   }
 
@@ -118,13 +117,6 @@ class CategoryController {
       case 'update':
         $category_data = $_REQUEST['category'];
 
-        // update associations first
-        $category->address->fromArray( $category_data['address'] );
-        $category->parent = $this->entity_manager->find( '\Hoo\Model\category', $category_data['parent'] );
-
-        // don't pass association data to fromArray method for category
-        unset( $category_data['address'] ); unset( $category_data['parent'] );
-
         // set main category data now
         $category = $category->fromArray( $category_data );
 
@@ -172,7 +164,7 @@ class CategoryController {
 
       $view_options = array(
         'categories-table' => $categories_table,
-        'notification' => array( 'type' => 'updated', 'message' => 'category Added' )
+        'notification' => array( 'type' => 'updated', 'message' => 'Category Added' )
       );
 
       $view = new View( 'admin/category/index' );

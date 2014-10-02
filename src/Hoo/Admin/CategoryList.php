@@ -16,7 +16,7 @@ class CategoryList extends \WP_List_Table {
 
   public function get_columns() {
     return array(
-      'label' => __( 'Label' ),
+      'name' => __( 'Name' ),
       'updated_at' => __( 'Modified Date' ),
       'priority' => __( 'Priority' )
     );
@@ -24,7 +24,7 @@ class CategoryList extends \WP_List_Table {
 
   public function get_sortable_columns() {
     return array(
-      'label' => array( 'label', false ),
+      'name' => array( 'name', false ),
       'updated_at' => array( 'updated_at', false ),
       'priority' => array( 'priority', true )
     );
