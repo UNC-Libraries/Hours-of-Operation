@@ -98,9 +98,9 @@ class LocationController {
 
   private function add_meta_boxes( $location ) {
 
-    $location_info_fields = new View( 'admin/partials/location_form_location_info_fields' );
-    $location_publish_fields = new View( 'admin/partials/location_form_publish_fields' );
-    $location_address_fields = new View( 'admin/partials/location_form_address_fields' );
+    $location_info_fields = new View( 'admin/location/form_info_fields' );
+    $location_publish_fields = new View( 'admin/location/form_publish_fields' );
+    $location_address_fields = new View( 'admin/location/form_address_fields' );
 
 
     add_meta_box(

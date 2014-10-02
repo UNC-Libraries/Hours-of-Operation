@@ -5,7 +5,7 @@ $this->capture();
 
 ?>
 
-<form id="location-form" name="location_form" action="<?php echo esc_url( sprintf( '?page=%s&action=%s&location_id=%s', $this['page'], $this['action'], $this['location']->id ) )?>" method="POST">
+<form id="location-form" name="location_form" class="metabox-form" action="<?php echo esc_url( sprintf( '?page=%s&action=%s&location_id=%s', $this['page'], $this['action'], $this['location']->id ) )?>" method="POST">
   <input type="hidden" name="action" value="<?php echo $this['action'] ?>"/>
   <?php 
 
@@ -33,11 +33,11 @@ $this->capture();
       </div> <!-- /post-body-content -->
 
       <div id="postbox-container-1" class="postbox-container">
-        <?php do_meta_boxes( 'hoo-location-edit', 'side', null ) ?>
+        <?php do_meta_boxes( $this['page'], 'side', null ) ?>
       </div>
       
       <div id="postbox-container-2" class="postbox-container">
-        <?php do_meta_boxes( 'hoo-location-edit', 'normal', null) ?>
+        <?php do_meta_boxes( $this['page'], 'normal', null) ?>
       </div>
     </div>
   </div>
