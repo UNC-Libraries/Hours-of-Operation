@@ -38,6 +38,22 @@ class EventController {
   
   public function init_hooks() {
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
+    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+  }
+  
+  public function enqueue_scripts() {
+    $current_screen = get_current_screen();
+
+    // only enqueue for location pages
+    if ( preg_match( '/hoo-location(-event)?/i', $current_screen->id ) ) {
+      wp_localize_script( 'init-postbox', 'HOO', array( 'page' => $_REQUEST['page'] ) );
+
+      wp_enqueue_style( 'datetime-picker' );
+
+      wp_enqueue_script( 'full-calendar' );
+      wp_enqueue_script( 'event-edit' );
+      wp_enqueue_script( 'init-postbox' );
+    }
   }
   
   public function add_menu_pages() {

@@ -98,7 +98,13 @@ class Loader {
     // location stuff
     wp_register_script( 'location-order', HOO__PLUGIN_URL . 'assets/js/location-order.js', array( 'jquery-ui-sortable' ) );
     wp_register_script( 'location-delete', HOO__PLUGIN_URL . 'assets/js/location-delete.js', array( 'jquery' ) );
-
+    
+    // event stuff
+    wp_register_style( 'datetime-picker', HOO__PLUGIN_URL . 'assets/css/jquery.datetimepicker.css', array(), HOO_VERSION );
+    wp_register_script( 'moment', HOO__PLUGIN_URL . 'assets/js/vendor/moment.min.js' );
+    wp_register_script( 'full-calendar', HOO__PLUGIN_URL . 'assets/js/vendor/fullcalendar.min.js', array( 'jquery', 'moment' ) );
+    wp_register_script( 'jquery-datetimepicker', HOO__PLUGIN_URL . 'assets/js/vendor/jquery.datetimepicker.js', array( 'jquery' ) );
+    wp_register_script( 'event-edit', HOO__PLUGIN_URL . 'assets/js/event-edit.js', array( 'jquery-datetimepicker', 'full-calendar' ) );
 
     add_action( 'admin_menu', array( $this, 'add_menu' ) );
 
