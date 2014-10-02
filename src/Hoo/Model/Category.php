@@ -21,7 +21,7 @@ class Category {
   /**
      @ORM\Column(type="string", length=256)
    */
-  protected $label;
+  protected $name;
 
   /** @ORM\Column(type="string", length=256) */
   protected $color;
@@ -32,6 +32,9 @@ class Category {
 
   /** @ORM\Column(type="text", nullable=true) */
   protected $description;
+
+    /** @ORM\Column(name="is_visible", type="boolean", options={"default" = 1}) */
+  protected $is_visible = true;
 
   /** @ORM\Column(name="created_at", type="datetime") */
   private $created_at;
@@ -52,9 +55,23 @@ class Category {
   }
 
   public function __toString(){
-    return $this->label;
+    return $this->title;
   }
 
+  /**
+
+   */
+  public function fromArray( $data ) {
+    foreach ( $data as $property => $value ) {
+      if ( property_exists( $this, $property ) ) {
+        $this->$property = $value;
+      } else {
+        trigger_error( "Can't access property " . get_class( $this ) . ':' . $property, E_USER_ERROR );
+      }
+    }
+
+    return $this;
+  }
 
   /**
      a little getter/setter magic
@@ -78,7 +95,14 @@ class Category {
 
   }
 
-  public function __construct() {
+  public function __construct( $initial_values = array() ) {
+    foreach ( $initial_values as $property => $value ) {
+      if ( property_exists( $this, $property ) ) {
+        $this->$property = $value;
+      }
+
+      $this->sublocations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
   }
 }
 
