@@ -52,6 +52,40 @@ class EventController {
     }
   }
   
+  public function add_meta_boxes( $page, $event ) {
+    $event_details_fields = new View( 'admin/event/form_details_fields' );
+    $event_publish_fields = new View( 'admin/event/form_publish_fields' );
+    $event_general_fields = new View( 'admin/event/form_general_fields' );
+    
+    add_meta_box( 'event-publish',
+                  'Publish',
+                  array( $event_publish_fields, 'render_metabox' ),
+                  $page,
+                  'side',
+                  'high',
+                  array( 'event' => $event ) );
+
+    $category_repo = $this->entity_manager->getRepository( '\Hoo\Model\Category' );
+    $categories = $category_repo->findAll();
+    add_meta_box( 'event-general',
+                  'General',
+                  array( $event_general_fields, 'render_metabox' ),
+                  $page,
+                  'normal',
+                  'high',
+                  array( 'event' => $event,
+                         'event-categories' => $categories ) );
+
+    add_meta_box( 'event-details',
+                  'Details',
+                  array( $event_details_fields, 'render_metabox' ),
+                  $page,
+                  'normal',
+                  'high',
+                  array( 'event' => $event ) );
+
+  }
+  
   public function index() {
     $location = $this->entity_manager->find( '\Hoo\Model\Location', $_GET['location_id'] );
 
@@ -62,9 +96,29 @@ class EventController {
     $events_table->prepare_items();
     $view_options['events-table'] = $events_table;
 
-    $view = new View( 'admin/events/index' );
+    $view = new View( 'admin/event/index' );
+    $view->render( $view_options );
+  }
+  
+  public function add() {
+    $location = $this->entity_manager->find( '\Hoo\Model\Location', $_GET['location_id'] );
+
+    $view = new View( 'admin/event/event' );
+    $view_options = array( 'page' => 'hoo-location-event-add',
+                           'columns' => 2 );
+
+    if ( $_POST['action'] == 'create' ) {
+      //stub
+    } else {
+      $event = new Event();
+
+      $this->add_meta_boxes( $view_options['page'], $event );
+      $view_options = array_merge( $view_options, array( 'title' => sprintf( 'Add an Hours Event for <em>%s</em>', $location->name ),
+                                                         'event' => $event,
+                                                         'action' => 'create',
+                                                         'action-display' => 'Add' ) );
+    }
     $view->render( $view_options );
   }
 }
-
  ?>

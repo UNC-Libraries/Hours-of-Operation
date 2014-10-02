@@ -58,6 +58,13 @@ class Event {
     $this->updated_at = new \DateTime();
   }
 
+  public function __construct() {
+    $start = new \DateTime();
+    $end = new \DateTime();
+    $this->start = $start;
+    $this->end = $end->modify( '+1 week' );
+  }
+
   public function __toString(){
     return $this->label;
   }
@@ -82,5 +89,6 @@ class Event {
 
     return $this; // allow chaining
   }
+  
 }
 ?>
