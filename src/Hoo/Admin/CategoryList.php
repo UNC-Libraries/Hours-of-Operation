@@ -74,7 +74,7 @@ class CategoryList extends \WP_List_Table {
   }
 
   public function no_items() {
-    _e( ' There are no categories.  <a href="?page=hoo-category&action=add">Click Here</a> to add a category!' );
+    _e( ' There are no categories.  <a href="?page=hoo-category-add">Click Here</a> to add a category!' );
   }
 }
 
