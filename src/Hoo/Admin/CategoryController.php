@@ -32,10 +32,6 @@ class CategoryController {
   public function __construct($entity_manager) {
     $this->entity_manager = $entity_manager;
 
-    wp_register_style( 'category-admin', HOO__PLUGIN_URL . 'assets/css/admin.css', array(), HOO_VERSION );
-
-    wp_register_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
-
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     $this->init_hooks();
@@ -57,12 +53,6 @@ class CategoryController {
 
 
   public function enqueue_scripts() {
-
-    wp_localize_script( 'init-postbox', 'HOO', array( 'page' => $_REQUEST['page'] ) );
-
-    wp_enqueue_style( 'category-admin' );
-    wp_enqueue_script( 'init-postbox' );
-
   }
 
   public function init_hooks() {
