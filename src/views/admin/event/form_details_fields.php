@@ -6,8 +6,8 @@
         <input type="text"
                name="event[start]"
                id="event_start"
-               class="wpt-form-textfield form-textfield textfield"
-               value="<?php echo $this['event']->start->format( 'Y-m-d h:m:s' ) ?>"/>
+               class="wpt-form-textfield form-textfield textfield datetimefield"
+               value="<?php echo $this['event']->start->format( 'Y-m-d h:i' ) ?>"/>
       </div>
     </div>
   </li>
@@ -18,8 +18,8 @@
         <input type="text"
                name="event[end]"
                id="event_end"
-               class="wpt-form-textfield form-textfield textfield"
-               value="<?php echo $this['event']->end->format( 'Y-m-d h:m:s' ) ?>"/>
+               class="wpt-form-textfield form-textfield textfield datetimefield"
+               value="<?php echo $this['event']->end->format( 'Y-m-d h:i' ) ?>"/>
       </div>
     </div>
   </li>
