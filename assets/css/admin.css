@@ -39,6 +39,7 @@
     cursor: move;
 }
  
+<<<<<<< HEAD
 .metabox-form .inside fieldset {
     border-top: 1px solid #eee;
 }
@@ -61,4 +62,3 @@
 .ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
 .ui-timepicker-rtl dl dt{ float: right; clear: right; }
 .ui-timepicker-rtl dl dd { margin: 0 45% 10px 10px; }
-}
