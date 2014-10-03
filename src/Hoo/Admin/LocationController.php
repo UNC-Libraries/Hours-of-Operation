@@ -106,7 +106,7 @@ class LocationController {
       'location-publish',
       'Publish',
       array( $location_publish_fields, 'render_metabox' ),
-      'hoo-location-edit',
+      $_GET['page'],
       'side',
       'high',
       array( 'location' => $location ) );
@@ -118,7 +118,7 @@ class LocationController {
       'location-info',
       'Location Info',
       array( $location_info_fields, 'render_metabox' ),
-      'hoo-location-edit',
+      $_GET['page'],
       'normal',
       'high',array( 'location' => $location, 'parent-locations' => $parent_locations ) );
 
@@ -126,7 +126,7 @@ class LocationController {
       'location-address',
       'Location Address',
       array( $location_address_fields, 'render_metabox' ),
-      'hoo-location-edit',
+      $_GET['page'],
       'normal',
       'high',array( 'location' => $location ) );
 
@@ -134,6 +134,7 @@ class LocationController {
 
   public function edit() {
 
+    $page = 'hoo-location-edit';
 
     $view = new View( 'admin/location/location' );
     $view_options = array(
