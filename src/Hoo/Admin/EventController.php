@@ -46,13 +46,8 @@ class EventController {
 
     // only enqueue for location pages
     if ( preg_match( '/hoo-location(-event)?/i', $current_screen->id ) ) {
-      wp_localize_script( 'init-postbox', 'HOO', array( 'page' => $_REQUEST['page'] ) );
-
-      wp_enqueue_style( 'datetime-picker' );
-
-      wp_enqueue_script( 'full-calendar' );
       wp_enqueue_script( 'event-edit' );
-      wp_enqueue_script( 'init-postbox' );
+      wp_enqueue_style( 'jquery-ui' ); 
     }
   }
   

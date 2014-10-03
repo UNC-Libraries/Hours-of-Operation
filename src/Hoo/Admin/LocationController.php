@@ -63,15 +63,12 @@ class LocationController {
 
     // only enqueue for location pages
     if ( preg_match( '/hoo(-location)?/i', $current_screen->id ) ) {
-      wp_localize_script( 'init-postbox', 'HOO', array( 'page' => $_REQUEST['page'] ) );
 
       wp_enqueue_style( 'location-admin' );
 
       wp_enqueue_script( 'location-delete' );
       wp_enqueue_script( 'location-order' );
-      wp_enqueue_script( 'init-postbox' );
     }
-
   }
 
   public function init_hooks() {

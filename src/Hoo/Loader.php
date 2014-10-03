@@ -93,18 +93,26 @@ class Loader {
 
     // let's register some scripts/styles
     wp_register_style( 'location-admin', HOO__PLUGIN_URL . 'assets/css/admin.css', array(), HOO_VERSION );
-    wp_register_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
+    wp_register_style( 'jquery-ui', HOO__PLUGIN_URL . 'assets/css/jquery-ui.css' );
+
+    wp_enqueue_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
+    wp_localize_script( 'init-postbox', 'HOO', array( 'page' => $_GET['page'] ) );
 
     // location stuff
     wp_register_script( 'location-order', HOO__PLUGIN_URL . 'assets/js/location-order.js', array( 'jquery-ui-sortable' ) );
     wp_register_script( 'location-delete', HOO__PLUGIN_URL . 'assets/js/location-delete.js', array( 'jquery' ) );
-    
+
     // event stuff
-    wp_register_style( 'datetime-picker', HOO__PLUGIN_URL . 'assets/css/jquery.datetimepicker.css', array(), HOO_VERSION );
     wp_register_script( 'moment', HOO__PLUGIN_URL . 'assets/js/vendor/moment.min.js' );
     wp_register_script( 'full-calendar', HOO__PLUGIN_URL . 'assets/js/vendor/fullcalendar.min.js', array( 'jquery', 'moment' ) );
-    wp_register_script( 'jquery-datetimepicker', HOO__PLUGIN_URL . 'assets/js/vendor/jquery.datetimepicker.js', array( 'jquery' ) );
-    wp_register_script( 'event-edit', HOO__PLUGIN_URL . 'assets/js/event-edit.js', array( 'jquery-datetimepicker', 'full-calendar' ) );
+    wp_register_script( 'jquery-timepicker-addon',
+                        HOO__PLUGIN_URL . 'assets/js/vendor/jquery-ui-timepicker-addon.min.js',
+                        array("jquery-ui-core",            //UI Core - do not remove this one
+                              "jquery-ui-slider",
+                              "jquery-ui-datepicker" ) );
+
+    wp_register_script( 'event-edit', HOO__PLUGIN_URL . 'assets/js/event-edit.js', array( 'jquery-timepicker-addon', 'full-calendar' ) );
+
 
     add_action( 'admin_menu', array( $this, 'add_menu' ) );
 
@@ -131,7 +139,7 @@ class Loader {
       $class_name = "\Hoo\Admin\\$class_name"; // need namespace I guess
       $this->$property_name = new $class_name( $this->entity_manager );
     }
-    
+
 
   }
 

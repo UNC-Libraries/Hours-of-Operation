@@ -1,3 +1,20 @@
 jQuery(function($) {
-    $('.datetimefield').datetimepicker({format: 'Y-m-d h:i'});
+    var $event_start = $('#event_start'),
+        $event_end = $('#event_end' );
+
+    $.timepicker.datetimeRange(
+        $event_start,
+        $event_end,
+        { dateFormat: 'yy-mm-dd',
+          timeFormat: 'HH:mm',
+
+          controlType: 'select',
+
+          stepMinute: 15,
+
+          start: { 
+          },
+          end: {}
+        }
+    );
 });
