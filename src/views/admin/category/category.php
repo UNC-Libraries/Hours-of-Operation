@@ -5,7 +5,7 @@ $this->capture();
 
 ?>
 
-<form id="category-form" name="category_form" action="<?php echo esc_url( sprintf( '?page=%s&action=%s&category_id=%s', $this['page'], $this['action'], $this['category']->id ) )?>" method="POST">
+<form id="category-form" name="category_form" class="metabox-form" action="<?php echo esc_url( sprintf( '?page=%s&action=%s&category_id=%s', $this['page'], $this['action'], $this['category']->id ) )?>" method="POST">
   <input type="hidden" name="action" value="<?php echo $this['action'] ?>"/>
   <?php 
 
