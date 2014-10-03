@@ -7,7 +7,7 @@
                name="event[start]"
                id="event_start"
                class="wpt-form-textfield form-textfield textfield datetimefield"
-               value="<?php echo $this['event']->start->format( 'Y-m-d H:i' ) ?>"/>
+               value="<?php echo isset( $this['event']->start ) ? $this['event']->start->format( 'Y-m-d H:i' ) : '' ?>"/>
       </div>
     </div>
   </li>
@@ -19,7 +19,7 @@
                name="event[end]"
                id="event_end"
                class="wpt-form-textfield form-textfield textfield datetimefield"
-               value="<?php echo $this['event']->end->format( 'Y-m-d H:i' ) ?>"/>
+               value="<?php echo isset( $this['event']->end ) ? $this['event']->end->format( 'Y-m-d H:i' ) : '' ?>"/>
       </div>
     </div>
   </li>
