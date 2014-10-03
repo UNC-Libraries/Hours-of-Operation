@@ -48,6 +48,7 @@ class EventController {
     if ( preg_match( '/hoo-location(-event)?/i', $current_screen->id ) ) {
       wp_enqueue_script( 'event-edit' );
       wp_enqueue_style( 'jquery-ui' ); 
+      wp_enqueue_style( 'full-calendar' ); 
     }
   }
   

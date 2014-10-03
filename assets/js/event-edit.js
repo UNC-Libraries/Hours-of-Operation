@@ -17,4 +17,8 @@ jQuery(function($) {
           end: {}
         }
     );
+    
+
+    $('#preview_calendar').fullCalendar({
+    });
 });

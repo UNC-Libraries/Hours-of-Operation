@@ -94,6 +94,7 @@ class Loader {
     // let's register some scripts/styles
     wp_register_style( 'location-admin', HOO__PLUGIN_URL . 'assets/css/admin.css', array(), HOO_VERSION );
     wp_register_style( 'jquery-ui', HOO__PLUGIN_URL . 'assets/css/jquery-ui.css' );
+    wp_register_style( 'full-calendar', HOO__PLUGIN_URL . 'assets/css/fullcalendar.min.css' );
 
     wp_enqueue_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
     wp_localize_script( 'init-postbox', 'HOO', array( 'page' => $_GET['page'] ) );

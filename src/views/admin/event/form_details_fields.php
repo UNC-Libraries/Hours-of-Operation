@@ -23,4 +23,10 @@
       </div>
     </div>
   </li>
+  <li>
+    <fieldset>
+      <legend>Preview</legend>
+      <div id="preview_calendar"></div>
+    </fieldset>
+  </li>
 </ul>
