@@ -16,7 +16,7 @@ class Event {
    */
   private $id;
   
-  /** @ORM\OneToOne(targetEntity="Location") */
+  /** @ORM\ManyToOne(targetEntity="Location", inversedBy="events") */
   private $location;
 
   /** @ORM\Column(type="string", length=256) */
@@ -28,7 +28,7 @@ class Event {
   /** @ORM\Column(type="datetime") */
   protected $end;
 
-  /** @ORM\OneToOne(targetEntity="Category") */
+  /** @ORM\ManyToOne(targetEntity="Category") */
   protected $category;
 
   /** @ORM\Column(type="boolean", options={"default"=0}) */
@@ -58,11 +58,12 @@ class Event {
     $this->updated_at = new \DateTime();
   }
 
-  public function __construct() {
-    $start = new \DateTime();
-    $end = new \DateTime();
-    $this->start = $start;
-    $this->end = $end->modify( '+1 week' );
+  public function __construct( $initial_values = array() ) {
+    foreach ( $initial_values as $property => $value ) {
+      if ( property_exists( $this, $property ) ) {
+        $this->$property = $value;
+      }
+    }
   }
 
   public function __toString(){

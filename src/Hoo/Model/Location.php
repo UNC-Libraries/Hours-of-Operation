@@ -56,12 +56,14 @@ class Location {
    */
   protected $sublocations;
 
-
   /**
      @ORM\ManyToOne(targetEntity="Location", inversedBy="sublocations")
      @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
    */
   private $parent;
+  
+  /** @ORM\OneToMany(targetEntity="Event", mappedBy="location") */
+  protected $events;
 
   /** @ORM\Column(name="created_at", type="datetime") */
   private $created_at;
