@@ -119,7 +119,13 @@ class Loader {
 
     $plugin_basename = HOO__PLUGIN_DIR . SLUG;
     add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
+    
+    add_action( 'init', array( $this, 'output_buffer' ) );
 
+  }
+  
+  public function output_buffer() {
+    ob_start();
   }
 
   public function add_menu() {
