@@ -64,7 +64,7 @@ class EventController {
     }
   }
 
-  public function add_meta_boxes( $page, $event ) {
+  public function add_meta_boxes( $event ) {
     $event_details_fields = new View( 'admin/event/form_details_fields' );
     $event_publish_fields = new View( 'admin/event/form_publish_fields' );
     $event_general_fields = new View( 'admin/event/form_general_fields' );
@@ -72,7 +72,7 @@ class EventController {
     add_meta_box( 'event-publish',
                   'Publish',
                   array( $event_publish_fields, 'render_metabox' ),
-                  $page,
+                  $_GET['page'],
                   'side',
                   'high',
                   array( 'event' => $event ) );
@@ -82,7 +82,7 @@ class EventController {
     add_meta_box( 'event-general',
                   'General',
                   array( $event_general_fields, 'render_metabox' ),
-                  $page,
+                  $_GET['page'],
                   'normal',
                   'high',
                   array( 'event' => $event,
@@ -91,7 +91,7 @@ class EventController {
     add_meta_box( 'event-details',
                   'Details',
                   array( $event_details_fields, 'render_metabox' ),
-                  $page,
+                  $_GET['page'],
                   'normal',
                   'high',
                   array( 'event' => $event ) );
