@@ -39,7 +39,17 @@
     cursor: move;
 }
  
+.metabox-form .inside fieldset {
+    border-top: 1px solid #eee;
+}
+
+.metabox-form .inside fieldset legend {
+    padding: 0 5px 0 0;
+}
+ 
 /* css for timepicker */
+#ui-datepicker-div { display: none; }
+.ui-datepicker{ z-index: 99999999 !important;}
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }
 .ui-timepicker-div dl dt { float: left; clear:left; padding: 0 0 0 5px; }
