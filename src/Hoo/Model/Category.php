@@ -100,8 +100,6 @@ class Category {
       if ( property_exists( $this, $property ) ) {
         $this->$property = $value;
       }
-
-      $this->sublocations = new \Doctrine\Common\Collections\ArrayCollection();
     }
   }
 }
