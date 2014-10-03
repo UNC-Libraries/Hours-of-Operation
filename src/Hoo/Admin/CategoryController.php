@@ -187,16 +187,6 @@ class CategoryController {
 
     $view->render( $view_options );
   }
-
-  public function add_action_links( $links ) {
-
-    return array_merge(
-      array(
-        'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>' ),
-      $links );
-
-  }
-
   public static function get_page_url() {
 
   }
