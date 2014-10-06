@@ -5,6 +5,7 @@ $this->capture();
 
 <form id="event-form" name="event_form" class="metabox-form" action="<?php echo esc_url( sprintf( '?page=%s&action=%s', $this['page'], $this['action'] ) )  ?>" method="POST">
   <input type="hidden" name="action" value="<?php echo $this['action'] ?>"/>
+  <input type="hidden" name="event[id]" value"<?php echo $this['action'] ?>"/>
   <input type="hidden" name="event[location]" value="<?php echo $this['location']->id ?>"/>
 
   <?php
