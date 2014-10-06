@@ -39,11 +39,6 @@ class Loader {
 
     if ( is_admin() ) {
 
-      wp_enqueue_style(
-        LocationController::SLUG . '-admin-styles',
-        HOO__PLUGIN_URL . 'assets/css/admin.css',
-        array(),
-        HOO_VERSION);
 
 
       $this->init_admin_hooks();
@@ -92,7 +87,6 @@ class Loader {
   private function init_admin_hooks() {
 
     // let's register some scripts/styles
-    wp_register_style( 'location-admin', HOO__PLUGIN_URL . 'assets/css/admin.css', array(), HOO_VERSION );
     wp_register_style( 'jquery-ui', HOO__PLUGIN_URL . 'assets/css/jquery-ui.css' );
     wp_register_style( 'full-calendar', HOO__PLUGIN_URL . 'assets/css/fullcalendar.min.css' );
 
@@ -114,6 +108,12 @@ class Loader {
 
     wp_register_script( 'event-edit', HOO__PLUGIN_URL . 'assets/js/event-edit.js', array( 'jquery-timepicker-addon', 'full-calendar' ) );
 
+
+    wp_enqueue_style(
+      'hoo-admin',
+      HOO__PLUGIN_URL . 'assets/css/admin.css',
+      array( 'jquery-ui' ),
+      HOO_VERSION);
 
     add_action( 'admin_menu', array( $this, 'add_menu' ) );
 
