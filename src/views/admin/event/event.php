@@ -5,8 +5,8 @@ $this->capture();
 
 <form id="event-form" name="event_form" class="metabox-form" action="<?php echo esc_url( sprintf( '?page=%s&action=%s', $this['page'], $this['action'] ) )  ?>" method="POST">
   <input type="hidden" name="action" value="<?php echo $this['action'] ?>"/>
-  <input type="hidden" name="event[id]" value"<?php echo $this['action'] ?>"/>
-  <input type="hidden" name="event[location]" value="<?php echo $this['location']->id ?>"/>
+  <input type="hidden" name="event[id]" value="<?php echo $this['event']->id ?>"/>
+  <input type="hidden" name="event[location]" value="<?php echo $this['event']->location->id ?>"/>
 
   <?php
   wp_nonce_field( $this['action'] );
@@ -15,7 +15,7 @@ $this->capture();
   ?>
 
   <div id="poststuff">
-    <div id="post-body" class="location-name metabox-holder columns-<?php echo $this['columns'] ?>">
+    <div id="post-body" class="event-name metabox-holder columns-<?php echo $this['columns'] ?>">
 
       <div id="postbox-container-1" class="postbox-container">
         <?php do_meta_boxes( $this['page'], 'side', null ) ?>
