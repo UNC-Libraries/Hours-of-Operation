@@ -43,7 +43,7 @@ class EventList extends \WP_List_Table {
 
   public function column_label( $event ) {
     $actions = array(
-      'edit' => sprintf( '<a href="?page=%s&location_id=%s&event_id%s">Edit</a>', 'hoo-location-event-edit', $event->location->id, $event->id ),
+      'edit' => sprintf( '<a href="?page=%s&location_id=%s&event_id=%s">Edit</a>', 'hoo-location-event-edit', $event->location->id, $event->id ),
       'delete' => sprintf( '<a href="?page=%s&action=%s&location_id=%s" class="event-delete">Delete</a>', 'hoo-location-event-edit', 'delete', $event->location->id )
     );
 
