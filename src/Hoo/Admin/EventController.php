@@ -113,20 +113,43 @@ class EventController {
   }
 
   public function edit() {
+
     switch( $_POST['action'] ) {
       case 'update':
         $event_data = $_POST['event'];
-        break;
-      case 'delete':
-        break;
 
+        $event_data['category'] = $this->entity_manager->find( '\Hoo\Model\Category', $event_data['category'] );
+        
+        $event = $event->fromArray( $event_data );
+
+        $this->entity_manager->persist( $location );
+        $this->entity_manager->flush();
+
+        wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&event_id=%s', 'hoo-location-event-edit', $even_data['id'] ) ) );
+        exit;
+      case 'delete':
+        $event_data = $_POST['event'];
+
+        $event = $this->entity_manager->find( '\Hoo\Model\Event', $event_data['id'] );
+        $this->entity_manager->persist( $location );
+
+        $location->remove();
+        $location->flush();
+        
+        wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $even_data['location']->id ) ) );
+        exit;
       default:
         $event = $this->entity_manager->find( '\Hoo\Model\Event', $_GET['event_id'] );
         
         $view = new View( 'admin/event/event' );
+
         $view_options = array( 'title' => sprintf( 'Edit %s', $event->label ),
+                               'event' => $event,
                                'page' => $_GET['page'],
                                'columns' => 2 );
+
+        $this->add_meta_boxes( $event );
+
         $view->render( $view_options );
     }
   }
@@ -154,7 +177,7 @@ class EventController {
       $view_options = array( 'page' => 'hoo-location-event-add',
                              'columns' => 2 );
 
-      $this->add_meta_boxes( $view_options['page'], $event );
+      $this->add_meta_boxes( $event );
       $view_options = array_merge( $view_options, array( 'title' => sprintf( 'Add an Hours Event for <em>%s</em>', $location->name ),
                                                          'event' => $event,
                                                          'location' => $location,
