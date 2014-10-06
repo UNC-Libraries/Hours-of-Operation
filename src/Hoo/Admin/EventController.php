@@ -112,6 +112,26 @@ class EventController {
     $view->render( $view_options );
   }
 
+  public function edit() {
+    switch( $_POST['action'] ) {
+      case 'update':
+        $event_data = $_POST['event'];
+        break;
+      case 'delete':
+        break;
+
+      default:
+        $event = $this->entity_manager->findBy( array( 'location' => $_GET['location_id'],
+                                                       'event' => $_GET['event_id'] ) ) ;
+        
+        $view = new View( 'admin/event/event' );
+        $view_options = array( 'title' => sprintf( 'Edit %s', $event->label ),
+                               'page' => $_GET['page'],
+                               'columns' => 2 );
+        $view->render( $view_options );
+    }
+  }
+
   public function add() {
 
     if ( $_POST['action'] == 'create' ) {
