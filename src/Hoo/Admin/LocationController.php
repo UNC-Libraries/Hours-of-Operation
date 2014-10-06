@@ -132,9 +132,6 @@ class LocationController {
   }
 
   public function edit() {
-
-    $page = 'hoo-location-edit';
-
     $view = new View( 'admin/location/location' );
     $view_options = array(
       'title' => 'Edit a Location',
