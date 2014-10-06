@@ -121,8 +121,7 @@ class EventController {
         break;
 
       default:
-        $event = $this->entity_manager->findBy( array( 'location' => $_GET['location_id'],
-                                                       'event' => $_GET['event_id'] ) ) ;
+        $event = $this->entity_manager->find( '\Hoo\Model\Event', $_GET['event_id'] );
         
         $view = new View( 'admin/event/event' );
         $view_options = array( 'title' => sprintf( 'Edit %s', $event->label ),
