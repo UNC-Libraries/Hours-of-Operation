@@ -176,10 +176,12 @@ class EventController {
       $this->entity_manager->persist( $event );
       $this->entity_manager->flush();
 
-      wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $even_data['location']->id ) ) );
+      wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $event_data['location']->id ) ) );
       exit;
     } else {
       $event = new Event();
+      $event->location = $this->entity_manager->find( '\Hoo\Model\Location', $_GET['location_id'] );
+
 
       $view_options = array( 'page' => 'hoo-location-event-add',
                              'columns' => 2 );
@@ -187,7 +189,6 @@ class EventController {
       $this->add_meta_boxes( $event );
       $view_options = array_merge( $view_options, array( 'title' => sprintf( 'Add an Hours Event for <em>%s</em>', $location->name ),
                                                          'event' => $event,
-                                                         'location' => $location,
                                                          'action' => 'create',
                                                          'action-display' => 'Add' ) );
 
