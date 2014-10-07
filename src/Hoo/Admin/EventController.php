@@ -105,7 +105,7 @@ class EventController {
 
     $view = new View( 'admin/event/index' );
     $view_options = array( 'title' => sprintf( '%s Hours Events', $location->name ),
-                           'add-new-page' => 'hoo-location-event-add' );
+                           'add-new-page' => sprintf( 'hoo-location-event-add&location_id=%s', $_GET['location_id'] ) );
 
     $events_table = new EventList( $this->entity_manager, $location );
 
@@ -179,7 +179,6 @@ class EventController {
       wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $even_data['location']->id ) ) );
       exit;
     } else {
-      $location = $this->entity_manager->find( '\Hoo\Model\Location', $_GET['location_id'] );
       $event = new Event();
 
       $view_options = array( 'page' => 'hoo-location-event-add',
