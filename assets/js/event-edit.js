@@ -42,43 +42,42 @@ jQuery(function($) {
                     console.log('doesnt exists');
                     // event doesn't exist. Append a new event to the eventSources
                     event_id = 'current';
-                    var event_source = [
-                        {
-                            events: [
-                                {
-                                    id: event_id,
-                                    title:  event_title,
-                                    start: $event_start.val(),
-                                    end: $event_end.val(),
-                                    backgroundColor: event_category_color,
-                                    border_color: current_event_border_color
-                                }
-                            ]
-                        }
-                    ];
+                    var event_source = {
+                        events: [
+                            {
+                                id: event_id,
+                                title:  event_title,
+                                start: $event_start.val(),
+                                end: $event_end.val(),
+                                backgroundColor: event_category_color,
+                                borderColor: current_event_border_color
+                            }
+                        ]
+                    };
 
 
+                    console.log(event_source);
                     $preview_calendar.fullCalendar('addEventSource', event_source);
                 }
-                
+
                 // change title event
                 $event_title.on('input', function() {
                     var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0],
                         event_title = $event_title.val();
 
                     current_event.title = event_title;
-                    
+
                     $preview_calendar.fullCalendar('updateEvent', current_event);
 
                 });
-                
+
                 // change color event
                 $event_category.on('change', function() {
                     var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0],
                         event_category_color = $event_category.find(':selected').data('color');
 
                     current_event.backgroundColor = event_category_color;
-                    
+
                     $preview_calendar.fullCalendar('updateEvent', current_event);
                 });
 
@@ -98,10 +97,8 @@ jQuery(function($) {
                             onSelect: function(dt_text, dt_instance) {
                                 var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0];
 
-                                current_event.title = event_title,
                                 current_event.start = $event_start.val();
                                 current_event.end = $event_end.val();
-                                current_event.backgroundColor = event_category_color;
 
                                 $preview_calendar.fullCalendar('updateEvent', current_event);
                             }
@@ -112,10 +109,8 @@ jQuery(function($) {
                                 console.log(event_id);
                                 var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0];
 
-                                current_event.title = event_title;
                                 current_event.start = $event_start.val();
                                 current_event.end = $event_end.val();
-                                current_event.backgroundColor = event_category_color;
 
                                 $preview_calendar.fullCalendar('updateEvent', current_event);
                             }
