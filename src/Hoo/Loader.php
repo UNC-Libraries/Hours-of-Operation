@@ -107,6 +107,7 @@ class Loader {
                               "jquery-ui-datepicker" ) );
 
     wp_register_script( 'event-edit', HOO__PLUGIN_URL . 'assets/js/event-edit.js', array( 'jquery-timepicker-addon', 'full-calendar' ) );
+    wp_register_script( 'event-delete', HOO__PLUGIN_URL . 'assets/js/event-delete.js', array( 'jquery' ) );
 
 
     wp_enqueue_style(

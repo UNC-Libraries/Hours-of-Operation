@@ -66,6 +66,19 @@ class EventList extends \WP_List_Table {
   public function column_default( $event, $column_name ) {
     return $event->$column_name;
   }
+
+  public function single_row( $item ) {
+    static $alternate = '';
+    $alternate = ( $alternate == '' ? ' alternate' : '' );
+    
+    $row_class = sprintf( ' class="list-item%s"', $alternate );
+    $row_id = sprintf( ' id="event_%s"', $item->id );
+
+    echo sprintf( '<tr %s %s>', $row_id, $row_class );
+    $this->single_row_columns( $item );
+    echo '</tr>';
+
+  }
   
   public function no_items() {
     _e( sprintf( 'There are no hour events.  <a href="?page=hoo-location-event-add&location_id=%s">Click Here</a> to add hours!', 

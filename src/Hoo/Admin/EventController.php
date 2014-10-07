@@ -41,14 +41,18 @@ class EventController {
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
     add_action( 'wp_ajax_location_events', array( $this, 'ajax_location_events' ) );
+    add_action( 'wp_ajax_location_event_delete', array( $this, 'ajax_location_event_delete' ) );
   }
 
   public function enqueue_scripts() {
     $current_screen = get_current_screen();
 
+    wp_enqueue_script( 'event-delete' );
+    
     // enqueue edit/add page specific js
     if ( preg_match( '/hoo-location-event-(add|edit)?/i', $current_screen->id ) ) {
       wp_enqueue_script( 'event-edit' );
+
       wp_enqueue_style( 'jquery-ui' );
       wp_enqueue_style( 'full-calendar' );
     }
@@ -197,6 +201,18 @@ class EventController {
     }
 
   }
+
+  public function ajax_location_event_delete() {
+    $event_id = $_POST['event_id'];
+
+    $event = $this->entity_manager->find( '\Hoo\Model\Event', $event_id );
+    $this->entity_manager->remove( $event );
+    $this->entity_manager->flush();
+
+    wp_send_json_success();
+    exit;
+  }
+
   public function ajax_location_events() {
     $location_id = $_GET['location_id'];
 
