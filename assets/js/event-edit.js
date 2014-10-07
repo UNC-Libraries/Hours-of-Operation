@@ -35,11 +35,9 @@ jQuery(function($) {
                     // event exists. Find from our eventSources and highlight the border
                     var current_event = $preview_calendar.fullCalendar('clientEvents', event_id[0]);
 
-                    console.log(current_event);
                     current_event.borderColor = current_event_border_color;
                     $preview_calendar.fullCalendar('updateEvent', current_event);
                 } else {
-                    console.log('doesnt exists');
                     // event doesn't exist. Append a new event to the eventSources
                     event_id = 'current';
                     var event_source = {
@@ -105,8 +103,6 @@ jQuery(function($) {
                         },
                         end: {
                             onSelect: function(dt_text, dt_instance) {
-                                console.log('onselect');
-                                console.log(event_id);
                                 var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0];
 
                                 current_event.start = $event_start.val();
