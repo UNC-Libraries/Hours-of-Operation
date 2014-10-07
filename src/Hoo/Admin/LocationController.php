@@ -88,6 +88,7 @@ class LocationController {
 
     $locations_table->prepare_items();
     $view_options['locations-table'] = $locations_table;
+    $view_options['add-new-page'] = 'hoo-location-add';
 
     $view = new View( 'admin/location/index' );
     $view->render( $view_options );

@@ -70,6 +70,7 @@ class CategoryController {
 
     $categories_table->prepare_items();
     $view_options['categories-table'] = $categories_table;
+    $view_options['add-new-page'] = 'hoo-category-add';
 
     $view = new View( 'admin/category/index' );
     $view->render( $view_options );

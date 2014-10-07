@@ -104,7 +104,8 @@ class EventController {
     $location = $this->entity_manager->find( '\Hoo\Model\Location', $_GET['location_id'] );
 
     $view = new View( 'admin/event/index' );
-    $view_options = array( 'title' => sprintf( '%s Hours Events', $location->name ) );
+    $view_options = array( 'title' => sprintf( '%s Hours Events', $location->name ),
+                           'add-new-page' => 'hoo-location-event-add' );
 
     $events_table = new EventList( $this->entity_manager, $location );
 
