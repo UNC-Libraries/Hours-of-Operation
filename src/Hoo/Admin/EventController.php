@@ -39,6 +39,8 @@ class EventController {
   public function init_hooks() {
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
+    add_action( 'wp_ajax_location_events', array( $this, 'ajax_location_events' ) );
   }
 
   public function enqueue_scripts() {
@@ -118,14 +120,18 @@ class EventController {
       case 'update':
         $event_data = $_POST['event'];
 
+        $event = $this->entity_manager->find( '\Hoo\Model\Event', $event_data['id'] );
         $event_data['category'] = $this->entity_manager->find( '\Hoo\Model\Category', $event_data['category'] );
-        
+        $event_data['location'] = $this->entity_manager->find( '\Hoo\Model\Location', $event_data['location'] );
+        $event_data['start'] = new \Datetime( $event_data['start'] );
+        $event_data['end'] = new \Datetime( $event_data['end'] );
+
         $event = $event->fromArray( $event_data );
 
-        $this->entity_manager->persist( $location );
+        $this->entity_manager->persist( $event );
         $this->entity_manager->flush();
 
-        wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&event_id=%s', 'hoo-location-event-edit', $even_data['id'] ) ) );
+        wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&event_id=%s', 'hoo-location-event-edit', $event_data['id'] ) ) );
         exit;
       case 'delete':
         $event_data = $_POST['event'];
@@ -135,16 +141,17 @@ class EventController {
 
         $location->remove();
         $location->flush();
-        
+
         wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $even_data['location']->id ) ) );
         exit;
       default:
         $event = $this->entity_manager->find( '\Hoo\Model\Event', $_GET['event_id'] );
-        
+
         $view = new View( 'admin/event/event' );
 
         $view_options = array( 'title' => sprintf( 'Edit %s', $event->label ),
                                'event' => $event,
+                               'action' => 'update',
                                'page' => $_GET['page'],
                                'columns' => 2 );
 
@@ -188,6 +195,24 @@ class EventController {
       $view->render( $view_options );
     }
 
+  }
+  public function ajax_location_events() {
+    $location_id = $_GET['location_id'];
+
+    $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
+    $events = $events_repo->findBy( array( 'location' => $location_id ) );
+
+    $events = array_map(
+      function( $event ) { return array( 'id'     => $event->id,
+                                         'title'  => $event->title,
+                                         'start'  => $event->start->format( \DateTime::ISO8601 ),
+                                         'end'    => $event->end->format( \DateTime::ISO8601 ),
+                                         'color'  => $event->category->color,
+                                         'allDay' => $event->is_all_day ); },
+      $events );
+
+    wp_send_json( $events );
+    exit;
   }
 }
 ?>
