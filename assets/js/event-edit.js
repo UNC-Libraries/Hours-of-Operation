@@ -61,6 +61,7 @@ jQuery(function($) {
                     $preview_calendar.fullCalendar('addEventSource', event_source);
                 }
                 
+                // change title event
                 $event_title.on('input', function() {
                     var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0],
                         event_title = $event_title.val();
@@ -71,7 +72,7 @@ jQuery(function($) {
 
                 });
                 
-                // change color
+                // change color event
                 $event_category.on('change', function() {
                     var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0],
                         event_category_color = $event_category.find(':selected').data('color');
