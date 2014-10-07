@@ -20,7 +20,7 @@ class Event {
   private $location;
 
   /** @ORM\Column(type="string", length=256) */
-  protected $label;
+  protected $title;
 
   /** @ORM\Column(type="datetime") */
   protected $start;
@@ -46,6 +46,18 @@ class Event {
   /** @ORM\column(name="updated_at", type="datetime") */
   private $updated_at;
 
+  public function fromArray( $data ) {
+    foreach ( $data as $property => $value ) {
+      if ( property_exists( $this, $property ) ) {
+        $this->$property = $value;
+      } else {
+        trigger_error( "Can't access property " . get_class( $this ) . ':' . $property, E_USER_ERROR );
+      }
+    }
+
+    return $this;
+  }
+
   /** @ORM\PrePersist */
   public function set_created_at() {
     $datetime = new \DateTime();
@@ -67,7 +79,7 @@ class Event {
   }
 
   public function __toString(){
-    return $this->label;
+    return $this->title;
   }
 
   /**
