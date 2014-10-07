@@ -61,6 +61,16 @@ jQuery(function($) {
                     $preview_calendar.fullCalendar('addEventSource', event_source);
                 }
                 
+                $event_title.on('input', function() {
+                    var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0],
+                        event_title = $event_title.val();
+
+                    current_event.title = event_title;
+                    
+                    $preview_calendar.fullCalendar('updateEvent', current_event);
+
+                });
+                
                 // change color
                 $event_category.on('change', function() {
                     var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0],
