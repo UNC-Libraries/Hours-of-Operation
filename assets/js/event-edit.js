@@ -58,7 +58,6 @@ jQuery(function($) {
                             }
                         ]
                     };
-
                     $preview_calendar.fullCalendar('addEventSource', event_source);
                 }
 
