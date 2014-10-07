@@ -16,8 +16,8 @@
       <div class="form-item form-item-select">
         <label for="event_category" class="wpt-form-label wpt-form-select-label">Category</label>
         <select id="event_category" name="event[category]">
+          <option value="">Select a Category</option>
           <?php foreach( $this['event-categories'] as $category ) : ?>
-            <option value="">Select a Category</option>
             <option value="<?php echo $category->id ?>"
                     data-color="<?php echo $category->color ?>"
               <?php echo $this['event']->category == $category ? 'selected' : '' ?>>

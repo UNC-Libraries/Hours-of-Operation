@@ -2,6 +2,7 @@ jQuery(function($) {
     var $event_start = $('#event_start'),
         $event_end = $('#event_end' ),
         $preview_calendar = $('#preview_calendar'),
+        $event_category = $('#event_category'),
 
         current_event_border_color = '#ffff00',
 
@@ -58,6 +59,16 @@ jQuery(function($) {
 
                     $preview_calendar.fullCalendar('addEventSource', event_source);
                 }
+                
+                // change color
+                $event_category.on('change', function() {
+                    var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0],
+                        event_category_color = $event_category.find(':selected').data('color');
+
+                    current_event.backgroundColor = event_category_color;
+                    
+                    $preview_calendar.fullCalendar('updateEvent', current_event);
+                });
 
                 // init timepicker
                 $.timepicker.datetimeRange(
