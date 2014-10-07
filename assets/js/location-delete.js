@@ -12,8 +12,6 @@ jQuery(function($) {
                     'location_id': location_id.split('_')[1]}),
 
                 success: function(response) {
-
-                    console.log(response);
                     $('#' + location_id).remove();
 
                     $('.list-item').each(function(index, row) {
