@@ -3,10 +3,10 @@ $this->set_layout( 'admin' );
 $this->capture();
 ?>
 
-<form id="event-form" name="event_form" class="metabox-form" action="<?php echo esc_url( sprintf( '?page=%s&action=%s', $this['page'], $this['action'] ) )  ?>" method="POST">
+<form id="event-form" name="event_form" class="metabox-form" action="<?php echo esc_url( sprintf( '?page=%s', $this['page'] ) )  ?>" method="POST">
   <input type="hidden" name="action" value="<?php echo $this['action'] ?>"/>
-  <input type="hidden" name="event[id]" value="<?php echo $this['event']->id ?>"/>
-  <input type="hidden" name="event[location]" value="<?php echo $this['event']->location->id ?>"/>
+  <input type="hidden" name="event[id]" id="event_id" value="<?php echo $this['event']->id ?>"/>
+  <input type="hidden" name="event[location]" id="event_location" value="<?php echo $this['event']->location->id ?>"/>
 
   <?php
   wp_nonce_field( $this['action'] );
