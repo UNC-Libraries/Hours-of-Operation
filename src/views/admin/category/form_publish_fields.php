@@ -4,13 +4,13 @@
       <li>
         <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
           <div class="form-item form-item-textfield">
-            <label for="category_is_visible">Visible</label>
-            <input type="hidden" name="category[is_visible]" value="0"/>
+            <label for="location_is_visible">Visible</label>
+            <input type="hidden" name="location[is_visible]" value="0"/>
             <input type="checkbox"
-                   name="category[is_visible]"
-                   id="category_is_visible"
-                   value="<?php echo $this['category']->is_visible ?>"
-            <?php echo $this['category']->is_visible ? 'checked' : '' ?>/>
+                   name="location[is_visible]"
+                   id="location_is_visible"
+                   value="<?php echo $this['location']->is_visible ?>"
+            <?php echo $this['location']->is_visible ? 'checked' : '' ?>/>
           </div>
         </div>
       </li>
@@ -19,8 +19,8 @@
   <div id="major-publishing-actions">
     <div id="publishing-action">
       <input type="submit"
-             name="category_submit"
-             id="category_submit"
+             name="location_submit"
+             id="location_submit"
              class="button button-primary button-large"
              value="Publish" />
     </div>
