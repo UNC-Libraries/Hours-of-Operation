@@ -2,13 +2,14 @@ jQuery(function($) {
     var $event_start = $('#event_start'),
         $event_end = $('#event_end' ),
         $preview_calendar = $('#preview_calendar'),
+        $event_title = $('#event_title'),
         $event_category = $('#event_category'),
 
         current_event_border_color = '#ffff00',
 
         event_id = $('#event_id').val(),
-        event_title = $('#event_title').val(),
-        event_category_color = $('#event_category').find(':selected').data('color');
+        event_title = $event_title.val(),
+        event_category_color = $event_category.find(':selected').data('color');
 
     // init fullcalendar
     $preview_calendar.fullCalendar({
