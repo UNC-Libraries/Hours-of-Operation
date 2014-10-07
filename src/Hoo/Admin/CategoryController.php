@@ -111,7 +111,7 @@ class CategoryController {
       'page' => 'hoo-category-edit',
       'columns' => 2 );
 
-    $category = $this->entity_manager->find( '\Hoo\Model\category', $_REQUEST['category_id'] );
+    $category = $this->entity_manager->find( '\Hoo\Model\Category', $_REQUEST['category_id'] );
     $this->entity_manager->persist( $category );
 
     switch( $_POST['action'] ) {
