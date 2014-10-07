@@ -33,11 +33,11 @@ $this->capture();
       </div> <!-- /post-body-content -->
 
       <div id="postbox-container-1" class="postbox-container">
-        <?php do_meta_boxes( 'hoo-category-edit', 'side', null ) ?>
+        <?php do_meta_boxes( $this['page'], 'side', null ) ?>
       </div>
       
       <div id="postbox-container-2" class="postbox-container">
-        <?php do_meta_boxes( 'hoo-category-edit', 'normal', null) ?>
+        <?php do_meta_boxes( $this['page'], 'normal', null) ?>
       </div>
     </div>
   </div>

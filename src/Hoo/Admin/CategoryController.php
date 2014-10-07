@@ -79,8 +79,8 @@ class CategoryController {
 
   private function add_meta_boxes( $category ) {
 
-    $category_info_fields = new View( 'admin/partials/category_form_category_info_fields' );
-    $category_publish_fields = new View( 'admin/partials/category_form_publish_fields' );
+    $category_info_fields = new View( 'admin/category/form_info_fields' );
+    $category_publish_fields = new View( 'admin/category/form_publish_fields' );
    
     add_meta_box(
       'category-publish',
