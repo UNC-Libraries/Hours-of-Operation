@@ -7,6 +7,7 @@ $this->capture();
 
 <form id="location-form" name="location_form" class="metabox-form" action="<?php echo esc_url( sprintf( '?page=%s&action=%s&location_id=%s', $this['page'], $this['action'], $this['location']->id ) )?>" method="POST">
   <input type="hidden" name="action" value="<?php echo $this['action'] ?>"/>
+  <input type="hidden" name="location[address][id]" id="address_id" value="<?php echo $this['location']->address->id ?>"/>
   <?php 
 
   wp_nonce_field( $this['action'] );

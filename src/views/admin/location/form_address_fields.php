@@ -64,4 +64,3 @@
     </div>
   </li>
 </ul>
-<input type="hidden" name="location[address][id]" id="address_id" value="<?php echo $this['location']->address->id ?>"/>
