@@ -50,7 +50,7 @@
   <li>
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
-        <label for="address_lat">Lattitude</label>
+        <label for="address_lat">Latitude</label>
         <input type="number" name="location[address][lat]" id="address_lat" value="<?php echo $this['location']->address->lat ?>"/>
       </div>
     </div>
