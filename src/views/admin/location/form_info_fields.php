@@ -3,7 +3,7 @@
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
         <label for="location_url" class="wpt-form-label wpt-form-textfield-label">URL</label>
-        <input type="text"
+        <input type="url"
                name="location[url]"
                id="location_url"
                class="wpt-form-textfield form-textfield textfield"
@@ -15,7 +15,7 @@
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
         <label for="location_phone" class="wpt-form-label wpt-form-textfield-label">Phone #</label>
-        <input type="text"
+        <input type="tel"
                name="location[phone]"
                id="location_url"
                class="wpt-form-textfield form-textfield textfield"
