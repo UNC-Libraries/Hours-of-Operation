@@ -43,7 +43,7 @@
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
         <label for="address_line3">Zip</label>
-        <input type="text" name="location[address][zip]" id="address_zip" value="<?php echo $this['location']->address->zip ?>"/>
+        <input type="number" name="location[address][zip]" id="address_zip" value="<?php echo $this['location']->address->zip ?>"/>
       </div>
     </div>
   </li>
@@ -51,7 +51,7 @@
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
         <label for="address_lat">Lattitude</label>
-        <input type="text" name="location[address][lat]" id="address_lat" value="<?php echo $this['location']->address->lat ?>"/>
+        <input type="number" name="location[address][lat]" id="address_lat" value="<?php echo $this['location']->address->lat ?>"/>
       </div>
     </div>
   </li>
@@ -59,7 +59,7 @@
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
         <label for="address_lon">Longitude</label>
-        <input type="text" name="location[address][lon]" id="address_lon" value="<?php echo $this['location']->address->lon ?>"/>
+        <input type="number" name="location[address][lon]" id="address_lon" value="<?php echo $this['location']->address->lon ?>"/>
       </div>
     </div>
   </li>
