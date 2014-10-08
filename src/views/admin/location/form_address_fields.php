@@ -51,7 +51,12 @@
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
         <label for="address_lat">Latitude</label>
-        <input type="text" name="location[address][lat]" id="address_lat" value="<?php echo $this['location']->address->lat ?>"/>
+        <input type="text"
+               name="location[address][lat]"
+               id="address_lat" 
+               size="25" 
+               maxlength="25" 
+               value="<?php echo $this['location']->address->lat ?>">
       </div>
     </div>
   </li>
@@ -59,7 +64,7 @@
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
         <label for="address_lon">Longitude</label>
-        <input type="text" name="location[address][lon]" id="address_lon" value="<?php echo $this['location']->address->lon ?>"/>
+        <input type="text" name="location[address][lon]" id="address_lon" size="25" maxlength="25" value="<?php echo $this['location']->address->lon ?>"/>
       </div>
     </div>
   </li>
