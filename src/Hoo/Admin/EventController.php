@@ -48,7 +48,7 @@ class EventController {
     $current_screen = get_current_screen();
 
     wp_enqueue_script( 'event-delete' );
-    
+
     // enqueue edit/add page specific js
     if ( preg_match( '/hoo-location-event-(add|edit)?/i', $current_screen->id ) ) {
       wp_enqueue_script( 'event-edit' );
@@ -125,12 +125,18 @@ class EventController {
       case 'update':
         $event_data = $_POST['event'];
 
+        $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
+        $utc_tz = new \DateTimeZone( 'UTC' );
+        $start = new \Datetime( $event_data['start'], $current_tz );
+        $end = new \Datetime( $event_data['end'], $current_tz );
+        $start->setTimezone( $utc_tz );
+        $end->setTimezone( $utc_tz );
+
         $event = $this->entity_manager->find( '\Hoo\Model\Event', $event_data['id'] );
         $event_data['category'] = $this->entity_manager->find( '\Hoo\Model\Category', $event_data['category'] );
         $event_data['location'] = $this->entity_manager->find( '\Hoo\Model\Location', $event_data['location'] );
-        $event_data['start'] = new \Datetime( $event_data['start'] );
-        $event_data['end'] = new \Datetime( $event_data['end'] );
-
+        $event_data['start'] = $start;
+        $event_data['end'] = $end;
         $event = $event->fromArray( $event_data );
 
         $this->entity_manager->persist( $event );
@@ -171,10 +177,17 @@ class EventController {
     if ( $_POST['action'] == 'create' ) {
       $event_data = $_POST['event'];
 
+      $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
+      $utc_tz = new \DateTimeZone( 'UTC' );
+      $start = new \Datetime( $event_data['start'], $current_tz );
+      $end = new \Datetime( $event_data['end'], $current_tz );
+      $start->setTimezone( $utc_tz );
+      $end->setTimezone( $utc_tz );
+
       $event_data['location'] = $this->entity_manager->find( '\Hoo\Model\Location', $event_data['location'] );
       $event_data['category'] = $this->entity_manager->find( '\Hoo\Model\Category', $event_data['category'] );
-      $event_data['start'] = new \Datetime( $event_data['start'] );
-      $event_data['end'] = new \Datetime( $event_data['end'] );
+      $event_data['start'] = $start;
+      $event_data['end'] = $end;
 
       $event = new Event( $event_data );
       $this->entity_manager->persist( $event );

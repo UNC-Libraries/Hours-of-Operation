@@ -56,11 +56,13 @@ class EventList extends \WP_List_Table {
   }
   
   public function column_start( $event ) {
-    return $event->start->format( 'Y-m-d h:i');
+    $event->start->setTimezone( new \DateTimeZone( get_option( 'timezone_string' ) ) );
+    return $event->start->format( 'Y-m-d H:i');
   }
 
   public function column_end( $event ) {
-    return $event->end->format( 'Y-m-d h:i');
+    $event->end->setTimezone( new \DateTimeZone( get_option( 'timezone_string' ) ) );
+    return $event->end->format( 'Y-m-d H:i');
   }
   
   public function column_default( $event, $column_name ) {
