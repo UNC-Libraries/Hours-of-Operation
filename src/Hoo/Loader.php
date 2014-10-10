@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Hoo;
 
 use \Hoo\Admin\LocationController;
@@ -35,22 +34,15 @@ class Loader {
     $entity_manager = EntityManager::create( $db_params, $config );
 
     $this->entity_manager = $entity_manager;
+    $this->shortcode = new Shortcode( $entity_manager );
 
 
     if ( is_admin() ) {
-
-
-
       $this->init_admin_hooks();
-
       $this->init_controllers();
-
-    } else {
-      $this->init_public_hooks();
-
     }
 
-
+    $this->init_public_hooks();
   }
 
   /**
@@ -156,7 +148,5 @@ class Loader {
 
   private function init_public_hooks() {
   }
-
 }
-
 ?>

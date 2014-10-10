@@ -71,6 +71,9 @@ class Location {
   /** @ORM\column(name="updated_at", type="datetime") */
   private $updated_at;
 
+  public function is_open() {
+    return true;
+  }
   /** @ORM\PrePersist */
   public function set_created_at() {
     $datetime = new \DateTime();
