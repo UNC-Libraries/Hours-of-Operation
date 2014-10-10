@@ -1,15 +1,19 @@
 jQuery(function($) {
-    var $event_start = $('#event_start'),
-        $event_end = $('#event_end' ),
-        $preview_calendar = $('#preview_calendar'),
-        $event_title = $('#event_title'),
-        $event_category = $('#event_category'),
+    var $event_start               = $('#event_start'),
+        $event_end                 = $('#event_end' ),
+        $preview_calendar          = $('#preview_calendar'),
+        $event_title               = $('#event_title'),
+        $event_category            = $('#event_category'),
 
         current_event_border_color = '#ffff00',
 
-        event_id = $('#event_id').val(),
-        event_title = $event_title.val(),
-        event_category_color = $event_category.find(':selected').data('color');
+        event_id                   = $('#event_id').val(),
+        event_title                = $event_title.val(),
+        event_category_color       = $event_category.find(':selected').data('color'),
+
+        datetime_control_type      = 'select',
+        date_format                = 'yy-mm-dd',
+        time_format                = 'hh:mm';
 
     // init fullcalendar
     $preview_calendar.fullCalendar({
@@ -20,9 +24,11 @@ jQuery(function($) {
                 data: {
                     action: 'location_events',
                     location_id: $('#event_location').val()
-                }
+                },
             }
         ],
+        timezone: 'local',
+        timeFormat: 'H:mm',
         editable: false,
 
         loading: function(is_loading, view) {
@@ -50,11 +56,9 @@ jQuery(function($) {
                                 backgroundColor: event_category_color,
                                 borderColor: current_event_border_color
                             }
-                        ]
+                        ],
                     };
 
-
-                    console.log(event_source);
                     $preview_calendar.fullCalendar('addEventSource', event_source);
                 }
 
@@ -79,17 +83,18 @@ jQuery(function($) {
                     $preview_calendar.fullCalendar('updateEvent', current_event);
                 });
 
-                // init timepicker
+                /*
+                 init datetimepicker
+                 */
+
                 $.timepicker.datetimeRange(
                     $event_start,
                     $event_end,
                     {
-                        dateFormat: 'yy/mm/dd',
-                        timeFormat: 'HH:mm',
+                        dateFormat: date_format,
+                        timeFormat: time_format,
 
                         controlType: 'select',
-                        stepMinute: 15,
-
 
                         start: {
                             onSelect: function(dt_text, dt_instance) {
@@ -101,6 +106,7 @@ jQuery(function($) {
                                 $preview_calendar.fullCalendar('updateEvent', current_event);
                             }
                         },
+
                         end: {
                             onSelect: function(dt_text, dt_instance) {
                                 var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0];
@@ -112,7 +118,7 @@ jQuery(function($) {
                             }
                         }
                     }
-                ); // timepicker
+                );
             } // is_loading
         } // loading
     }); // fullcalendar
