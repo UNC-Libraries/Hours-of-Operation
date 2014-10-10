@@ -15,7 +15,7 @@ class Event {
      @ORM\GeneratedValue
    */
   private $id;
-  
+
   /** @ORM\ManyToOne(targetEntity="Location", inversedBy="events") */
   private $location;
 
@@ -27,6 +27,7 @@ class Event {
 
   /** @ORM\Column(type="datetime") */
   protected $end;
+  
 
   /** @ORM\ManyToOne(targetEntity="Category") */
   protected $category;
@@ -69,13 +70,20 @@ class Event {
   public function set_updated_at() {
     $this->updated_at = new \DateTime();
   }
-
+  
   public function __construct( $initial_values = array() ) {
-    foreach ( $initial_values as $property => $value ) {
-      if ( property_exists( $this, $property ) ) {
-        $this->$property = $value;
+
+    if ( $initial_values )  {
+      foreach ( $initial_values as $property => $value ) {
+        if ( property_exists( $this, $property ) ) {
+          $this->$property = $value;
+        }
       }
+    } else {
+      $this->start = new \Datetime();
+      $this->end = new \Datetime('+1 Day');
     }
+
   }
 
   public function __toString(){
@@ -86,22 +94,18 @@ class Event {
      a little getter/setter magic
    */
   public function __get( $property ) {
-
     if ( property_exists( $this, $property ) ){
       return $this->$property;
     }
   }
 
   public function __set( $property, $value ) {
-
     if ( property_exists( $this, $property ) ) {
       $this->$property = $value;
     } else {
       trigger_error( "Can't access property " . get_class( $this ) . ':' . $property, E_USER_ERROR );
     }
-
     return $this; // allow chaining
   }
-  
 }
 ?>
