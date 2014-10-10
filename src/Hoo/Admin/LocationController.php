@@ -64,6 +64,8 @@ class LocationController {
     // only enqueue for location pages
     if ( preg_match( '/hoo(-location)?/i', $current_screen->id ) ) {
 
+      wp_localize_script( 'event-edit', 'HOO', array( 'timezone' => get_option( 'timezone_string' ) ) );
+
       wp_enqueue_style( 'location-admin' );
 
       wp_enqueue_script( 'location-delete' );
