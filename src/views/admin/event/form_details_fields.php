@@ -26,6 +26,21 @@
     </div>
   </li>
   <li>
+    <div class="repeat-options">
+      <div class="form-item form-item-select">
+        <label for="event_repeats" class="wpt-form-label wpt-form-select-label">Repeats</label>
+        <select id="event_repeats" name="event_repeats[frequency]">
+          <option value="">None</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+    </div>
+  </li>
+  <li>
     <fieldset>
       <legend>Preview</legend>
       <div id="preview_calendar"></div>
