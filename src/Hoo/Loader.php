@@ -91,7 +91,10 @@ class Loader {
     wp_register_style( 'full-calendar', HOO__PLUGIN_URL . 'assets/css/fullcalendar.min.css' );
 
     wp_enqueue_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
-    wp_localize_script( 'init-postbox', 'HOO', array( 'page' => $_GET['page'] ) );
+
+    wp_enqueue_script( 'hoo-admin', HOO__PLUGIN_URL . 'assets/js/hoo-admin.js', array( 'jquery' ) );
+    wp_localize_script( 'hoo-admin', 'HOO', array( 'page' => $_GET['page'],
+                                                   'timezone' => get_option( 'timezone_string' ) ) );
 
     // location stuff
     wp_register_script( 'location-order', HOO__PLUGIN_URL . 'assets/js/location-order.js', array( 'jquery-ui-sortable' ) );
@@ -101,7 +104,7 @@ class Loader {
     wp_register_script( 'moment', HOO__PLUGIN_URL . 'assets/js/vendor/moment.min.js' );
     wp_register_script( 'full-calendar', HOO__PLUGIN_URL . 'assets/js/vendor/fullcalendar.min.js', array( 'jquery', 'moment' ) );
     wp_register_script( 'jquery-timepicker-addon',
-                        HOO__PLUGIN_URL . 'assets/js/vendor/jquery-ui-timepicker-addon.min.js',
+                        HOO__PLUGIN_URL . 'assets/js/vendor/jquery-ui-timepicker-addon.js',
                         array("jquery-ui-core",            //UI Core - do not remove this one
                               "jquery-ui-slider",
                               "jquery-ui-datepicker" ) );
@@ -120,11 +123,11 @@ class Loader {
 
     $plugin_basename = HOO__PLUGIN_DIR . SLUG;
     add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
-    
+
     add_action( 'init', array( $this, 'output_buffer' ) );
 
   }
-  
+
   public function output_buffer() {
     ob_start();
   }
