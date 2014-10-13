@@ -1,5 +1,5 @@
 <?php foreach( $this['locations'] as $location ) : ?>
-  <tr class="location">
+  <tr class="location-row" data-location-id="<?php echo $location->id ?>">
     <td class="location-name">
       <span>
         <?php echo $location->name ?>
