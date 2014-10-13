@@ -34,8 +34,8 @@ class Loader {
     $entity_manager = EntityManager::create( $db_params, $config );
 
     $this->entity_manager = $entity_manager;
-    $this->shortcode = new Shortcode( $entity_manager );
 
+    $this->shortcode = new Shortcode( $entity_manager );
 
     if ( is_admin() ) {
       $this->init_admin_hooks();
@@ -84,9 +84,6 @@ class Loader {
 
     wp_enqueue_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
 
-    wp_enqueue_script( 'hoo-admin', HOO__PLUGIN_URL . 'assets/js/hoo-admin.js', array( 'jquery' ) );
-    wp_localize_script( 'hoo-admin', 'HOO', array( 'page' => $_GET['page'],
-                                                   'timezone' => get_option( 'timezone_string' ) ) );
 
     // location stuff
     wp_register_script( 'location-order', HOO__PLUGIN_URL . 'assets/js/location-order.js', array( 'jquery-ui-sortable' ) );
@@ -103,6 +100,7 @@ class Loader {
 
     wp_register_script( 'event-edit', HOO__PLUGIN_URL . 'assets/js/event-edit.js', array( 'jquery-timepicker-addon', 'full-calendar' ) );
     wp_register_script( 'event-delete', HOO__PLUGIN_URL . 'assets/js/event-delete.js', array( 'jquery' ) );
+
 
 
     wp_enqueue_style(
@@ -147,6 +145,13 @@ class Loader {
   }
 
   private function init_public_hooks() {
+
+    wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js', array( 'jquery' ) );
+    wp_localize_script( 'hoo', 'HOO', array( 'page' => $_GET['page'],
+                                             'ajaxurl' => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
+                                             'timezone' => get_option( 'timezone_string' ) ) );
+    // shortcode stuff
+    wp_register_script( 'location-detail', HOO__PLUGIN_URL . 'assets/js/location-detail.js', array( 'jquery' ) );
   }
 }
 ?>
