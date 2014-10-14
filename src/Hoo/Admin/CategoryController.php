@@ -40,7 +40,6 @@ class CategoryController {
 
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-    
     $this->init_hooks();
   }
 
@@ -56,18 +55,8 @@ class CategoryController {
     }
   }
 
-
-/*    public function enqueue_scripts() {
-    wp_enqueue_style( 'wp-color-picker' );
-    wp_enqueue_script( 'category-color-picker' );
-  }
-*/
-
-  public function enqueue_scripts() {
-    $current_screen = get_current_screen();
-
     // only enqueue for category pages
- //   if ( preg_match( '/hoo(-category)?/i', $current_screen->id ) ) {
+   if ( preg_match( '/hoo(-category)?/i', $current_screen->id ) ) {
 
       wp_enqueue_style( 'category-admin' );
 
@@ -80,7 +69,7 @@ class CategoryController {
       //wp_enqueue_style( 'wp-color-picker' );
       //wp_enqueue_script( 'category-color-picker' );
     }
- // }
+ }
 
  public function init_hooks() {
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_color_picker' ) );
