@@ -200,20 +200,22 @@ class CategoryController {
     //If the WordPress version is greater than or equal to 3.5, then load the new WordPress color picker.
     if ( 3.5 <= $wp_version ){
         //Both the necessary css and javascript have been registered already by WordPress, so all we have to do is load them with their handle.
-        wp_enqueue_style( 'wp-color-picker' );
-        wp_enqueue_script( 'wp-color-picker' );
+        $picker = 'wp-color-picker';
+        wp_enqueue_style( $picker );
+        wp_enqueue_script( $picker );
+
     }
 
     //If the WordPress version is less than 3.5 load the older farbtasic color picker.
     else {
         //As with wp-color-picker the necessary css and javascript have been registered already by WordPress, so all we have to do is load them with their handle.
-        wp_enqueue_style( 'farbtastic' );
-        wp_enqueue_script( 'farbtastic' );
+        $picker = 'farbtastic';
+        wp_enqueue_style( $picker );
+        wp_enqueue_script( $picker );
     }
 
     //Load our custom javascript file
-    // wp_enqueue_script( 'wp-color-picker-settings', plugin_dir_url( __FILE__ ) . 'js/settings.js' );
-    wp_enqueue_script( 'category-color-picker', plugins_url('color-picker.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
+    wp_enqueue_script( 'category-color-picker', plugins_url('color-picker.js', __FILE__ ), array( $picker ), false, true );
   
     }
 
