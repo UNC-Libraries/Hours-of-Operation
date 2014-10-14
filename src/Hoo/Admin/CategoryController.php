@@ -57,10 +57,13 @@ class CategoryController {
   }
 
   public function enqueue_scripts() {
+
+    wp_enqueue_style( 'wp-color-picker' );
+    wp_enqueue_script( 'category-color-picker' );
   }
 
   public function init_hooks() {
-
+    add_action( 'admin_enqueue_scripts', array( $this, 'mw_enqueue_color_picker' ) );
   }
 
   public function index() {
@@ -188,6 +191,13 @@ class CategoryController {
 
     $view->render( $view_options );
   }
+
+  public function mw_enqueue_color_picker( $hook_suffix ) {
+    // first check that $hook_suffix is appropriate for your admin page
+    wp_enqueue_style( 'wp-color-picker' );
+    wp_enqueue_script( 'category-color-picker', plugins_url('color-picker.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
+  }
+
   public static function get_page_url() {
 
   }

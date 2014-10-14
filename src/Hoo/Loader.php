@@ -90,6 +90,9 @@ class Loader {
     wp_register_script( 'location-delete', HOO__PLUGIN_URL . 'assets/js/location-delete.js', array( 'jquery' ) );
     wp_register_script( 'location-image', HOO__PLUGIN_URL . 'assets/js/location-image.js', array( 'media-upload', 'thickbox' ) );
 
+    // category stuff
+    wp_register_script( 'category-color-picker', HOO__PLUGIN_URL . 'assets/js/color-picker.js', array( 'jquery' ) );
+
     // event stuff
     wp_register_script( 'moment', HOO__PLUGIN_URL . 'assets/js/vendor/moment.min.js' );
     wp_register_script( 'full-calendar', HOO__PLUGIN_URL . 'assets/js/vendor/fullcalendar.min.js', array( 'jquery', 'moment' ) );

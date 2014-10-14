@@ -11,10 +11,10 @@
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
         <label for="category_color" class="wpt-form-label wpt-form-textfield-label">Color</label>
-        <input type="text"
+        <input type="text" 
                name="category[color]"
                id="category_color"
-               class="wpt-form-textfield form-textfield textfield"
+               class="wpt-form-textfield form-textfield textfield category-color-field"
                value="<?php echo $this['category']->color ?>"/>
       </div>
     </div>
