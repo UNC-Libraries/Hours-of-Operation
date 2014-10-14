@@ -1,14 +1,22 @@
+<li class="hoo-main-list-header">
+  <a href="#hoo-map">
+    <span class="location-name">
+      Location Name
+    </span>
+    <span class="location-status">
+      @ <?php echo $this['now']->format( 'h:i a' ) ?>
+    </span>
+  </a>
+</li>
 <?php foreach( $this['locations'] as $location ) : ?>
-  <tr class="location-row" data-location-id="<?php echo $location->id ?>">
-    <td class="location-name">
-      <span>
+  <li>
+    <a href="#location-<?php echo $location->id ?>">
+      <span class="location-name">
         <?php echo $location->name ?>
       </span>
-    </td>
-    <td class="location-status">
-      <span>
+      <span class="location-status">
         <?php echo $location->is_open() ? 'Open' : 'Closed' ?>
       </span>
-    </td>
-  </tr>
+    </a>
+  </li>
 <?php endforeach ?>

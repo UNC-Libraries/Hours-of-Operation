@@ -151,7 +151,9 @@ class Loader {
                                              'ajaxurl' => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
                                              'timezone' => get_option( 'timezone_string' ) ) );
     // shortcode stuff
-    wp_register_script( 'location-detail', HOO__PLUGIN_URL . 'assets/js/location-detail.js', array( 'jquery' ) );
+    wp_register_script( 'shortcode-main', HOO__PLUGIN_URL . 'assets/js/shortcode-main.js', array( 'jquery', 'jquery-ui-tabs', 'jquery-effects-slide' ) );
+
+    wp_register_style( 'shortcode-main', HOO__PLUGIN_URL . 'assets/css/shortcode-main.css');
   }
 }
 ?>

@@ -30,7 +30,8 @@ class Shortcode {
     global $post;
 
     if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'hoo' ) ) {
-      wp_enqueue_script( 'location-detail' );
+      wp_enqueue_style( 'shortcode-main' );
+      wp_enqueue_script( 'shortcode-main' );
     }
   }
 
@@ -52,7 +53,7 @@ class Shortcode {
     $view = new View( 'shortcode/location_detail' );
 
 
-    wp_send_json( array( 'location' => $view->fetch( array( 'location' => $location ) ) ) );
+    wp_send_json( array( 'render' => $view->fetch( array( 'location' => $location ) ) ) );
     exit;
   }
 }
