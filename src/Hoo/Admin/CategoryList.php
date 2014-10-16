@@ -10,8 +10,8 @@ class CategoryList extends \WP_List_Table {
     $this->entity_manager = $entity_manager;
 
     parent::__construct( array(
-      'singular' => 'wp_list_text_link',
-      'plural'   => 'wp_list_text_links',
+      'singular' => 'category',
+      'plural'   => 'locations',
       'ajax'     => false
     ) );
   }
@@ -20,6 +20,7 @@ class CategoryList extends \WP_List_Table {
     return array(
       'name' => __( 'Name' ),
       'updated_at' => __( 'Modified Date' ),
+      'is_visible' => __( 'Visible?' ),
       'priority' => __( 'Priority' )
     );
   }
