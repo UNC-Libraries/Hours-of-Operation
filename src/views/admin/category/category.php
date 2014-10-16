@@ -18,20 +18,6 @@ $this->capture();
   <div id="poststuff">
     <div id="post-body" class="metabox-holder columns-<?php echo $this['columns'] ?>">
 
-      <div id="post-body-content">
-        <div id="titlediv">
-          <div id="titlewrap">
-            <label for="title" class="screen-reader-text" id="title-prompt-text">Title</label>
-            <input type="text"
-                   name="category[name]"
-                   id="title"
-                   autocomplete="off"
-                   placeholder="Name"
-                   value="<?php echo $this['category']->name ?>"/>
-          </div>
-        </div>
-      </div> <!-- /post-body-content -->
-
       <div id="postbox-container-1" class="postbox-container">
         <?php do_meta_boxes( $this['page'], 'side', null ) ?>
       </div>
@@ -39,7 +25,7 @@ $this->capture();
       <div id="postbox-container-2" class="postbox-container">
         <?php do_meta_boxes( $this['page'], 'normal', null) ?>
       </div>
-    </div>
-  </div>
+    </div> <!-- /post-body -->
+  </div> <!-- /poststuff -->
 </form>
 <?php $this->end_capture( 'body' ); ?>

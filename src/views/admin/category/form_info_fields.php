@@ -1,5 +1,18 @@
 <ul>
     <li>
+      <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
+        <div class="form-item form-item-textfield">
+          <label for="title" class="wpt-form-label wpt-form-textfield-label">Title</label>
+          <input type="text"
+                 name="category[name]"
+                 id="title"
+                 autocomplete="off"
+                 placeholder="Name"
+                 value="<?php echo $this['category']->name ?>"/>
+        </div>
+      </div>
+    </li>
+    <li>
     <div class="description wpt-form-description wpt-form-description-textarea description-textarea">
       <div class="form-item form-item-textarea">
         <label for="category_description" class="wpt-form-label wpt-form-textarea-label">Description</label>
