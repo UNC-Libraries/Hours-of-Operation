@@ -33,7 +33,7 @@ jQuery(function($) {
                 // set current_event
                 if ( event_id ) {
                     // event exists. Find from our eventSources and highlight the border
-                    var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0];
+                    var current_event = $preview_calendar.fullCalendar('clientEvents', event_id[0]);
 
                     console.log(current_event);
                     current_event.borderColor = current_event_border_color;
