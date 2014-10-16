@@ -192,6 +192,41 @@ class CategoryController {
     $view->render( $view_options );
   }
 
+   public function add_action_links( $links ) {
+
+    return array_merge(
+      array(
+        'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>' ),
+      $links );
+
+  }
+
+
+  public function ajax_category_order() {
+
+    $categories_order = $_POST['category'];
+
+    foreach( $categories_order as $position => $category_id ) {
+      $category = $this->entity_manager->find( '\Hoo\Model\Category', $category_id );
+      $category->position = $position;
+      $this->entity_manager->flush();
+    }
+
+    wp_send_json_success();
+    exit;
+  }
+
+  public function ajax_category_delete() {
+    $category_id = $_POST['category_id'];
+
+    $category = $this->entity_manager->find( '\Hoo\Model\Category', $category_id );
+    $this->entity_manager->remove( $category );
+    $this->entity_manager->flush();
+
+    wp_send_json_success();
+    exit;
+  }
+
   public function enqueue_color_picker( $hook_suffix ) {
   
     //Access the global $wp_version variable to see which version of WordPress is installed.
