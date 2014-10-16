@@ -32,16 +32,4 @@
       </div>
     </div>
   </li>
-  <li>
-    <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
-      <div class="form-item form-item-textfield">
-        <label for="category_priority" class="wpt-form-label wpt-form-textfield-label">Priority</label>
-        <input type="text"
-               name="category[priority]"
-               id="category_url"
-               class="wpt-form-textfield form-textfield textfield"
-               value="<?php echo $this['category']->priority ?>"/>
-      </div>
-    </div>
-  </li>
 </ul>
