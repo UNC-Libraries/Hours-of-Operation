@@ -23,6 +23,7 @@ class EventList extends \WP_List_Table {
 
   public function get_sortable_columns() {
     return array( 'title' => array( 'title', false ),
+                  'category' => array( 'category', false ),
                   'start' => array( 'start', false),
                   'end'   => array( 'end', false) );
   }
