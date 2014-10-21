@@ -147,13 +147,14 @@ class Loader {
   private function init_public_hooks() {
 
     wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js', array( 'jquery' ) );
-    wp_localize_script( 'hoo', 'HOO', array( 'page' => $_GET['page'],
-                                             'ajaxurl' => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
+    wp_localize_script( 'hoo', 'HOO', array( 'page'     => $_GET['page'],
+                                             'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
                                              'timezone' => get_option( 'timezone_string' ) ) );
     // shortcode stuff
-    wp_register_script( 'shortcode-main', HOO__PLUGIN_URL . 'assets/js/shortcode-main.js', array( 'jquery', 'jquery-ui-tabs', 'jquery-effects-slide' ) );
-
     wp_register_style( 'shortcode-main', HOO__PLUGIN_URL . 'assets/css/shortcode-main.css');
+    wp_register_script( 'g-api', sprintf( 'http://google.com/jsapi?key=%s', 'ABQIAAAAoRs91XgpKw60K4liNrOHoBStNMhZCa0lqZKLUDgzjZGRsKl38xSnSmVmaulnWVdBLItzW4KsddHCzA' ) ); // TODO: make plugin settings for this
+    wp_register_script( 'g-maps', 'http://maps.googleapis.com/maps/api/js?senesor=false', array( 'g-api', 'jquery' ) );
+    wp_register_script( 'shortcode-main', HOO__PLUGIN_URL . 'assets/js/shortcode-main.js', array( 'g-maps', 'jquery', 'jquery-ui-tabs', 'jquery-effects-slide', 'jquery-effects-fade' ) );
   }
 }
 ?>

@@ -1,53 +1,36 @@
-
-.hoo-main.ui-tabs {
+#hoo-main * {
+    margin: 0;
     padding: 0;
-    width: 100%;
 }
-.hoo-main.ui-tabs .ui-widget-header {
-    border: none;
+
+#hoo-main {
+    min-height: 300px;
 }
-.hoo-main.ui-tabs .ui-tabs-nav {
-    float: left;
-    width: 40%;
-    
-}
-.hoo-main.ui-tabs .ui-tabs-nav li {
-    clear: left;
-    width: 100%;
-    margin: 0.2em 0;
-    border: 1px solid gray;
-    border-width: 1px 0 1px 1px;
-    border-radius: 4px 0 0 4px;
-    overflow: hidden;
-    position: relative;
-    right: -2px;
-    z-index: 2;
-}
-.hoo-main.ui-tabs .ui-tabs-nav li a {
-    display: block;
-    width: 100%;
-    padding: 0.6em 1em;
-}
-.hoo-main.ui-tabs .ui-tabs-nav li a:hover {
+
+#hoo-main ul { list-style: none; }
+
+#hoo-main .location-row:hover {
     cursor: pointer;
 }
-.hoo-main.ui-tabs .ui-tabs-nav li.ui-tabs-active {
-    margin-bottom: 0.2em;
-    padding-bottom: 0;
-    border-right: 1px solid white;
-}
-.hoo-main.ui-tabs .ui-tabs-nav li:last-child {
-    margin-bottom: 10px;
-}
-.hoo-main.ui-tabs .ui-tabs-panel {
+
+#hoo-main #location-list-container {
     float: left;
-    width: 28em;
-    border-left: 1px solid gray;
-    border-radius: 0;
-    position: relative;
-    left: -1px;
+    width: 30%;
+    min-height: 300px;
 }
 
-.hoo-main.ui-tabs .ui-state-disabled {
+#hoo-main #panel-container {
+    position: relative;
+    margin-left: 30%;
+}
+#hoo-main .panel {
+    min-height: 300px;
+    background-color: white;
+    position: absolute;
+    z-index: 99999999;
     display: none;
+}
+
+#hoo-main #map-canvas {
+    min-height: 300px;
 }
