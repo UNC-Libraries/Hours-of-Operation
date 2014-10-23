@@ -1,5 +1,5 @@
 jQuery( function( $ ) {
-    var $hoo_list_rows = $( '.location-row a' ),
+    var $hoo_list_rows = $( '.location-row' ),
         map_options = {
             center: {
                 lat: -34.397,
@@ -13,23 +13,20 @@ jQuery( function( $ ) {
 
     $hoo_list_rows.on( 'click', function( e ) {
         var $this_panel = $( '#' + $( this ).data( 'panel' ) ),
-            $panels = $( '.panel' );
+            $visible_panel = $('.panel:visible');
 
         if ( $this_panel.is( ':visible' ) ) {
-            $this_panel.hide( 'slide', { direction: 'left' }, 100 );
-            console.log('1');
+            $this_panel.hide( 'slide', { direction: 'left', easing: 'easeOutExpo' }, 500 );
         }
-        else if ( $panels.is( ':visible') ) {
-            console.log('2');
-            $panels.hide('fade', { easing: 'linear' }, 500, function() {
-                $this_panel.show();
+        else if ( $visible_panel.length ) {
+            $this_panel.show('fade', { 
+                complete: function(){
+                    $visible_panel.hide('fade');
+                }
             });
         } else {
-            console.log('3');
-            $this_panel.show( 'slide', { direction: 'left', easing: 'easeOutBounce' }, 500 );
+            $this_panel.show( 'slide', { direction: 'left', easing: 'easeOutBounce' }, 800 );
         }
-
-        e.preventDefault();
 
     });
 

@@ -1,12 +1,19 @@
 <?php foreach( $this['locations'] as $location ) : ?>
-  <li class="location-row">
-    <a href="#" data-panel="panel-<?php echo $location->id ?>">
-      <span class="location-name">
-        <?php echo $location->name ?>
+  <li class="location-row" data-panel="panel-<?php echo $location->id ?>">
+    <div class="location-name">
+      <span>
+        <a href="#location">
+          <?php echo $location->name ?>
+        </a>
       </span>
-      <span class="location-status">
+    </div>
+    <div class="location-status">
+      <p>
         <?php echo $location->is_open() ? 'Open' : 'Closed' ?>
-      </span>
-    </a>
+      </p>
+      <p>
+        until 12 PM
+      </p>
+    </div>
   </li>
 <?php endforeach ?>

@@ -4,7 +4,7 @@
 }
 
 #hoo-main {
-    min-height: 300px;
+    min-height: 500px;
 }
 
 #hoo-main ul { list-style: none; }
@@ -14,17 +14,66 @@
 }
 
 #hoo-main #location-list-container {
+    border-radius: 5px 5px 0 0;
+    box-shadow: 1px 1px 3px 0 #aaa;
     float: left;
-    width: 30%;
-    min-height: 300px;
+    width: 45%;
+    min-height: 500px;
 }
 
+#hoo-main #location-list-container li div{
+    display: inline-block;
+    vertical-align: middle;
+    padding: 7.5px 2px 7.5px 8px;
+}
+
+#hoo-main #location-list-container .list-header div {
+    padding: 5px 2px 5px 8px;
+}
+
+#hoo-main #location-list-container .list-header {
+    background-color: #666;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+}
+
+#hoo-main #location-list-container .location-row {
+    overflow: auto;
+    border-bottom: 1px solid #ddddff;
+}
+
+#hoo-main #location-list-container .location-row:hover {
+    background-color: #ddddff;
+}
+
+#hoo-main #location-list-container .location-row:hover .location-name {
+    border-right: 1px solid #ddddff;
+}
+
+#hoo-main #location-list-container .location-name {
+}
+#hoo-main #location-list-container .location-status {
+    width: 20%;
+    border-left: 1px solid #ccc;
+    float: right;
+    text-align: center;
+}
+
+
 #hoo-main #panel-container {
+    padding-top: 10px;
     position: relative;
-    margin-left: 30%;
+    margin-left: 45%;
 }
 #hoo-main .panel {
-    min-height: 300px;
+    border-top: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    border-radius: 0 5px 5px 0;
+    box-shadow: 1px 1px 3px 0px #aaa;
+
+    padding: 5px;
+    min-height: 475px; 
     background-color: white;
     position: absolute;
     z-index: 99999999;
@@ -32,5 +81,5 @@
 }
 
 #hoo-main #map-canvas {
-    min-height: 300px;
+    min-height: 485px;
 }

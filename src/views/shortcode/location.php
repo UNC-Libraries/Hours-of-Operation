@@ -4,13 +4,9 @@
   </div>
 
   <div id="panel-container">
-    <?php foreach( $this['locations'] as $location ) : ?>
-      <div id="panel-<?php echo $location->id ?>" class="panel">
-        <?php echo $location->description ?>
-      </div>
-    <?php endforeach ?>
+    <?php $this->include_file( 'shortcode/location_detail' ) ?>
 
-    <div id="hoo-map" class="">
+    <div id="hoo-map">
       <div id="map-canvas"></div>
     </div>
   </div>
