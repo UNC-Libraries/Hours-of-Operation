@@ -32,14 +32,13 @@ jQuery(function($) {
         editable: false,
 
         loading: function(is_loading, view) {
-
             if ( is_loading ) {
                 // add loading animation?
             } else {
                 // set current_event
                 if ( event_id ) {
                     // event exists. Find from our eventSources and highlight the border
-                    var current_event = $preview_calendar.fullCalendar('clientEvents', event_id[0]);
+                    var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0];
 
                     current_event.borderColor = current_event_border_color;
                     $preview_calendar.fullCalendar('updateEvent', current_event);
