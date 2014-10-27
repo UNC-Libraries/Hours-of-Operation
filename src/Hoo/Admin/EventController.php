@@ -6,6 +6,12 @@ use \Hoo\Model\Event;
 use \Hoo\View;
 use \Hoo\Utils;
 
+use \Recurr\Rule as RRule;
+use \Recurr\Transformer\ArrayTransformer as RRuleTransformer;
+use \Recurr\Transformer\Constraint\BetweenConstraint;
+use \Recurr\Transformer\Constraint\BeforeConstraint;
+use Doctrine\Common\Collections\Criteria as Criteria;
+
 defined( 'ABSPATH' ) or die();
 
 class EventController {
@@ -227,21 +233,35 @@ class EventController {
   }
 
   public function ajax_location_events() {
+    // params passed by fullcalendar 
     $location_id = $_GET['location_id'];
+    $cal_start = new \Datetime( $_GET['start'] );
+    $cal_end = new \DateTime( $_GET['end'] );
+
+    $tz = new \DateTimeZone( get_option( 'timezone_string') );
 
     $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
     $events = $events_repo->findBy( array( 'location' => $location_id ) );
 
-    $events = array_map(
-      function( $event ) { return array( 'id'     => $event->id,
-                                         'title'  => $event->title,
-                                         'start'  => $event->start->format( \DateTime::ISO8601 ),
-                                         'end'    => $event->end->format( \DateTime::ISO8601 ),
-                                         'color'  => $event->category->color,
-                                         'allDay' => $event->is_all_day ); },
-      $events );
+    $rrule_transformer = new RRuleTransformer();
 
-    wp_send_json( $events );
+    $event_instances = array();
+    foreach( $events as $event ) {
+      $event->start->setTimeZone( $tz );
+      $event->end->setTimeZone( $tz );
+      $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
+      $cal_range = new BetweenConstraint( $cal_start, $cal_end, $tz ) ;
+      
+      foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
+        $event_instances[] = array( 'id' => $event->id,
+                                    'title' => Utils::format_as_time_range( $recurrence->getStart(), $recurrence->getEnd() ),
+                                    'start' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
+                                    'end' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
+                                    'color' => $event->category->color );
+      }
+    }
+
+    wp_send_json( $event_instances );
     exit;
   }
 }

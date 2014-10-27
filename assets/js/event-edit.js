@@ -13,7 +13,7 @@ jQuery(function($) {
 
         datetime_control_type      = 'select',
         date_format                = 'yy-mm-dd',
-        time_format                = 'hh:mm';
+        time_format                = 'HH:mm';
 
     // init fullcalendar
     $preview_calendar.fullCalendar({
@@ -28,7 +28,7 @@ jQuery(function($) {
             }
         ],
         timezone: 'local',
-        timeFormat: 'H:mm',
+        timeFormat: '',
         editable: false,
 
         loading: function(is_loading, view) {
@@ -56,7 +56,7 @@ jQuery(function($) {
                                 backgroundColor: event_category_color,
                                 borderColor: current_event_border_color
                             }
-                        ],
+                        ]
                     };
 
                     $preview_calendar.fullCalendar('addEventSource', event_source);
