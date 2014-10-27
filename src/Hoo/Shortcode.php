@@ -24,6 +24,7 @@ class Shortcode {
   public function init() {
     global $post;
 
+    // check the current page for the hoo shortcode
     if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'hoo' ) ) {
       wp_enqueue_style( 'shortcode-main' );
       wp_enqueue_script( 'shortcode-main' );
@@ -34,6 +35,7 @@ class Shortcode {
   public function full() {
     $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
     $locations = $locations_repo->findBy( array( 'parent' => null ), array( 'position' => 'asc' ) );
+
     /* quick hack to put the sublocations under the parent
        TODO: rewrite this in the model 
     */
@@ -47,7 +49,6 @@ class Shortcode {
         return $locations;
       },
       array() );
-
 
     $view = new View( 'shortcode/location' );
     $view->render( array( 'locations' => $locations,
