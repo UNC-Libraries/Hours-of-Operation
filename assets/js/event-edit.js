@@ -10,6 +10,10 @@ jQuery(function($) {
         event_id                   = $('#event_id').val(),
         event_title                = $event_title.val(),
         event_category_color       = $event_category.find(':selected').data('color'),
+        
+        $rrule_container           = $('#rrule-custom-container'),
+        $rrule_frequency           = $( '#event_recurrence_rule' ),
+        $rrule_custom_frequency    = $( '#event_recurrence_rule_custom' ),
 
         datetime_control_type      = 'select',
         date_format                = 'yy-mm-dd',
@@ -123,10 +127,34 @@ jQuery(function($) {
                         }
                     }
                 );
+
+                // recurrence rules
+                $rrule_frequency.on('change', function() {
+                    if ( this.value == 'custom' ) {
+                        $rrule_container.show();
+                    } else {
+                        $rrule_container.hide();
+                    }
+
+                });
+                
+                $rrule_custom_frequency.on( 'change', function() {
+                    var $option = $(this);
+                    
+                    // hide all custom rule options
+                    $( '#rrule-custom-container .rrule-custom').hide();
+
+                    // set unit text
+                    $( '#interval-unit' ).text( $option.find(':selected').data( 'unit' ) );
+
+                    // show options for current frequency
+                    $( '#rrule-custom-container .' + $option.val() ).show();
+                });
             } // is_loading
         }, // loading
 
         eventRender: function( event, element, view ) {
+            // render the whole events calendar square with the events category color
             $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]').css('background-color', event.color);
         }
     }); // fullcalendar
