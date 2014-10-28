@@ -1,4 +1,5 @@
 <?php foreach( $this['locations'] as $location ) : ?>
+  <?php $current_hours = $location->current_hours(); ?>
   <li class="location-row" data-panel="panel-<?php echo $location->id ?>">
     <div class="location-name">
       <span>
@@ -8,12 +9,14 @@
       </span>
     </div>
     <div class="location-status">
-      <p>
-        <?php echo $location->is_open() ? 'Open' : 'Closed' ?>
-      </p>
-      <p>
-        until 12 PM
-      </p>
+      <?php if ( is_null( $current_hours ) ) : ?>
+        <p>N/A</p>
+      <?php elseif ( \Hoo\Utils::is_open( $current_hours ) ) : ?>
+        <p>Open</p>
+        <p>Until <?php echo \Hoo\Utils::format_time( $current_hours->getEnd() )?> </p>
+      <?php else : ?>
+        <p>Closed</p>
+      <?php endif ?>
     </div>
   </li>
 <?php endforeach ?>

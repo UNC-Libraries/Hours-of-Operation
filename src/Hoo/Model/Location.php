@@ -2,7 +2,14 @@
 
 namespace Hoo\Model;
 
+use \Hoo\Utils;
 use Doctrine\ORM\Mapping as ORM;
+
+use \Recurr\Rule as RRule;
+use \Recurr\Transformer\ArrayTransformer as RRuleTransformer;
+use \Recurr\Transformer\Constraint\BetweenConstraint;
+use \Recurr\Transformer\Constraint\BeforeConstraint;
+use Doctrine\Common\Collections\Criteria as Criteria;
 
 /**
    @ORM\Entity
@@ -70,10 +77,50 @@ class Location {
 
   /** @ORM\column(name="updated_at", type="datetime") */
   private $updated_at;
+  
+  public function get_hours( \DateTime $start, \DateTime $end) {
+    $tz = new \DateTimeZone( get_option( 'timezone_string') );
 
-  public function is_open() {
-    return true;
+    $rrule_transformer = new RRuleTransformer();
+    
+    $event_instances = array();
+    foreach( $this->events as $event ) {
+      $event->start->setTimeZone( $tz );
+      $event->end->setTimeZone( $tz );
+      $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
+      $cal_range = new BetweenConstraint( $start, $end, $tz ) ;
+      
+      foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
+        $event_instances[] = array( 'id' => $event->id,
+                                    'title' => Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ),
+                                    'start' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
+                                    'end' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
+                                    'color' => $event->category->color );
+      }
+    }
+    
+    return $event_instances;
   }
+
+  public function current_hours() {
+    $tz = new \DateTimeZone( get_option( 'timezone_string') );
+
+    $rrule_transformer = new RRuleTransformer();
+    
+    $recurrences = array();
+    foreach( $this->events as $event ) {
+      $event->start->setTimeZone( $tz );
+      $event->end->setTimeZone( $tz );
+      $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
+      $cal_range = new BetweenConstraint( new \DateTime( '-1 day', $tz ), new \DateTime( 'now' , $tz ) ) ;
+      
+      foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
+        $recurrences[] = $recurrence;
+      }
+    }
+    return $recurrences[0];
+  }
+
   /** @ORM\PrePersist */
   public function set_created_at() {
     $datetime = new \DateTime();
