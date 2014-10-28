@@ -28,13 +28,7 @@ class Utils {
 
   static public function is_open( $recurrence ) {
     $now = new \DateTime();
-    $open = $recurrence->getStart();
-    $close = $recurrence->getEnd();
-    if ( $now >= $open && $now <= $close ) {
-      return true;
-    }
-
-    return false;
+    return $now >= $recurrence->getStart() && $now <= $recurrence->getEnd();
   }
 }
 
