@@ -38,10 +38,14 @@ jQuery(function($) {
                 // set current_event
                 if ( event_id ) {
                     // event exists. Find from our eventSources and highlight the border
-                    var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0];
+                    var event_instances = $preview_calendar.fullCalendar('clientEvents', event_id);
 
-                    current_event.borderColor = current_event_border_color;
-                    $preview_calendar.fullCalendar('updateEvent', current_event);
+                    // add a class to set all the current instances and highlight the border
+                    $.each( event_instances, function( index, event ) {
+                        $( '.fc-bg td[data-date="' + event.start.format( 'YYYY-MM-DD' ) + '"]' )
+                            .addClass( 'hoo-current-event' )
+                            .css( 'border-top-color', 'yellow' );
+                    });
                 } else {
                     // event doesn't exist. Append a new event to the eventSources
                     event_id = 'current';
@@ -51,16 +55,15 @@ jQuery(function($) {
                                 id: event_id,
                                 title:  event_title,
                                 start: $event_start.val(),
-                                end: $event_end.val(),
-                                backgroundColor: event_category_color,
-                                borderColor: current_event_border_color
+                                end: $event_end.val()
                             }
                         ]
                     };
                     $preview_calendar.fullCalendar('addEventSource', event_source);
                 }
 
-                // change title event
+                /* change title event
+                 TODO: title should always be the the hours the location is open?
                 $event_title.on('input', function() {
                     var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0],
                         event_title = $event_title.val();
@@ -70,14 +73,17 @@ jQuery(function($) {
                     $preview_calendar.fullCalendar('updateEvent', current_event);
 
                 });
+                 */
 
                 // change color event
                 $event_category.on('change', function() {
                     var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0],
-                        event_category_color = $event_category.find(':selected').data('color');
+                        event_category_color = $event_category.find(':selected').data('color'),
+                        text_color = ('000000' + (('0xffffff' ^ '0x' + event_category_color.slice(1)).toString(16))).slice(-6);
 
-                    current_event.backgroundColor = event_category_color;
 
+                    $( '.hoo-current-event' ).css( 'background-color', event_category_color );
+                    current_event.color = event_category_color;
                     $preview_calendar.fullCalendar('updateEvent', current_event);
                 });
 
@@ -118,6 +124,10 @@ jQuery(function($) {
                     }
                 );
             } // is_loading
-        } // loading
+        }, // loading
+
+        eventRender: function( event, element, view ) {
+            $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]').css('background-color', event.color);
+        }
     }); // fullcalendar
 }); // jquery
