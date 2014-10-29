@@ -39,7 +39,7 @@
     </div>
   </li>
   <li>
-    <div id="rrule-custom-container">
+    <div id="rrule-custom-container" class="js-wpt-field wpt-field wp-textfield">
       <label for="event_recurrence_rule_custom" class="wpt-form-label wpt-form-select-label">Frequency</label>
       <select id="event_recurrence_rule_custom" name="event_recurrence_rule_custom[frequency]">
         <option value="daily" data-unit="day">Daily</option>
@@ -48,12 +48,17 @@
         <option value="yearly" data-unit="year">Yearly</option>
       </select>
 
-      <div class="interval">
-        <p>Every <input type="text" 
-                        id="event_recurrence_rule_custom_interval" 
-                        name="event_recurrence_rule_custom[interval]"
-                        value="1"/>
-          <span id="interval-unit">day</span>(s)</p>
+      <div class="interval wpt-field wp-textfield">
+        <div class="form-item form-item-textfield">
+          <label for="event_recurrence_rule_custom_interval"></label>
+          Every
+          <input type="text"
+                 id="event_recurrence_rule_custom_interval"
+                 name="event_recurrence_rule_custom[interval]"
+                 class="wpt-form-textfield form-textfield textfield"
+                 value="1"/>
+          <span id="interval-unit"> day</span>(s)</p>
+        </div>
       </div>
 
       <div class="rrule-custom weekly">
@@ -74,13 +79,13 @@
 
       <div class="rrule-custom yearly">
         <?php foreach( range( 1, 12 ) as $month ): ?>
-        <label for="<?php sprintf( 'event_recurrence_rule_custom_bymonth_%s', $month ) ?>">
-          <?php echo \DateTime::createFromFormat( '!m', $month )->format( 'M' ) ?>
-        </label>
-        <input type="checkbox"
-               id="<?php sprintf( 'event_recurrence_rule_custom_bymonth_%s', $month ) ?>"
-               name="event_recurrence_rule_custom[bymonth][]"
-               value="<?php echo $month ?>"/>
+          <label for="<?php sprintf( 'event_recurrence_rule_custom_bymonth_%s', $month ) ?>">
+            <?php echo \DateTime::createFromFormat( '!m', $month )->format( 'M' ) ?>
+          </label>
+          <input type="checkbox"
+                 id="<?php sprintf( 'event_recurrence_rule_custom_bymonth_%s', $month ) ?>"
+                 name="event_recurrence_rule_custom[bymonth][]"
+                 value="<?php echo $month ?>"/>
         <?php endforeach ?>
       </div>
     </div>
