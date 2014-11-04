@@ -26,8 +26,8 @@ class Category {
   /** @ORM\Column(type="string", length=256) */
   protected $color;
 
-  /** @ORM\Column(type="integer") */
-  protected $priority;
+  /** @ORM\Column(name="priority", type="integer", options={"default" = 0}) */
+  protected $priority = 0;
 
 
   /** @ORM\Column(type="text", nullable=true) */
