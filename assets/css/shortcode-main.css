@@ -83,3 +83,7 @@
 #hoo-main #map-canvas {
     min-height: 485px;
 }
+
+.is-hidden {
+    display: none;
+}

@@ -100,13 +100,17 @@ class EventController {
                   array( 'event' => $event,
                          'event-categories' => $categories ) );
 
+    $freq_values = array( 'Daily', 'Weekly', 'Monthly', 'Yearly', 'Custom' );
     add_meta_box( 'event-details',
                   'Details',
                   array( $event_details_fields, 'render_metabox' ),
                   $_GET['page'],
                   'normal',
                   'high',
-                  array( 'event' => $event ) );
+                  array( 'event' => $event,
+                         'freq_values' => $freq_values,
+                         'freq_units' => array( 'HOURLY' => 'hour', 'DAILY' => 'day', 'MONTHLY' => 'month', 'WEEKLY' => 'week', 'YEARLY' => 'year' ),
+                         'cust_freq_values' => array_slice( $freq_values, 0, -1 ) ) );
 
   }
 
@@ -130,6 +134,18 @@ class EventController {
     switch( $_POST['action'] ) {
       case 'update':
         $event_data = $_POST['event'];
+
+        switch( $event_data['recurrence_rule'] ) {
+        case 'CUSTOM':
+            $custom_rr = $_POST['event_recurrence_rule_custom'];
+            $event_data['recurrence_rule'] = UTILS::rrules_to_str( $custom_rr );
+            break;
+        case 'NONE':
+            $event_data['recurrence_rule'] = '';
+            break;
+        default:
+            $event_data['recurrence_rule'] =  strtoupper( sprintf( 'FREQ=%s', $event_data['recurrence_rule'] ) );
+        }
 
         $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
         $utc_tz = new \DateTimeZone( 'UTC' );
@@ -163,6 +179,8 @@ class EventController {
         exit;
       default:
         $event = $this->entity_manager->find( '\Hoo\Model\Event', $_GET['event_id'] );
+        $event->recurrence_rule = Utils::str_to_rrules( $event->recurrence_rule );
+
 
         $view = new View( 'admin/event/event' );
 
@@ -234,11 +252,12 @@ class EventController {
 
   public function ajax_location_events() {
     // params passed by fullcalendar 
-    $location_id = $_GET['location_id'];
-    $cal_start = new \Datetime( $_GET['start'] );
-    $cal_end = new \DateTime( $_GET['end'] );
-
+    $location_id = $_GET['event']['location'];
     $tz = new \DateTimeZone( get_option( 'timezone_string') );
+
+    $cal_start = new \Datetime( $_GET['start'], $tz );
+    $cal_end = new \DateTime( $_GET['end'], $tz );
+
 
     $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
     $events = $events_repo->findBy( array( 'location' => $location_id ) );
@@ -247,11 +266,28 @@ class EventController {
 
     $event_instances = array();
     foreach( $events as $event ) {
-      $event->start->setTimeZone( $tz );
-      $event->end->setTimeZone( $tz );
+      if ( $event->id == $_GET['event']['id'] ) {
+        $event->start = new \DateTime( $_GET['event']['start'], $tz );
+        $event->end = new \DateTime( $_GET['event']['end'], $tz );
+        $event->category = $this->entity_manager->find( '\Hoo\Model\Category', $_GET['event']['category'] );
+
+        switch( $_GET['event']['recurrence_rule'] ) {
+        case 'CUSTOM':
+            $event->recurrence_rule = UTILS::rrules_to_str( $_GET['event_recurrence_rule_custom']);
+            break;
+        case 'NONE':
+            $event->recurrence_rule = '';
+            break;
+        default:
+            $event->recurrence_rule = strtoupper( sprintf( 'FREQ=%s', $_GET['event']['recurrence_rule'] ) );
+        }
+      } else {
+        $event->start->setTimeZone( $tz );
+        $event->end->setTimeZone( $tz );
+      }
       $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
       $cal_range = new BetweenConstraint( $cal_start, $cal_end, $tz ) ;
-      
+
       foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
         $event_instances[] = array( 'id' => $event->id,
                                     'title' => Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ),

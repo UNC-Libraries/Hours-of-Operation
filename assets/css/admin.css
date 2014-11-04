@@ -62,9 +62,10 @@
 .ui-timepicker-rtl dl dd { margin: 0 45% 10px 10px; }
 
 #rrule-custom-container {
-    display: none;
 }
 
 #rrule-custom-container .weekly,.monthly,.yearly {
+}
+.is-hidden {
     display: none;
 }
