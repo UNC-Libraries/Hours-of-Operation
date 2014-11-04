@@ -40,8 +40,8 @@ class CategoryController {
 
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+    
     $this->init_hooks();
-
   }
 
   public function add_menu_pages() {
@@ -57,7 +57,6 @@ class CategoryController {
   }
 
   public function enqueue_scripts() {
-
     wp_enqueue_style( 'wp-color-picker' );
     wp_enqueue_script( 'category-color-picker' );
   }
@@ -89,7 +88,7 @@ class CategoryController {
       'category-publish',
       'Publish',
       array( $category_publish_fields, 'render_metabox' ),
-      'hoo-category-edit',
+      $_GET['page'],
       'side',
       'high',
       array( 'category' => $category ) );
@@ -98,15 +97,13 @@ class CategoryController {
       'category-info',
       'Category Info',
       array( $category_info_fields, 'render_metabox' ),
-      'hoo-category-edit',
+      $_GET['page'],
       'normal',
       'high',array( 'category' => $category ) );
 
   }
 
   public function edit() {
-
-
     $view = new View( 'admin/category/category' );
     $view_options = array(
       'title' => 'Edit a Category',
