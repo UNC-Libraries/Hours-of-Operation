@@ -33,7 +33,7 @@ jQuery( function( $ ) {
                 // render the whole events calendar square with the events category color
                 $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]', hour_cal).css('background-color', event.color);
             },
-
+            height: 325,
             timezone: 'local',
             timeFormat: '',
             editable: false
@@ -41,7 +41,8 @@ jQuery( function( $ ) {
     } );
 
     $hoo_list_rows.on( 'click', function( e ) {
-        var $this_panel = $( '#' + $( this ).data( 'panel' ) ),
+        var location_id = $( this ).data( 'panel' ).split( '-' )[1],
+            $this_panel = $( '#' + $( this ).data( 'panel' ) ),
             $visible_panel = $('.panel:visible');
 
         if ( $this_panel.is( ':visible' ) ) {
@@ -51,10 +52,13 @@ jQuery( function( $ ) {
             $this_panel.show('fade', {
                 complete: function(){
                     $visible_panel.hide('fade');
+                    $('.hours-calendar').fullCalendar( 'render' );
                 }
             });
         } else {
-            $this_panel.show( 'slide', { direction: 'left', easing: 'easeOutBounce' }, 800 );
+            $this_panel.show( 'slide', {direction: 'left', easing: 'easeOutBounce' } , 800);
+            // render as soon as possible.  hopefully this will always render and we don't have to wait for the animation to complete
+            $('.hours-calendar').fullCalendar( 'render' );
         }
 
     });

@@ -72,7 +72,7 @@
     border-radius: 0 5px 5px 0;
     box-shadow: 1px 1px 3px 0px #aaa;
 
-    padding: 5px;
+    padding: 10px;
     min-height: 475px; 
     background-color: white;
     position: absolute;
@@ -91,4 +91,9 @@
 #hoo-main .address-picture-wrapper .location-image {
     float: left;
     width: 50%;
+}
+
+#hoo-main .hours-calendar {
+    font-size: 12px;
+    min-height: 350px;
 }
