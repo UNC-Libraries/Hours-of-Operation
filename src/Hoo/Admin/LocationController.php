@@ -67,7 +67,9 @@ class LocationController {
       wp_localize_script( 'event-edit', 'HOO', array( 'timezone' => get_option( 'timezone_string' ) ) );
 
       wp_enqueue_style( 'location-admin' );
+      wp_enqueue_style( 'thickbox' );
 
+      wp_enqueue_script( 'location-image' );
       wp_enqueue_script( 'location-delete' );
       wp_enqueue_script( 'location-order' );
     }

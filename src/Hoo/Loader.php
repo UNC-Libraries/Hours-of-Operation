@@ -88,6 +88,7 @@ class Loader {
     // location stuff
     wp_register_script( 'location-order', HOO__PLUGIN_URL . 'assets/js/location-order.js', array( 'jquery-ui-sortable' ) );
     wp_register_script( 'location-delete', HOO__PLUGIN_URL . 'assets/js/location-delete.js', array( 'jquery' ) );
+    wp_register_script( 'location-image', HOO__PLUGIN_URL . 'assets/js/location-image.js', array( 'media-upload', 'thickbox' ) );
 
     // event stuff
     wp_register_script( 'moment', HOO__PLUGIN_URL . 'assets/js/vendor/moment.min.js' );

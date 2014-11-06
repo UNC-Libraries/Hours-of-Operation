@@ -48,4 +48,20 @@
       </div>
     </div>
   </li>
+  <li>
+    <div class="js-wpt-field wpt-field js-wpt-filefield wpt-filefield">
+      <div class="form-item form-item-filefield">
+        <label for="location_image" class="wpt-form-label wpt-form-filefield-label">Image</label>
+        <input type="hidden"
+               name="location[image]"
+               id="location_image"
+               class="wpt-form-filefield form-filefield filefield"
+               value="<?php echo $this['location']->image ?>"/>
+        <input id="location_upload_image_button" type="button" value="Select Image" />
+        <?php if ( $this['location']->image ) : ?>
+          <img id="location_image_thumb" src="<?php echo $this['location']->image ?>" width="120"/>
+        <?php endif ?>
+      </div>
+    </div>
+  </li>
 </ul>

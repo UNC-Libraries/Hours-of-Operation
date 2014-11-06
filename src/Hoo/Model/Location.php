@@ -53,6 +53,9 @@ class Location {
   /** @ORM\Column(name="position", type="integer", options={"default" = 0}) */
   protected $position = 0;
 
+  /** @ORM\Column(name="image", type="string", nullable=true) */
+  protected $image = 0;
+
   /**
      @ORM\OneToOne(targetEntity="Address", cascade={"persist", "remove"})
    */
