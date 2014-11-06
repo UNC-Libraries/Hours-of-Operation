@@ -57,7 +57,7 @@ class Location {
   protected $image = 0;
 
   /**
-     @ORM\OneToOne(targetEntity="Address", cascade={"persist", "remove"})
+     @ORM\OneToOne(targetEntity="Address", cascade={"persist", "remove"}, fetch="EAGER")
    */
   protected $address;
 

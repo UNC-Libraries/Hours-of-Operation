@@ -12,8 +12,35 @@
         <?php echo $location->description ?>
       </div>
 
-      <div class="location-address">
+      <div class="hours-calendar" data-location-id="<?php echo $location->id ?>"></div>
 
+      <div class="address-picture-wrapper">
+        <?php if ( $location->image ) : ?>
+          <div class="location-image">
+            <img src="<?php echo $location->image ?>"/>
+          </div>
+        <?php endif ?>
+        <?php if ( $location->address ) : ?>
+          <div class="location-address">
+            <ul>
+              <li>Address</li>
+              <li><?php echo $location->address->line1 ?></li>
+              <li><?php echo $location->address->line2 ?></li>
+              <li><?php echo $location->address->line3 ?></li>
+              <li><?php echo sprintf( '%s, %s',  $location->address->city, $location->address->state ) ?></li>
+              <li><?php echo $location->address->zip ?></li>
+            </ul>
+            <?php if ( $location->is_handicap_accessible ) : ?>
+              <span>Disability Access</span>
+            <?php endif ?>
+          </div>
+        <?php endif ?>
+        <div class="location-phone">
+          <ul>
+            <li>Phone</li>
+            <li><?php echo $location->phone ?></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

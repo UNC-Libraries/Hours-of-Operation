@@ -46,6 +46,9 @@ class EventController {
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
+    add_action( 'wp_ajax_hour_events', array( $this, 'ajax_hour_events' ) );
+    add_action( 'wp_ajax_nopriv_hour_events', array( $this, 'ajax_hour_events' ) );
+
     add_action( 'wp_ajax_location_events', array( $this, 'ajax_location_events' ) );
     add_action( 'wp_ajax_location_event_delete', array( $this, 'ajax_location_event_delete' ) );
   }
@@ -272,13 +275,13 @@ class EventController {
         $event->category = $this->entity_manager->find( '\Hoo\Model\Category', $_GET['event']['category'] );
 
         switch( $_GET['event']['recurrence_rule'] ) {
-        case 'CUSTOM':
+          case 'CUSTOM':
             $event->recurrence_rule = UTILS::rrules_to_str( $_GET['event_recurrence_rule_custom']);
             break;
-        case 'NONE':
+          case 'NONE':
             $event->recurrence_rule = '';
             break;
-        default:
+          default:
             $event->recurrence_rule = strtoupper( sprintf( 'FREQ=%s', $_GET['event']['recurrence_rule'] ) );
         }
       } else {
@@ -297,6 +300,39 @@ class EventController {
       }
     }
 
+    wp_send_json( $event_instances );
+    exit;
+  }
+
+  public function ajax_hour_events() {
+    $location_id = $_GET['location_id'];
+
+    $tz = new \DateTimeZone( get_option( 'timezone_string') );
+
+    $cal_start = new \Datetime( $_GET['start'], $tz );
+    $cal_end = new \DateTime( $_GET['end'], $tz );
+
+    $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
+    $events = $events_repo->findBy( array( 'location' => $location_id ) );
+
+    $rrule_transformer = new RRuleTransformer();
+
+    $event_instances = array();
+    foreach( $events as $event ) {
+      $event->start->setTimeZone( $tz );
+      $event->end->setTimeZone( $tz );
+
+      $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
+      $cal_range = new BetweenConstraint( $cal_start, $cal_end, $tz ) ;
+
+      foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
+        $event_instances[] = array( 'id' => $event->id,
+                                    'title' => Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ),
+                                    'start' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
+                                    'end' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
+                                    'color' => $event->category->color );
+      }
+    }
     wp_send_json( $event_instances );
     exit;
   }

@@ -1,5 +1,6 @@
 jQuery( function( $ ) {
     var $hoo_list_rows = $( '.location-row' ),
+        $hours_calendars = $( '.hours-calendar' ),
         map_options = {
             center: {
                 lat: -34.397,
@@ -10,6 +11,34 @@ jQuery( function( $ ) {
         map = new google.maps.Map( document.getElementById( 'map-canvas' ),
                                    map_options );
 
+    $hours_calendars.each( function( index, hour_cal ) {
+        $( hour_cal ).fullCalendar( {
+            events: function( cal_start, cal_end, tz, cb ) {
+
+                $.ajax( {
+                    url: HOO.ajaxurl,
+                    type: 'GET',
+                    data: {
+                        action: 'hour_events',
+                        start: cal_start.format(),
+                        end: cal_end.format(),
+                        location_id: $( hour_cal ).data( 'location-id' )
+                    },
+                    success: function( response ) {
+                        cb ( response );
+                    }
+                });
+            },
+            eventRender: function( event, element, view ) {
+                // render the whole events calendar square with the events category color
+                $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]', hour_cal).css('background-color', event.color);
+            },
+
+            timezone: 'local',
+            timeFormat: '',
+            editable: false
+        });
+    } );
 
     $hoo_list_rows.on( 'click', function( e ) {
         var $this_panel = $( '#' + $( this ).data( 'panel' ) ),
@@ -19,7 +48,7 @@ jQuery( function( $ ) {
             $this_panel.hide( 'slide', { direction: 'left', easing: 'easeOutExpo' }, 500 );
         }
         else if ( $visible_panel.length ) {
-            $this_panel.show('fade', { 
+            $this_panel.show('fade', {
                 complete: function(){
                     $visible_panel.hide('fade');
                 }

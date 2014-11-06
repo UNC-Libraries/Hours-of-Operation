@@ -87,3 +87,8 @@
 .is-hidden {
     display: none;
 }
+
+#hoo-main .address-picture-wrapper .location-image {
+    float: left;
+    width: 50%;
+}

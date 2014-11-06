@@ -34,7 +34,6 @@ jQuery(function($) {
                 cal_end = 'end=' + cal_end.format(),
                 event_inputs = $(':input', 'form').not("input[name='action']").serialize();
 
-            console.log('fetch');
             // reset calendar day
             $('.fc-bg td').css('background-color', 'transparent');
             $.ajax(
@@ -44,7 +43,6 @@ jQuery(function($) {
                     // TODO: filter out more uneeded inputs
                     data: [ajax_action, cal_start, cal_end, event_inputs].join( '&' ),
                     success: function( response) {
-                        console.log('blah');
                         cb( response );
                     }
                 }

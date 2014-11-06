@@ -26,9 +26,11 @@ class Shortcode {
 
     // check the current page for the hoo shortcode
     if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'hoo' ) ) {
+
       wp_enqueue_style( 'shortcode-main' );
       wp_enqueue_script( 'shortcode-main' );
       wp_enqueue_script( 'hoo-map');
+
     }
   }
 
@@ -37,8 +39,8 @@ class Shortcode {
     $locations = $locations_repo->findBy( array( 'parent' => null ), array( 'position' => 'asc' ) );
 
     /* quick hack to put the sublocations under the parent
-       TODO: rewrite this in the model 
-    */
+       TODO: rewrite this in the model
+     */
     $locations = array_reduce(
       $locations,
       function( $locations, $location ) {
