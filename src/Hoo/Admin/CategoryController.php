@@ -56,13 +56,47 @@ class CategoryController {
     }
   }
 
-  public function enqueue_scripts() {
+
+/*    public function enqueue_scripts() {
     wp_enqueue_style( 'wp-color-picker' );
     wp_enqueue_script( 'category-color-picker' );
   }
+*/
 
-  public function init_hooks() {
+  public function enqueue_scripts() {
+    $current_screen = get_current_screen();
+
+    // only enqueue for category pages
+    if ( preg_match( '/hoo(-category)?/i', $current_screen->id ) ) {
+
+      /**
+       THESE SCRIPTS AND STYLES DON'T EXIST YET
+       */
+      wp_enqueue_style( 'category-admin' );
+
+      wp_enqueue_script( 'category-delete' );
+      wp_enqueue_script( 'category-order' );
+
+     /** 
+     These are enqueued as necessary in the color-picker function below
+     */
+      //wp_enqueue_style( 'wp-color-picker' );
+      //wp_enqueue_script( 'category-color-picker' );
+    }
+  }
+
+ public function init_hooks() {
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_color_picker' ) );
+  //}
+  
+  //public function init_hooks() {
+    add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
+    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+    
+    add_action( 'wp_ajax_category_order', array( $this, 'ajax_category_order' ) );
+    add_action( 'wp_ajax_category_delete', array( $this, 'ajax_category_delete' ) );
+  //  add_action( 'enqueue_color_picker', array( $this, 'enqueue_color_picker' ) );
+    
   }
 
   public function index() {
@@ -231,20 +265,15 @@ class CategoryController {
  
     //If the WordPress version is greater than or equal to 3.5, then load the new WordPress color picker.
     if ( 3.5 <= $wp_version ){
-        //Both the necessary css and javascript have been registered already by WordPress, so all we have to do is load them with their handle.
         $picker = 'wp-color-picker';
-        wp_enqueue_style( $picker );
-        wp_enqueue_script( $picker );
-
     }
-
     //If the WordPress version is less than 3.5 load the older farbtasic color picker.
     else {
-        //As with wp-color-picker the necessary css and javascript have been registered already by WordPress, so all we have to do is load them with their handle.
-        $picker = 'farbtastic';
-        wp_enqueue_style( $picker );
-        wp_enqueue_script( $picker );
+       $picker = 'farbtastic';
     }
+
+    wp_enqueue_style( $picker );
+    wp_enqueue_script( $picker );
 
     //Load our custom javascript file
     wp_enqueue_script( 'category-color-picker', plugins_url('color-picker.js', __FILE__ ), array( $picker ), false, true );
