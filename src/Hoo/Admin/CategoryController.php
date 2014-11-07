@@ -67,11 +67,8 @@ class CategoryController {
     $current_screen = get_current_screen();
 
     // only enqueue for category pages
-    if ( preg_match( '/hoo(-category)?/i', $current_screen->id ) ) {
+ //   if ( preg_match( '/hoo(-category)?/i', $current_screen->id ) ) {
 
-      /**
-       THESE SCRIPTS AND STYLES DON'T EXIST YET
-       */
       wp_enqueue_style( 'category-admin' );
 
       wp_enqueue_script( 'category-delete' );
@@ -83,15 +80,13 @@ class CategoryController {
       //wp_enqueue_style( 'wp-color-picker' );
       //wp_enqueue_script( 'category-color-picker' );
     }
-  }
+ // }
 
  public function init_hooks() {
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_color_picker' ) );
-  //}
   
-  //public function init_hooks() {
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
-    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+    //add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     
     add_action( 'wp_ajax_category_order', array( $this, 'ajax_category_order' ) );
     add_action( 'wp_ajax_category_delete', array( $this, 'ajax_category_delete' ) );
@@ -237,9 +232,9 @@ class CategoryController {
 
     $categories_order = $_POST['category'];
 
-    foreach( $categories_order as $position => $category_id ) {
+    foreach( $categories_order as $priority => $category_id ) {
       $category = $this->entity_manager->find( '\Hoo\Model\Category', $category_id );
-      $category->position = $position;
+      $category->priority = $priority;
       $this->entity_manager->flush();
     }
 

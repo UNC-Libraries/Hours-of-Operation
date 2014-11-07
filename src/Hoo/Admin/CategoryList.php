@@ -11,7 +11,7 @@ class CategoryList extends \WP_List_Table {
 
     parent::__construct( array(
       'singular' => 'category',
-      'plural'   => 'locations',
+      'plural'   => 'categories',
       'ajax'     => false
     ) );
   }
@@ -54,8 +54,8 @@ class CategoryList extends \WP_List_Table {
 
   public function column_name( $category ) {
     $actions = array(
-      'edit' => sprintf( '<a href=?page=%s&category_id=%s>Edit</a>', 'hoo-category-edit', $category->id ),
-      'delete' => sprintf( '<a href=?page=%s&action=%s&category_id=%s>Delete</a>', 'hoo-category-edit', 'delete', $category->id )
+      'edit' => sprintf( '<a href="?page=%s&category_id=%s">Edit</a>', 'hoo-category-edit', $category->id ),
+      'delete' => sprintf( '<a href="?page=%s&action=%s&category_id=%s" class="category-delete">Delete</a>', 'hoo-category-edit', 'delete', $category->id )    
     );
 
     return sprintf( '%1$s %2$s', $category->name, $this->row_actions( $actions ) );
