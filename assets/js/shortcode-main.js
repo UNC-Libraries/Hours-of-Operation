@@ -33,7 +33,6 @@ jQuery( function( $ ) {
                 // render the whole events calendar square with the events category color
                 $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]', hour_cal).css('background-color', event.color);
             },
-            height: 325,
             timezone: 'local',
             timeFormat: '',
             editable: false

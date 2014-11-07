@@ -4,7 +4,7 @@
 }
 
 #hoo-main {
-    min-height: 500px;
+    min-height: 800px;
 }
 
 #hoo-main ul { list-style: none; }
@@ -18,7 +18,7 @@
     box-shadow: 1px 1px 3px 0 #aaa;
     float: left;
     width: 45%;
-    min-height: 500px;
+    min-height: 800px;
 }
 
 #hoo-main #location-list-container li div{
@@ -73,7 +73,7 @@
     box-shadow: 1px 1px 3px 0px #aaa;
 
     padding: 10px;
-    min-height: 475px; 
+    min-height: 775px;
     background-color: white;
     position: absolute;
     z-index: 88888;
@@ -81,7 +81,7 @@
 }
 
 #hoo-main #map-canvas {
-    min-height: 485px;
+    min-height: 785px;
 }
 
 .is-hidden {
@@ -93,7 +93,9 @@
     width: 50%;
 }
 
-#hoo-main .hours-calendar {
-    font-size: 12px;
-    min-height: 350px;
+.fc-content {
+    text-align: center;
+}
+.fc-container {
+    line-height: 1em;
 }

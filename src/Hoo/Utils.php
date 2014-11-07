@@ -20,7 +20,7 @@ class Utils {
 
     if ( ! is_null( $end ) ) {
       $end_format = ( $end->format('i') == '00' ? 'g ' : 'g:i ' ) . 'a';
-      return sprintf( '%s - %s', $start->format( $start_format), $end->format( $end_format ) );
+      return sprintf( "%s \n-\n %s", $start->format( $start_format), $end->format( $end_format ) );
     }
 
     return $start->format( $start_format );
