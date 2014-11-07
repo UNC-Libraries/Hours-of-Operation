@@ -118,14 +118,19 @@ class LocationController {
     $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
     $parent_locations = $locations_repo->findBy( array(), array( 'position' => 'asc' ) );
     $parent_locations = array_filter( $parent_locations, function( $p_location ) use ( $location ) { return $location->id != $p_location->id;  } ); // can't be own parent :D
+    $wp_editor_options = array( 'textarea_name' => 'location[description]',
+                                'textarea_rows' => 5,
+                                'teeny'         => true,
+                                'media_buttons' => false );
     add_meta_box(
       'location-info',
       'Location Info',
       array( $location_info_fields, 'render_metabox' ),
       $_GET['page'],
       'normal',
-      'high',array( 'location' => $location, 'parent-locations' => $parent_locations ) );
-
+      'high',array( 'location' => $location,
+                    'parent-locations' => $parent_locations,
+                    'wp_editor_options' => $wp_editor_options ) );
     add_meta_box(
       'location-address',
       'Location Address',

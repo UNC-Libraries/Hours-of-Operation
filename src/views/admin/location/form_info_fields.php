@@ -24,16 +24,6 @@
     </div>
   </li>
   <li>
-    <div class="description wpt-form-description wpt-form-description-textarea description-textarea">
-      <div class="form-item form-item-textarea">
-        <label for="location_description" class="wpt-form-label wpt-form-textarea-label">Description</label>
-        <textarea name="location[description]" id="location_description" tabindex="4">
-          <?php echo $this['location']->description ?>
-        </textarea>
-      </div>
-    </div>
-  </li>
-  <li>
     <div class="parent">
       <div class="form-item form-item-select">
         <label for="location_parent" class="wpt-form-label wpt-form-select-label">Parent Location</label>
@@ -49,19 +39,18 @@
     </div>
   </li>
   <li>
-    <div class="js-wpt-field wpt-field js-wpt-filefield wpt-filefield">
-      <div class="form-item form-item-filefield">
-        <label for="location_image" class="wpt-form-label wpt-form-filefield-label">Image</label>
-        <input type="hidden"
-               name="location[image]"
-               id="location_image"
-               class="wpt-form-filefield form-filefield filefield"
-               value="<?php echo $this['location']->image ?>"/>
-        <input id="location_upload_image_button" type="button" value="Select Image" />
-        <?php if ( $this['location']->image ) : ?>
-          <img id="location_image_thumb" src="<?php echo $this['location']->image ?>" width="120"/>
-        <?php endif ?>
-      </div>
+    <div class="form-item">
+      <label for="location_image" class="">Image</label>
+      <input type="hidden"
+             name="location[image]"
+             id="location_image"
+             class="wpt-form-filefield form-filefield filefield"
+             value="<?php echo $this['location']->image ?>"/>
+      <button id="location_upload_image_button" type="button">Select an Image</button>
+      <img id="location_image_thumb" src="<?php echo $this['location']->image ?>" width="120"/>
     </div>
+  </li>
+  <li>
+    <?php wp_editor( $this['location']->description, 'location_description', $this['wp_editor_options'] ) ?>
   </li>
 </ul>
