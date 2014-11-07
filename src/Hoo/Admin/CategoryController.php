@@ -55,6 +55,9 @@ class CategoryController {
     }
   }
 
+  public function enqueue_scripts() {
+    $current_screen = get_current_screen();
+    
     // only enqueue for category pages
    if ( preg_match( '/hoo(-category)?/i', $current_screen->id ) ) {
 
