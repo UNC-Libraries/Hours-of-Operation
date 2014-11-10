@@ -85,7 +85,7 @@ class Loader {
     wp_enqueue_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
 
     // category stuff
-    $color_picker = 3.4 <= $wp_version ? 'wp-color-picker' : 'fabtastic';
+    $color_picker = 3.4 <= $wp_version ? 'wp-color-picker' : 'farbtastic';
     wp_register_script( 'category-color-picker', HOO__PLUGIN_URL . 'assets/js/color-picker.js', array( $color_picker ) );
     wp_register_style( 'category-color-picker', NULL, array( $color_picker ) );
 
