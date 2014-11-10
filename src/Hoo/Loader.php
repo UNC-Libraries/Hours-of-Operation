@@ -77,13 +77,17 @@ class Loader {
      @return void
    */
   private function init_admin_hooks() {
-
+    global $wp_version;
     // let's register some scripts/styles
     wp_register_style( 'jquery-ui', HOO__PLUGIN_URL . 'assets/css/jquery-ui.css' );
     wp_register_style( 'full-calendar', HOO__PLUGIN_URL . 'assets/css/fullcalendar.min.css' );
 
     wp_enqueue_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
 
+    // category stuff
+    $color_picker = 3.4 <= $wp_version ? 'wp-color-picker' : 'fabtastic';
+    wp_register_script( 'category-color-picker', HOO__PLUGIN_URL . 'assets/js/color-picker.js', array( $color_picker ) );
+    wp_register_style( 'category-color-picker', NULL, array( $color_picker ) );
 
     // location stuff
     wp_register_script( 'location-order', HOO__PLUGIN_URL . 'assets/js/location-order.js', array( 'jquery-ui-sortable' ) );

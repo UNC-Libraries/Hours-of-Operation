@@ -59,31 +59,23 @@ class CategoryController {
     $current_screen = get_current_screen();
     
     // only enqueue for category pages
-   if ( preg_match( '/hoo(-category)?/i', $current_screen->id ) ) {
+   if ( preg_match( '/hoo-category(-edit|-add)?/i', $current_screen->id ) ) {
 
       wp_enqueue_style( 'category-admin' );
 
       wp_enqueue_script( 'category-delete' );
       wp_enqueue_script( 'category-order' );
 
-     /** 
-     These are enqueued as necessary in the color-picker function below
-     */
-      //wp_enqueue_style( 'wp-color-picker' );
-      //wp_enqueue_script( 'category-color-picker' );
+      wp_enqueue_script( 'category-color-picker' );
+      wp_enqueue_style( 'category-color-picker' );
     }
  }
 
  public function init_hooks() {
-    add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_color_picker' ) );
-  
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
-    //add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     
     add_action( 'wp_ajax_category_order', array( $this, 'ajax_category_order' ) );
     add_action( 'wp_ajax_category_delete', array( $this, 'ajax_category_delete' ) );
-  //  add_action( 'enqueue_color_picker', array( $this, 'enqueue_color_picker' ) );
-    
   }
 
   public function index() {
@@ -245,31 +237,7 @@ class CategoryController {
     exit;
   }
 
-  public function enqueue_color_picker( $hook_suffix ) {
-  
-    //Access the global $wp_version variable to see which version of WordPress is installed.
-    global $wp_version;
- 
-    //If the WordPress version is greater than or equal to 3.5, then load the new WordPress color picker.
-    if ( 3.5 <= $wp_version ){
-        $picker = 'wp-color-picker';
-    }
-    //If the WordPress version is less than 3.5 load the older farbtasic color picker.
-    else {
-       $picker = 'farbtastic';
-    }
-
-    wp_enqueue_style( $picker );
-    wp_enqueue_script( $picker );
-
-    //Load our custom javascript file
-    wp_enqueue_script( 'category-color-picker', plugins_url('color-picker.js', __FILE__ ), array( $picker ), false, true );
-  
-    }
-
-
   public static function get_page_url() {
-
   }
 }
 
