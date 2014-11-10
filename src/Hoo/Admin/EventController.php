@@ -133,6 +133,8 @@ class EventController {
   }
 
   public function edit() {
+    $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
+    $utc_tz = new \DateTimeZone( 'UTC' );
 
     switch( $_POST['action'] ) {
       case 'update':
@@ -150,8 +152,6 @@ class EventController {
             $event_data['recurrence_rule'] =  strtoupper( sprintf( 'FREQ=%s', $event_data['recurrence_rule'] ) );
         }
 
-        $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
-        $utc_tz = new \DateTimeZone( 'UTC' );
         $start = new \Datetime( $event_data['start'], $current_tz );
         $end = new \Datetime( $event_data['end'], $current_tz );
         $start->setTimezone( $utc_tz );
@@ -182,8 +182,9 @@ class EventController {
         exit;
       default:
         $event = $this->entity_manager->find( '\Hoo\Model\Event', $_GET['event_id'] );
+        $event->start->setTimeZone( $current_tz );
+        $event->end->setTimeZone( $current_tz );
         $event->recurrence_rule = Utils::str_to_rrules( $event->recurrence_rule );
-
 
         $view = new View( 'admin/event/event' );
 
@@ -270,8 +271,11 @@ class EventController {
     $event_instances = array();
     foreach( $events as $event ) {
       if ( $event->id == $_GET['event']['id'] ) {
-        $event->start = new \DateTime( $_GET['event']['start'], $tz );
-        $event->end = new \DateTime( $_GET['event']['end'], $tz );
+        $event_start_dt = sprintf( '%s %s', $_GET['event_start_date'], $_GET['event_start_time'] );
+        $event_end_dt = sprintf( '%s %s', $_GET['event_start_date'], $_GET['event_end_time'] );
+
+        $event->start = new \DateTime( $event_start_dt, $tz );
+        $event->end = new \DateTime( $event_end_dt, $tz );
         $event->category = $this->entity_manager->find( '\Hoo\Model\Category', $_GET['event']['category'] );
 
         switch( $_GET['event']['recurrence_rule'] ) {
@@ -300,39 +304,6 @@ class EventController {
       }
     }
 
-    wp_send_json( $event_instances );
-    exit;
-  }
-
-  public function ajax_hour_events() {
-    $location_id = $_GET['location_id'];
-
-    $tz = new \DateTimeZone( get_option( 'timezone_string') );
-
-    $cal_start = new \Datetime( $_GET['start'], $tz );
-    $cal_end = new \DateTime( $_GET['end'], $tz );
-
-    $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
-    $events = $events_repo->findBy( array( 'location' => $location_id ) );
-
-    $rrule_transformer = new RRuleTransformer();
-
-    $event_instances = array();
-    foreach( $events as $event ) {
-      $event->start->setTimeZone( $tz );
-      $event->end->setTimeZone( $tz );
-
-      $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
-      $cal_range = new BetweenConstraint( $cal_start, $cal_end, $tz ) ;
-
-      foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
-        $event_instances[] = array( 'id' => $event->id,
-                                    'title' => Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ),
-                                    'start' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
-                                    'end' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
-                                    'color' => $event->category->color );
-      }
-    }
     wp_send_json( $event_instances );
     exit;
   }

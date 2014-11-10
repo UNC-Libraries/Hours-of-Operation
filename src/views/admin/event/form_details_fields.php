@@ -2,26 +2,30 @@
   <li>
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
-        <label for="event_start" class="wpt-form-label wpt-form-textfield-label">Start</label>
-        <?php $this['event']->start->setTimezone( new \DateTimeZone( get_option( 'timezone_string' ) ) ) ?>
-        <input type="datetime"
-               name="event[start]"
-               id="event_start"
-               class="wpt-form-textfield form-textfield textfield datetimefield "
-               value="<?php echo $this['event']->start->format( 'Y-m-d H:i' ) ?>"/>
+        <label for="event_start" class="wpt-form-label wpt-form-textfield-label">Start Date</label>
+        <input type="text"
+               name="event_start_date"
+               id="event_start_date"
+               class="wpt-form-textfield form-textfield textfield date"
+               value="<?php echo $this['event']->start->format( 'Y-m-d' ) ?>"/>
       </div>
     </div>
   </li>
   <li>
     <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
       <div class="form-item form-item-textfield">
-        <label for="event_end" class="wpt-form-label wpt-form-textfield-label">End</label>
-        <?php $this['event']->end->setTimezone( new \DateTimeZone( get_option( 'timezone_string' ) ) ) ?>
-        <input type="datetime"
-               name="event[end]"
-               id="event_end"
-               class="wpt-form-textfield form-textfield textfield datetimefield "
-               value="<?php echo $this['event']->end->format( 'Y-m-d H:i' )?>">
+        <label for="event_end" class="wpt-form-label wpt-form-textfield-label">Hours</label>
+        <input type="text"
+               name="event_start_time"
+               id="event_start_time"
+               class="wpt-form-textfield form-textfield textfield time"
+               value="<?php echo $this['event']->start->format( 'h:i A' )?>">
+        <span>-</span>
+        <input type="text"
+               name="event_end_time"
+               id="event_end_time"
+               class="wpt-form-textfield form-textfield textfield time"
+               value="<?php echo $this['event']->end->format( 'h:i A' )?>">
       </div>
     </div>
   </li>
@@ -74,7 +78,7 @@
                  class="hoo-rrule"
                  name="event_recurrence_rule_custom[byday][]"
                  value="<?php echo $abbrv ?>"
-                 <?php echo ( isset( $this['event']->recurrence_rule['BYDAY'] ) && in_array( $abbrv, $this['event']->recurrence_rule['BYDAY'] ) ) ? 'checked' : ''  ?>/>
+          <?php echo ( isset( $this['event']->recurrence_rule['BYDAY'] ) && in_array( $abbrv, $this['event']->recurrence_rule['BYDAY'] ) ) ? 'checked' : ''  ?>/>
         <?php endforeach ?>
       </div>
 

@@ -18,9 +18,10 @@
     width: 25%;
 }
 
-.metabox-form .inside ul li input[type="text"] {
-    width: 60%;
+.metabox-form .inside ul li input[type="text"].date,.time {
+    width: 8em;
 }
+
 
 .metabox-form #postbox-container-1 .inside ul li label {
     display: inline-block;

@@ -1,6 +1,7 @@
 jQuery(function($) {
-    var $event_start               = $('#event_start'),
-        $event_end                 = $('#event_end' ),
+    var $event_start_date          = $('#event_start_date'),
+        $event_start_time          = $('#event_start_time'),
+        $event_end_time            = $('#event_end_time' ),
         $preview_calendar          = $('#preview_calendar'),
         $event_title               = $('#event_title'),
         $event_category            = $('#event_category'),
@@ -24,7 +25,7 @@ jQuery(function($) {
 
         datetime_control_type      = 'select',
         date_format                = 'yy-mm-dd',
-        time_format                = 'HH:mm';
+        time_format                = 'hh:mm TT';
 
     // init fullcalendar
     $preview_calendar.fullCalendar({
@@ -32,7 +33,7 @@ jQuery(function($) {
             var ajax_action = 'action=location_events',
                 cal_start = 'start=' + cal_start.format(),
                 cal_end = 'end=' + cal_end.format(),
-                event_inputs = $(':input', 'form').not("input[name='action']").serialize();
+                event_inputs = $(':input:visible,#event_id,#event_category,#event_location').serialize();
 
             // reset calendar day
             $('.fc-bg td').css('background-color', 'transparent');
@@ -41,7 +42,7 @@ jQuery(function($) {
                     url: ajaxurl,
                     type: 'GET',
                     // TODO: filter out more uneeded inputs
-                    data: [ajax_action, cal_start, cal_end, event_inputs].join( '&' ),
+                    data: [ajax_action, cal_start, cal_end, event_id, event_inputs].join( '&' ),
                     success: function( response) {
                         cb( response );
                     }
@@ -93,17 +94,19 @@ jQuery(function($) {
                 });
 
                 /*
-                 init datetimepicker
+                 init date and time pickers
                  */
 
-                $.timepicker.datetimeRange(
-                    $event_start,
-                    $event_end,
-                    {
-                        dateFormat: date_format,
-                        timeFormat: time_format,
+                $event_start_date.datepicker( {
+                } );
 
-                        controlType: 'select',
+                $.timepicker.timeRange(
+                    $event_start_time,
+                    $event_end_time,
+                    {
+                       timeFormat: time_format,
+                        minInterval: (1000*60*60), // 1hr
+
 
                         start: {
                             onSelect: function(dt_text, dt_instance) {
