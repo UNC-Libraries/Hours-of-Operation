@@ -36,7 +36,7 @@ class Shortcode {
 
   public function full() {
     $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
-    $locations = $locations_repo->findBy( array( 'parent' => null ), array( 'position' => 'asc' ) );
+    $locations = $locations_repo->findBy( array( 'parent' => null, 'is_visible' => true ), array( 'position' => 'asc' ) );
 
     /* quick hack to put the sublocations under the parent
        TODO: rewrite this in the model

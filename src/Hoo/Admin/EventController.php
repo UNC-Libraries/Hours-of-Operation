@@ -269,6 +269,7 @@ class EventController {
     $rrule_transformer = new RRuleTransformer();
 
     $event_instances = array();
+    $blah = array();
     foreach( $events as $event ) {
       if ( $event->id == $_GET['event']['id'] ) {
         $event_start_dt = sprintf( '%s %s', $_GET['event_start_date'], $_GET['event_start_time'] );
@@ -300,10 +301,44 @@ class EventController {
                                     'title' => Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ),
                                     'start' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
                                     'end' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
+                                    'color' => $event->category->color,
+
+                                    // the two are here solely for priority filtering
+                                    'priority' => $event->category->priority,
+                                    'date' => $recurrence->getStart()->format( 'Y-m-d' ) );
+      }
+    }
+    wp_send_json( $event_instances );
+    exit;
+  }
+
+  public function ajax_hour_events() {
+    $location_id = $_GET['location_id'];
+    $tz = new \DateTimeZone( get_options( 'timezone_string' ) );
+
+    $cal_start = new \DateTime( $_GET['start'], $tz );
+    $cal_end = new \DateTime( $_GET['end'], $tz );
+
+    $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
+    $events = $events_repo->findBy( array( 'location' => $location_id ) );
+
+    $rrule_transformer = new RRuleTransformer();
+
+    $event_instances = array();
+    foreach( $events as $event ) {
+      $event->start->setTimeZone( $tz ); $event->end->setTimeZone( $tz );
+
+      $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
+      $cal_range = new BetweenConstraint( $cal_start, $cal_end, $tz );
+
+      foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
+        $event_instances[] = array( 'id' => $event->id,
+                                    'title' => Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ),
+                                    'start' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
+                                    'end' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
                                     'color' => $event->category->color );
       }
     }
-
     wp_send_json( $event_instances );
     exit;
   }

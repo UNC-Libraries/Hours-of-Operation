@@ -72,7 +72,7 @@ class LocationList extends \WP_List_Table {
 
   public function column_is_visible( $location ) {
     $checked = $location->is_visible ? 'checked' : '';
-    return sprintf( '<input type="checkbox" value="%s" %s/>', $location->is_visible, $checked );
+    return sprintf( '<input class="location_is_visible" type="checkbox" data-location-id="%s" %s/>', $location->id, $checked );
   }
 
   public function column_default( $location, $column_name ) {

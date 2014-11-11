@@ -69,6 +69,7 @@ class LocationController {
       wp_enqueue_style( 'location-admin' );
       wp_enqueue_style( 'thickbox' );
 
+      wp_enqueue_script( 'location-visibility' );
       wp_enqueue_script( 'location-image' );
       wp_enqueue_script( 'location-delete' );
       wp_enqueue_script( 'location-order' );
@@ -80,6 +81,7 @@ class LocationController {
     add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
+    add_action( 'wp_ajax_location_is_visible', array( $this, 'ajax_location_is_visible' ) );
     add_action( 'wp_ajax_location_order', array( $this, 'ajax_location_order' ) );
     add_action( 'wp_ajax_location_delete', array( $this, 'ajax_location_delete' ) );
 
@@ -267,6 +269,18 @@ class LocationController {
 
     $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
     $this->entity_manager->remove( $location );
+    $this->entity_manager->flush();
+
+    wp_send_json_success();
+    exit;
+  }
+
+  public function ajax_location_is_visible() {
+    $location_id = $_POST['location_id'];
+    $checked = $_POST['checked'] === 'true' ? true : false;
+
+    $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
+    $location->is_visible = $checked;
     $this->entity_manager->flush();
 
     wp_send_json_success();
