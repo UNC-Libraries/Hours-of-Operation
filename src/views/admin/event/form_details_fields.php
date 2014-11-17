@@ -46,7 +46,7 @@
     </div>
   </li>
   <li>
-    <div id="rrule-custom-container" class="js-wpt-field wpt-field wp-textfield <? if ( ! $is_custom ) echo 'is-hidden' ?>">
+    <div id="rrule-custom-container" class="js-wpt-field wpt-field wp-textfield <?php if ( ! $is_custom ) echo 'is-hidden' ?>">
       <label for="event_recurrence_rule_custom" class="wpt-form-label wpt-form-select-label">Frequency</label>
       <select id="event_recurrence_rule_custom" name="event_recurrence_rule_custom[freq]" class="hoo-rrule">
         <?php foreach ( $this['cust_freq_values'] as $freq_value ) : ?>
