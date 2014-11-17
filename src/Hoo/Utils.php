@@ -59,6 +59,14 @@ class Utils {
     }
     return strtoupper( $rrule_str );
   }
+
+  static public function remove_overlapping_events( $event_instances ) {
+
+    $uniq_a = array();
+    foreach( $event_instances as $key => $search_instance ) {
+      
+    }
+  }
 }
 
 ?>

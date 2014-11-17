@@ -1,3 +1,3 @@
 jQuery(function($) {
-    console.log(HOO);
+    // do some global stuff :}
 });

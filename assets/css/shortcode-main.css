@@ -45,6 +45,9 @@
 #hoo-main #location-list-container .location-row:hover {
     background-color: #ddddff;
 }
+#hoo-main #location-list-container .location-row.highlight {
+    background-color: #ddddff;
+}
 
 #hoo-main #location-list-container .location-row:hover .location-name {
     border-right: 1px solid #ddddff;

@@ -1,15 +1,51 @@
 jQuery( function( $ ) {
     var $hoo_list_rows = $( '.location-row' ),
         $hours_calendars = $( '.hours-calendar' ),
+
         map_options = {
             center: {
-                lat: -34.397,
-                lng: 150.644
+                lat: 0,
+                lng: 0
             },
             zoom: 8
         },
-        map = new google.maps.Map( document.getElementById( 'map-canvas' ),
-                                   map_options );
+
+        locations_map = new google.maps.Map( document.getElementById( 'map-canvas' ), map_options ),
+        locations_bounds = new google.maps.LatLngBounds(),
+        location_markers = {},
+
+        create_location_marker = function( location ) {
+            var lat = location.dataset.lat,
+                lon = location.dataset.lon,
+                lat_lon = new google.maps.LatLng( lat, lon ),
+
+                marker = new google.maps.Marker( {
+                    map: locations_map,
+                    draggable: false,
+                    animation: google.maps.Animation.DROP,
+                    position: lat_lon } ),
+
+                highlight_row = function() { $( '.location-row[data-id="' + location.dataset.id + '"]').addClass( 'highlight' ); },
+                remove_highlight = function() {$( '.location-row[data-id="' + location.dataset.id + '"]').removeClass( 'highlight' ); };
+
+            if ( lat.length && lon.length ) {
+                locations_bounds.extend( lat_lon );
+            }
+            google.maps.event.addListener( marker, 'mouseover', highlight_row );
+            google.maps.event.addListener( marker, 'mouseout', remove_highlight );
+
+            return marker;
+        };
+
+
+    $hoo_list_rows.each( function( index, location ) {
+        location_markers[ location.dataset.id ] = create_location_marker( location );
+
+        $( location ).on( 'mouseover', function () { location_markers[ location.dataset.id ].setAnimation( google.maps.Animation.BOUNCE ); } );
+        $( location ).on( 'mouseout', function () { location_markers[ location.dataset.id ].setAnimation( null); } );
+    } );
+
+    locations_map.fitBounds( locations_bounds );
 
     $hours_calendars.each( function( index, hour_cal ) {
         $( hour_cal ).fullCalendar( {
@@ -38,6 +74,7 @@ jQuery( function( $ ) {
             editable: false
         });
     } );
+
 
     $hoo_list_rows.on( 'click', function( e ) {
         var location_id = $( this ).data( 'panel' ).split( '-' )[1],
