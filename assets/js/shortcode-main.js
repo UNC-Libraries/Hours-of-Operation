@@ -25,6 +25,10 @@ jQuery( function( $ ) {
                     animation: google.maps.Animation.DROP,
                     position: lat_lon } ),
 
+                slideout_panel = function() {
+                    $( '#' + location.dataset.panel ).show( 'slide', {direction: 'left', easing: 'easeOutBounce' } , 800);
+                    $('.hours-calendar').fullCalendar( 'render' );
+                },
                 highlight_row = function() { $( '.location-row[data-id="' + location.dataset.id + '"]').addClass( 'highlight' ); },
                 remove_highlight = function() {$( '.location-row[data-id="' + location.dataset.id + '"]').removeClass( 'highlight' ); };
 
@@ -33,6 +37,7 @@ jQuery( function( $ ) {
             }
             google.maps.event.addListener( marker, 'mouseover', highlight_row );
             google.maps.event.addListener( marker, 'mouseout', remove_highlight );
+            google.maps.event.addListener( marker, 'click', slideout_panel );
 
             return marker;
         };
