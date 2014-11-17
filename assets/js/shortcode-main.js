@@ -7,7 +7,8 @@ jQuery( function( $ ) {
                 lat: 0,
                 lng: 0
             },
-            zoom: 8
+            zoom: 8,
+            disableDefaultUI: true
         },
 
         locations_map = new google.maps.Map( document.getElementById( 'map-canvas' ), map_options ),
