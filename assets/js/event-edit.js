@@ -109,13 +109,13 @@ jQuery(function($) {
 
 
                         start: {
-                            onSelect: function(dt_text, dt_instance) {
+                            onClose: function(dt_text, dt_instance) {
                                 $preview_calendar.fullCalendar( 'refetchEvents' );
                             }
                         },
 
                         end: {
-                            onSelect: function(dt_text, dt_instance) {
+                            onClose: function(dt_text, dt_instance) {
                                 $preview_calendar.fullCalendar( 'refetchEvents' );
                             }
                         }
