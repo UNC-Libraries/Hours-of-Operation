@@ -1,16 +1,28 @@
 .hoo-head {
-    display: table;
+    position: relative;
     width: 100%;
 }
 .hoo-head img {
     display: inline-block;
     vertical-align: middle;
     height: 100%;
-    padding: 5px;
+    padding: 15px 5px 5px 5px;
+}
+
+.hoo-head ol {
+    display: inline-block;
+}
+.hoo-head span {
+    position: absolute;
+    top: 0;
+    left: 36px;
+    font-size: 1.5em;
 }
 #wphead {
     display: inline-block;
     vertical-align: middle;
+}
+#wphead:after {
 }
 
 .metabox-form .inside ul li label {
@@ -39,7 +51,7 @@
 .locations td.position {
     cursor: move;
 }
- 
+
 .metabox-form .inside fieldset {
     border-top: 1px solid #eee;
 }
@@ -47,7 +59,7 @@
 .metabox-form .inside fieldset legend {
     padding: 0 5px 0 0;
 }
- 
+
 /* css for timepicker */
 #ui-datepicker-div { display: none; }
 .ui-datepicker{ z-index: 99999999 !important;}
