@@ -4,7 +4,7 @@
 }
 
 #hoo-main {
-    min-height: 800px;
+    min-height: 700px;
 }
 
 #hoo-main ul { list-style: none; }
@@ -18,7 +18,7 @@
     box-shadow: 1px 1px 3px 0 #aaa;
     float: left;
     width: 45%;
-    min-height: 800px;
+    min-height: 700px;
 }
 
 #hoo-main #location-list-container li div{
@@ -76,7 +76,7 @@
     box-shadow: 1px 1px 3px 0px #aaa;
 
     padding: 10px;
-    min-height: 775px;
+    min-height: 675px;
     background-color: white;
     position: absolute;
     z-index: 88888;
@@ -84,7 +84,7 @@
 }
 
 #hoo-main #map-canvas {
-    min-height: 785px;
+    min-height: 685px;
 }
 
 .is-hidden {
