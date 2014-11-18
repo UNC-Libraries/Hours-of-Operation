@@ -152,8 +152,11 @@ class EventController {
                         $event_data['recurrence_rule'] =  strtoupper( sprintf( 'FREQ=%s', $event_data['recurrence_rule'] ) );
                 }
 
-                $start = new \Datetime( $event_data['start'], $current_tz );
-                $end = new \Datetime( $event_data['end'], $current_tz );
+                // TODO: put these conversions in the model?   
+                $event_start_dt = sprintf( '%s %s', $_POST['event_start_date'], $_POST['event_start_time'] );
+                $event_end_dt = sprintf( '%s %s', $_POST['event_start_date'], $_POST['event_end_time'] );
+                $start = new \Datetime( $event_start_dt, $current_tz );
+                $end = new \Datetime( $event_end_dt, $current_tz );
                 $start->setTimezone( $utc_tz );
                 $end->setTimezone( $utc_tz );
 
@@ -205,21 +208,24 @@ class EventController {
         if ( $_POST['action'] == 'create' ) {
             $event_data = $_POST['event'];
 
-            switch( $_GET['event']['recurrence_rule'] ) {
+            switch( $_POST['event']['recurrence_rule'] ) {
                 case 'CUSTOM':
-                    $event['recurrence_rule'] = UTILS::rrules_to_str( $_GET['event_recurrence_rule_custom']);
+                    $event['recurrence_rule'] = UTILS::rrules_to_str( $_POST['event_recurrence_rule_custom']);
                     break;
                 case 'NONE':
                     $event['recurrence_rule'] = '';
                     break;
                 default:
-                    $event['recurrence_rule'] = strtoupper( sprintf( 'FREQ=%s', $_GET['event']['recurrence_rule'] ) );
+                    $event['recurrence_rule'] = strtoupper( sprintf( 'FREQ=%s', $_POST['event']['recurrence_rule'] ) );
             }
 
             $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
             $utc_tz = new \DateTimeZone( 'UTC' );
-            $start = new \Datetime( $event_data['start'], $current_tz );
-            $end = new \Datetime( $event_data['end'], $current_tz );
+
+            $event_start_dt = sprintf( '%s %s', $_POST['event_start_date'], $_POST['event_start_time'] );
+            $event_end_dt = sprintf( '%s %s', $_POST['event_start_date'], $_POST['event_end_time'] );
+            $start = new \Datetime( $event_start_dt, $current_tz );
+            $end = new \Datetime( $event_end_dt, $current_tz );
             $start->setTimezone( $utc_tz );
             $end->setTimezone( $utc_tz );
 
