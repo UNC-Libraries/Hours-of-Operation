@@ -98,13 +98,16 @@ jQuery(function($) {
                  */
 
                 $event_start_date.datepicker( {
+                    onClose: function( select_date ) {
+                        $preview_calendar.fullCalendar( 'refetchEvents' );
+                    }
                 } );
 
                 $.timepicker.timeRange(
                     $event_start_time,
                     $event_end_time,
                     {
-                       timeFormat: time_format,
+                        timeFormat: time_format,
                         minInterval: (1000*60*60), // 1hr
 
 
