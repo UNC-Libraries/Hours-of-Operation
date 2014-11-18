@@ -32,6 +32,10 @@ class Shortcode {
         }
     }
 
+    public function api() {
+
+    }
+
     public function full() {
         $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
         $locations = $locations_repo->findBy( array( 'parent' => null, 'is_visible' => true ), array( 'position' => 'asc' ) );
