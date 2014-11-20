@@ -57,37 +57,6 @@ jQuery(function($) {
             if ( is_loading ) {
                 // add loading animation?
             } else {
-                // set current_event
-                if ( event_id ) {
-                    // event exists. Find from our eventSources and highlight the border
-                } else {
-                    // event doesn't exist. Append a new event to the eventSources
-                    event_id = 'current';
-                    var event_source = {
-                        events: [
-                            {
-                                id: event_id,
-                                title:  event_title,
-                                start: $event_start.val(),
-                                end: $event_end.val()
-                            }
-                        ]
-                    };
-                    $preview_calendar.fullCalendar('addEventSource', event_source);
-                }
-
-                /* change title event
-                 TODO: title should always be the the hours the location is open?
-                 $event_title.on('input', function() {
-                 var current_event = $preview_calendar.fullCalendar('clientEvents', event_id)[0],
-                 event_title = $event_title.val();
-
-                 current_event.title = event_title;
-
-                 $preview_calendar.fullCalendar('updateEvent', current_event);
-
-                 });
-                 */
 
                 $event_category.on('change', function() {
                     $preview_calendar.fullCalendar( 'refetchEvents' );
@@ -108,8 +77,6 @@ jQuery(function($) {
                     $event_end_time,
                     {
                         timeFormat: time_format,
-                        minInterval: (1000*60*60), // 1hr
-
 
                         start: {
                             onClose: function(dt_text, dt_instance) {

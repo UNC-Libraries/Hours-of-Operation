@@ -230,6 +230,12 @@ class EventController {
         $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
         $events = $events_repo->findBy( array( 'location' => $location_id ) );
 
+        if ( empty( $_GET['event']['id'] ) ) {
+            $current_event = new Event( $_GET, $this->entity_manager );
+            $current_event->id = 'current';
+            $events[] = $current_event;
+        }
+
         $rrule_transformer = new RRuleTransformer();
 
         $event_instances = array();
@@ -253,10 +259,10 @@ class EventController {
                                             'title' => Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ),
                                             'start' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
                                             'end' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
-                                            'color' => $event->category->color,
+                                            'color' => $event->category->color ? $event->category->color : '#ddd000',
 
                                             // the two are here solely for priority filtering
-                                            'priority' => $event->category->priority,
+                                            'priority' => $event->category->priority ? $event->category->priority : 999,
                                             'date' => $recurrence->getStart()->format( 'Y-m-d' ) );
             }
         }
