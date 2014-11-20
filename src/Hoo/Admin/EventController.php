@@ -237,25 +237,7 @@ class EventController {
         foreach( $events as $event ) {
             if ( $event->id == $_GET['event']['id'] ) {
                 // if we are being called by an ajax event to update so get data from $_GET
-                $event_start_dt = sprintf( '%s %s', $_GET['event_start_date'], $_GET['event_start_time'] );
-                $event_end_dt = sprintf( '%s %s', $_GET['event_start_date'], $_GET['event_end_time'] );
-
-                // TODO: put these conversions in the model?   
-                $event->start = new \DateTime( $event_start_dt, $tz );
-                $event->end = new \DateTime( $event_end_dt, $tz );
-                $event->category = $this->entity_manager->find( '\Hoo\Model\Category', $_GET['event']['category'] );
-
-                switch( $_GET['event']['recurrence_rule'] ) {
-                    case 'CUSTOM':
-                        $event->recurrence_rule = UTILS::rrules_to_str( $_GET['event_recurrence_rule_custom']);
-                        break;
-                    case 'NONE':
-                        $event->recurrence_rule = '';
-                        break;
-                    default:
-                        $event->recurrence_rule = strtoupper( sprintf( 'FREQ=%s', $_GET['event']['recurrence_rule'] ) );
-                }
-
+                $event->fromParams( $_GET, $this->entity_manager );
             } else {
                 // just grabbing from the db, set the timezone to current and move on
                 $event->start->setTimeZone( $tz );
