@@ -138,52 +138,24 @@ class EventController {
 
         switch( $_POST['action'] ) {
             case 'update':
-                $event_data = $_POST['event'];
-
-                switch( $event_data['recurrence_rule'] ) {
-                case 'CUSTOM':
-                        $custom_rr = $_POST['event_recurrence_rule_custom'];
-                        $event_data['recurrence_rule'] = UTILS::rrules_to_str( $custom_rr );
-                        break;
-                case 'NONE':
-                        $event_data['recurrence_rule'] = '';
-                        break;
-                default:
-                        $event_data['recurrence_rule'] =  strtoupper( sprintf( 'FREQ=%s', $event_data['recurrence_rule'] ) );
-                }
-
-                // TODO: put these conversions in the model?   
-                $event_start_dt = sprintf( '%s %s', $_POST['event_start_date'], $_POST['event_start_time'] );
-                $event_end_dt = sprintf( '%s %s', $_POST['event_start_date'], $_POST['event_end_time'] );
-                $start = new \Datetime( $event_start_dt, $current_tz );
-                $end = new \Datetime( $event_end_dt, $current_tz );
-                $start->setTimezone( $utc_tz );
-                $end->setTimezone( $utc_tz );
-
-                $event = $this->entity_manager->find( '\Hoo\Model\Event', $event_data['id'] );
-                $event_data['category'] = $this->entity_manager->find( '\Hoo\Model\Category', $event_data['category'] );
-                $event_data['location'] = $this->entity_manager->find( '\Hoo\Model\Location', $event_data['location'] );
-                $event_data['start'] = $start;
-                $event_data['end'] = $end;
-                $event = $event->fromArray( $event_data );
-
+                $event = $this->entity_manager->find( '\Hoo\Model\Event', $_POST['event']['id'] );
+                $event->fromParams( $_POST, $this->entity_manager );
                 $this->entity_manager->persist( $event );
                 $this->entity_manager->flush();
 
-                wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&event_id=%s', 'hoo-location-event-edit', $event_data['id'] ) ) );
+                wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&event_id=%s', 'hoo-location-event-edit', $_POST['event']['id'] ) ) );
                 exit;
             case 'delete':
-                $event_data = $_POST['event'];
+                $event = $this->entity_manager->find( '\Hoo\Model\Event', $_POST['event']['id'] );
+                $this->entity_manager->persist( $event );
 
-                $event = $this->entity_manager->find( '\Hoo\Model\Event', $event_data['id'] );
-                $this->entity_manager->persist( $location );
-
-                $location->remove();
-                $location->flush();
+                $event->remove();
+                $event->flush();
 
                 wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $even_data['location']->id ) ) );
                 exit;
             default:
+
                 $event = $this->entity_manager->find( '\Hoo\Model\Event', $_GET['event_id'] );
                 $event->start->setTimeZone( $current_tz );
                 $event->end->setTimeZone( $current_tz );
@@ -195,6 +167,10 @@ class EventController {
                                        'event' => $event,
                                        'action' => 'update',
                                        'page' => $_GET['page'],
+                                       'breadcrumbs' => array( 'Locations' => 'hoo',
+                                                               sprintf( '%s Hours', $event->location->name ) => sprintf( '%s&location_id=%s', 'hoo-location-events', $event->location->id ),
+                                                               $event->title => null ),
+                                       
                                        'columns' => 2 );
 
                 $this->add_meta_boxes( $event );
@@ -206,36 +182,7 @@ class EventController {
     public function add() {
 
         if ( $_POST['action'] == 'create' ) {
-            $event_data = $_POST['event'];
-
-            switch( $_POST['event']['recurrence_rule'] ) {
-                case 'CUSTOM':
-                    $event['recurrence_rule'] = UTILS::rrules_to_str( $_POST['event_recurrence_rule_custom']);
-                    break;
-                case 'NONE':
-                    $event['recurrence_rule'] = '';
-                    break;
-                default:
-                    $event['recurrence_rule'] = strtoupper( sprintf( 'FREQ=%s', $_POST['event']['recurrence_rule'] ) );
-            }
-
-            $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
-            $utc_tz = new \DateTimeZone( 'UTC' );
-
-            $event_start_dt = sprintf( '%s %s', $_POST['event_start_date'], $_POST['event_start_time'] );
-            $event_end_dt = sprintf( '%s %s', $_POST['event_start_date'], $_POST['event_end_time'] );
-            $start = new \Datetime( $event_start_dt, $current_tz );
-            $end = new \Datetime( $event_end_dt, $current_tz );
-            $start->setTimezone( $utc_tz );
-            $end->setTimezone( $utc_tz );
-
-            $event_data['location'] = $this->entity_manager->find( '\Hoo\Model\Location', $event_data['location'] );
-            $event_data['category'] = $this->entity_manager->find( '\Hoo\Model\Category', $event_data['category'] );
-            $event_data['start'] = $start;
-            $event_data['end'] = $end;
-
-
-            $event = new Event( $event_data );
+            $event = new Event( $_POST, $this->entity_manager );
             $this->entity_manager->persist( $event );
             $this->entity_manager->flush();
 
