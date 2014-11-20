@@ -23,7 +23,7 @@ class Location {
      @ORM\Column(type="integer")
      @ORM\GeneratedValue
    */
-  private $id;
+  protected $id;
 
   /**
      @ORM\Column(type="string", length=256)
