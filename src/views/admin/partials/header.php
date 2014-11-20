@@ -10,17 +10,16 @@
         <?php endif ?>
     </h2>
     <?php if ( isset( $this['breadcrumbs'] ) ) : ?>
-    <ul class="breadcrumbs">
-        <?php $last_crumb = end( $this['breakcrumbs'] ); reset( $this['breadcrumbs'] ); ?>
+    <ol class="breadcrumbs">
+        <?php $last_crumb = end( $this['breadcrumbs'] ); reset( $this['breadcrumbs'] ); ?>
         <?php foreach( $this['breadcrumbs'] as $title => $url ) : ?>
-            <?php  if ( $last_crumb == $title ) : ?>
+            <?php  if ( $last_crumb == $url ) : ?>
                 <li class="active"><?php echo $title ?></li>
             <?php else : ?>
-                <li><a href="<?php echo $url ?>"><?php echo $title ?></a></li>
+                <li><a href="admin.php?page=<?php echo $url ?>"><?php echo $title ?></a></li>
             <?php endif ?>
-
         <?php endforeach ?>
-    </ul>
+    </ol>
     <?php endif ?>
     <?php $this->include_file( 'admin/partials/notifications' ) ?>
 </div>
