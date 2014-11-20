@@ -15,6 +15,7 @@ jQuery(function($) {
         $rrule_container           = $('#rrule-custom-container'),
         $rrule_frequency           = $( '#event_recurrence_rule' ),
         $rrule_custom_frequency    = $( '#event_recurrence_rule_custom' ),
+        $rrule_until               = $( '#event_recurrence_rule_custom_until' ),
         $rrule                     = $( '.hoo-rrule' ),
 
         freq_units                 = { 'WEEKLY': 'week',
@@ -66,6 +67,12 @@ jQuery(function($) {
                  init date and time pickers
                  */
 
+                $rrule_until.datepicker( {
+                    onClose: function( select_date ) {
+                        $preview_calendar.fullCalendar( 'refetchEvents' );
+                    }
+                } );
+
                 $event_start_date.datepicker( {
                     onClose: function( select_date ) {
                         $preview_calendar.fullCalendar( 'refetchEvents' );
@@ -98,6 +105,12 @@ jQuery(function($) {
                         $rrule_container.removeClass( 'is-hidden' );
                     } else {
                         $rrule_container.addClass( 'is-hidden' );
+                    }
+
+                    if ( this.value == 'NONE' ) {
+                        $( '#rrule-until' ).addClass( 'is-hidden' );
+                    } else {
+                        $( '#rrule-until' ).removeClass( 'is-hidden' );
                     }
 
                 });

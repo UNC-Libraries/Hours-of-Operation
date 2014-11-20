@@ -262,7 +262,7 @@ class EventController {
                                             'color' => $event->category->color ? $event->category->color : '#ddd000',
 
                                             // the two are here solely for priority filtering
-                                            'priority' => $event->category->priority ? $event->category->priority : 999,
+                                            'priority' => $event->category->priority ? $event->category->priority : 0,
                                             'date' => $recurrence->getStart()->format( 'Y-m-d' ) );
             }
         }

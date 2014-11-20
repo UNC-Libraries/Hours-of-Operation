@@ -63,7 +63,13 @@ class Event {
                 $event_data['recurrence_rule'] = '';
                 break;
             default:
-                $event_data['recurrence_rule'] =  strtoupper( sprintf( 'FREQ=%s', $event_data['recurrence_rule'] ) );
+                $rrule = strtoupper( sprintf( 'FREQ=%s', $event_data['recurrence_rule'] ) );
+                $until = $params['event_recurrence_rule_custom']['until'];
+                if ( $until ) {
+                    $until_dt = new \DateTime( $until );
+                    $rrule .= sprintf( ';UNTIL=%s', $until_dt->format( 'Ymd\THis') );
+                }
+                $event_data['recurrence_rule'] = $rrule;
         }
 
         $event_start_dt = sprintf( '%s %s', $params['event_start_date'], $params['event_start_time'] );
