@@ -18,12 +18,6 @@ jQuery(function($) {
         $rrule_until               = $( '#event_recurrence_rule_custom_until' ),
         $rrule                     = $( '.hoo-rrule' ),
 
-        freq_units                 = { 'WEEKLY': 'week',
-                                       'HOURLY': 'hour',
-                                       'DAILY' : 'day',
-                                       'MONTHLY': 'month'
-                                     },
-
         datetime_control_type      = 'select',
         date_format                = 'yy-mm-dd',
         time_format                = 'hh:mm TT';
@@ -118,11 +112,11 @@ jQuery(function($) {
                 $rrule_custom_frequency.on( 'change', function() {
                     var $option = $(this);
 
-                    // hide all custom rule options
+                    // hide all cust	m rule options
                     $( '#rrule-custom-container .rrule-custom').not('.interval').addClass( 'is-hidden' );
 
                     // set unit text
-                    $( '#interval-unit' ).text( freq_units[ $option.find(':selected').val() ] );
+                    $( '#interval-unit' ).text( $option.find(':selected').data( 'freq-unit' ) );
 
                     // show options for current frequency
                     $( '#rrule-custom-container .' + $option.val().toLowerCase() ).removeClass( 'is-hidden' );

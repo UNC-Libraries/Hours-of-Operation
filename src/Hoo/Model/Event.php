@@ -57,6 +57,9 @@ class Event {
         switch( $event_data['recurrence_rule'] ) {
             case 'CUSTOM':
                 $custom_rr = $params['event_recurrence_rule_custom'];
+                if ( empty( $custom_rr['until'] ) ) {
+                    unset( $custom_rr['until']);
+                }
                 $event_data['recurrence_rule'] = UTILS::rrules_to_str( $custom_rr );
                 break;
             case 'NONE':
@@ -65,13 +68,12 @@ class Event {
             default:
                 $rrule = strtoupper( sprintf( 'FREQ=%s', $event_data['recurrence_rule'] ) );
                 $until = $params['event_recurrence_rule_custom']['until'];
-                if ( $until ) {
+                if ( isset( $until ) ) {
                     $until_dt = new \DateTime( $until );
                     $rrule .= sprintf( ';UNTIL=%s', $until_dt->format( 'Ymd\THis') );
                 }
                 $event_data['recurrence_rule'] = $rrule;
         }
-
         $event_start_dt = sprintf( '%s %s', $params['event_start_date'], $params['event_start_time'] );
         $event_end_dt = sprintf( '%s %s', $params['event_start_date'], $params['event_end_time'] );
         $start = new \Datetime( $event_start_dt, $current_tz );

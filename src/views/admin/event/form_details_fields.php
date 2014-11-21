@@ -61,6 +61,7 @@
             <select id="event_recurrence_rule_custom" name="event_recurrence_rule_custom[freq]" class="hoo-rrule">
                 <?php foreach ( $this['cust_freq_values'] as $freq_value ) : ?>
                     <option value="<?php echo strtoupper( $freq_value ) ?>"
+                            data-freq-unit="<?php echo $this['freq_units'][ strtoupper( $freq_value ) ] ?>""
                         <?php if ( strtoupper( $freq_value ) == $this['event']->recurrence_rule['FREQ'] ) echo 'selected' ?>><?php echo $freq_value  ?></option>
                 <?php endforeach ?>
             </select>
@@ -74,7 +75,7 @@
                            name="event_recurrence_rule_custom[interval]"
                            class="wpt-form-textfield form-textfield textfield hoo-rrule"
                            value="<?php echo isset( $this['event']->recurrence_rule['INTERVAL'] ) ? $this['event']->recurrence_rule['INTERVAL'] : 1 ?>"/>
-                    <span id="interval-unit"> <?php echo $this['freq_units'][ $this['event']->recurrence_rule['FREQ'] ] ?></span>(s)</p>
+                    <span id="interval-unit"><?php echo $this['freq_units'][ $this['event']->recurrence_rule['FREQ'] ] ? $this['freq_units'][ $this['event']->recurrence_rule['FREQ'] ] : 'day' ?></span>(s)
                 </div>
             </div>
 
@@ -93,18 +94,27 @@
             </div>
 
             <div class="rrule-custom monthly <?php if ( ! ( $is_custom && $this['event']->recurrence_rule['FREQ'] == 'MONTHLY' ) ) echo 'is-hidden' ?>">
-                <p>hi</p>
-            </div>
-
-            <div class="rrule-custom yearly <?php if ( ! ( $is_custom && $this['event']->recurrence_rule['FREQ'] == 'MONTHLY' ) ) echo 'is-hidden' ?>">
-                <?php foreach( range( 1, 12 ) as $month ): ?>
-                    <label for="<?php sprintf( 'event_recurrence_rule_custom_bymonth_%s', $month ) ?>">
-                        <?php echo \DateTime::createFromFormat( '!m', $month )->format( 'M' ) ?>
+                <?php foreach( range( 1, 31 ) as $day ) : ?>
+                    <label for="<?php sprintf( 'event_recurrence_rule_custom_bymonth_%s', $day ) ?>">
+                        <?php echo $day ?>
                     </label>
-                    <input type="checkbox"
-                           id="<?php sprintf( 'event_recurrence_rule_custom_bymonth_%s', $month ) ?>"
+                    <input type="radio"
+                           id="<?php sprintf( 'event_recurrence_rule_custom_by_month_%s', $day ) ?>"
                            class="hoo-rrule"
                            name="event_recurrence_rule_custom[bymonth][]"
+                           value="<?php echo $day ?>"/>
+                <?php endforeach ?>
+            </div>
+
+            <div class="rrule-custom yearly <?php if ( ! ( $is_custom && $this['event']->recurrence_rule['FREQ'] == 'YEARLY' ) ) echo 'is-hidden' ?>">
+                <?php foreach( range( 1, 12 ) as $month ): ?>
+                    <label for="<?php sprintf( 'event_recurrence_rule_custom_byyear_%s', $month ) ?>">
+                        <?php echo \DateTime::createFromFormat( '!m', $month )->format( 'M' ) ?>
+                    </label>
+                    <input type="radio"
+                           id="<?php sprintf( 'event_recurrence_rule_custom_byyear_%s', $month ) ?>"
+                           class="hoo-rrule"
+                           name="event_recurrence_rule_custom[byyear][]"
                            value="<?php echo $month ?>"/>
                 <?php endforeach ?>
             </div>
