@@ -21,9 +21,9 @@ class EventList extends \WP_List_Table {
     }
 
     public function get_sortable_columns() {
-        return array( 'title' => array( 'title', false ),
-                      'category' => array( 'category', false ),
-                      'updated_at' => array( 'updated_at', false ) );
+        return array( 'title' => array( 'e.title', false ),
+                      'category' => array( 'c.name', false ),
+                      'updated_at' => array( 'e.updated_at', false ) );
     }
 
     public function prepare_items() {
@@ -33,9 +33,35 @@ class EventList extends \WP_List_Table {
                                         $this->get_sortable_columns() );
 
         // fetch events
-        $order_by = isset( $_GET['orderby'] ) ? array( $_GET['orderby'] => $_GET['order'] ) : array( 'start' => 'desc' );
         $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
-        $events = $events_repo->findBy( array( 'location' => $this->location->id ), $order_by );
+
+        if ( isset( $_GET['orderby'] ) ) {
+            $order_by = $_GET['orderby']; $order = $_GET['order'];
+        }else {
+            $order_by = 'e.updated_at'; $order = 'desc';
+        }
+
+        if ( isset( $_GET['s'] ) ) {
+            $events = $this->entity_manager->createQueryBuilder()
+                                           ->select( array( 'e', 'c' ) )
+                                           ->from( '\Hoo\Model\Event', 'e')
+                                           ->join( 'e.category', 'c' )
+                                           ->where( 'e.title LIKE :search')
+                                           ->orWhere( 'c.name LIKE :search' )
+                                           ->setParameter( 'search', '%'. $_GET['s'] . '%' )
+                                           ->orderBy( $order_by, $order )
+                                           ->getQuery()
+                                           ->getResult();
+
+        } else {
+            $events = $this->entity_manager->createQueryBuilder()
+                                           ->select( array( 'e', 'c') )
+                                           ->from( '\Hoo\Model\Event', 'e')
+                                           ->join( 'e.category', 'c' )
+                                           ->orderBy( $order_by, $order)
+                                           ->getQuery()
+                                           ->getResult();
+        }
 
         $this->items = $events;
     }

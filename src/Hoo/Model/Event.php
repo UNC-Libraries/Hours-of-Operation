@@ -30,7 +30,7 @@ class Event {
     protected $end;
 
 
-    /** @ORM\ManyToOne(targetEntity="Category") */
+    /** @ORM\ManyToOne(targetEntity="Category", fetch="EAGER") */
     protected $category;
 
     /** @ORM\Column(type="boolean", options={"default"=0}) */

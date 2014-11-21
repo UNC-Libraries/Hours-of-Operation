@@ -122,6 +122,8 @@ class EventController {
 
         $view = new View( 'admin/event/index' );
         $view_options = array( 'title' => sprintf( '%s Hours Events', $location->name ),
+                               'location-id' => $location->id,
+                               'page' => $_GET['page'],
                                'add-new-page' => sprintf( 'hoo-location-event-add&location_id=%s', $_GET['location_id'] ) );
 
         $events_table = new EventList( $this->entity_manager, $location );
