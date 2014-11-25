@@ -258,7 +258,7 @@ class EventController {
 
             foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
                 $event_instances[] = array( 'id' => $event->id,
-                                            'title' => Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ),
+                                            'title' => sprintf( "%s\n%s", $event->title, Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ) ),
                                             'start' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
                                             'end' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
                                             'color' => $event->category->color ? $event->category->color : '#ddd000',
