@@ -80,7 +80,7 @@
             </div>
 
             <div class="rrule-custom weekly <?php if ( ! ( $is_custom && $this['event']->recurrence_rule['FREQ'] == 'WEEKLY' ) ) echo 'is-hidden' ?>">
-                <?php foreach ( array( 'MO' => 'Monday', 'TU' => 'Tuesday', 'WE' => 'Wednesday', 'TH' => 'Thursday', 'FR' => 'Friday', 'SA' => 'Saturday' ) as $abbrv => $full) : ?>
+                <?php foreach ( array( 'SU' => 'Sunday', 'MO' => 'Monday', 'TU' => 'Tuesday', 'WE' => 'Wednesday', 'TH' => 'Thursday', 'FR' => 'Friday', 'SA' => 'Saturday' ) as $abbrv => $full) : ?>
                     <label for="<?php echo sprintf( 'event_recurrence_rule_custom_byday_%s', $abbrv ) ?>" class="wpt-form-label wpt-form-checkbox-label">
                         <?php echo $full ?>
                     </label>
