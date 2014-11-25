@@ -93,7 +93,6 @@ class Location {
             $event->end->setTimeZone( $tz );
             $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
             $cal_range = new BetweenConstraint( $start, $end, $tz ) ;
-
             foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
                 $event_instances[] = array( 'id' => $event->id,
                                             'title' => $event->title,
@@ -117,11 +116,17 @@ class Location {
         return $event_instances;
     }
 
-    public function current_hours() {
+    public function get_hours_for_date( $start ) {
         $tz = new \DateTimeZone( get_option( 'timezone_string') );
-        $hours = $this->get_hours( new \DateTime( '-1 day', $tz ), new \DateTime( 'now', $tz ) );
+
+        $start = new \DateTime( $start, $tz );
+        $end = new \DateTime( $start->format( 'Y-m-d' ), $tz );
+        $end->modify( '+1 day' );
+
+        $hours = $this->get_hours( $start, $end );
 
         $current_event = $hours[0];
+        
         unset( $current_event['priority'] ); unset( $current_event['date'] );
         
         return $current_event;
