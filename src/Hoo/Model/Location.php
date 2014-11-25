@@ -119,7 +119,7 @@ class Location {
     public function get_hours_for_date( $start ) {
         $tz = new \DateTimeZone( get_option( 'timezone_string') );
 
-        $start = new \DateTime( $start, $tz );
+        $start = new \DateTime( date( $start ? $start : 'Y-m-d' ), $tz );
         $end = new \DateTime( $start->format( 'Y-m-d' ), $tz );
         $end->modify( '+1 day' );
 
@@ -129,7 +129,7 @@ class Location {
         
         unset( $current_event['priority'] ); unset( $current_event['date'] );
         
-        return $current_event;
+        return $current_event ? $current_event : 'N/A';
     }
 
     /** @ORM\PrePersist */
