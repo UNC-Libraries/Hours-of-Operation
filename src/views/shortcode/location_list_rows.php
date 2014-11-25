@@ -1,5 +1,5 @@
 <?php foreach( $this['locations'] as $location ) : ?>
-  <?php $current_hours = $location->current_hours(); ?>
+  <?php $current_hours = $location->get_hours_for_date( null ); ?>
   <li class="location-row" data-panel="panel-<?php echo $location->id ?>" data-lat="<?php echo $location->address->lat ?>" data-lon="<?php echo $location->address->lon ?>" data-id="<?php echo $location->id ?>">
     <div class="location-name">
       <span>
