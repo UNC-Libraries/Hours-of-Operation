@@ -20,13 +20,20 @@ class Loader {
        Responsible for setting up database access and choosing correct controller
      */
     public function __construct() {
-
         $db_params = array(
             'driver' => 'pdo_mysql',
             'user' => DB_USER,
             'password' => DB_PASSWORD,
             'host' => DB_HOST,
             'dbname' => DB_NAME );
+
+        // check if DB_HOST is a socket
+        // TODO:  is this the best way to do this?
+        $socket = explode( ':', DB_HOST )[1];
+        if ( file_exists( $socket ) ) {
+            $db_params['host'] = '127.0.0.1';
+            $db_params['unix_socket'] = $socket;
+        }
 
         $is_dev_mode = true;
 
