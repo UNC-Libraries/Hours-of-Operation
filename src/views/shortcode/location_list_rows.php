@@ -13,7 +13,7 @@
         <p>N/A</p>
       <?php elseif ( \Hoo\Utils::is_open( $current_hours ) ) : ?>
         <p>Open</p>
-        <p>Until <?php echo \Hoo\Utils::format_time( $current_hours->getEnd() )?> </p>
+        <p>Until <?php echo \Hoo\Utils::format_time( new \DateTime( $current_hours['close'] ) )?> </p>
       <?php else : ?>
         <p>Closed</p>
       <?php endif ?>

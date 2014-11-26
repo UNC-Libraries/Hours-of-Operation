@@ -129,7 +129,7 @@ class Location {
         
         unset( $current_event['priority'] ); unset( $current_event['date'] );
         
-        return $current_event ? $current_event : 'N/A';
+        return $current_event;
     }
 
     /** @ORM\PrePersist */
