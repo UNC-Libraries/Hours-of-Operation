@@ -68,8 +68,7 @@
 
             <div class="rrule-custom interval wpt-field wp-textfield">
                 <div class="form-item form-item-textfield">
-                    <label for="event_recurrence_rule_custom_interval"></label>
-                    Every
+                    <label for="event_recurrence_rule_custom_interval">Every</label>
                     <input type="text"
                            id="event_recurrence_rule_custom_interval"
                            name="event_recurrence_rule_custom[interval]"
