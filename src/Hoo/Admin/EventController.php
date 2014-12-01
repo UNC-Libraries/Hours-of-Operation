@@ -112,6 +112,7 @@ class EventController {
                       'high',
                       array( 'event' => $event,
                              'freq_values' => $freq_values,
+                             'event-categories' => $categories,
                              'freq_units' => array( 'HOURLY' => 'hour', 'DAILY' => 'day', 'MONTHLY' => 'month', 'WEEKLY' => 'week', 'YEARLY' => 'year' ),
                              'cust_freq_values' => array_slice( $freq_values, 0, -1 ) ) );
 
@@ -172,7 +173,7 @@ class EventController {
                                        'breadcrumbs' => array( 'Locations' => 'hoo',
                                                                sprintf( '%s Hours', $event->location->name ) => sprintf( '%s&location_id=%s', 'hoo-location-events', $event->location->id ),
                                                                $event->title => null ),
-                                       
+
                                        'columns' => 2 );
 
                 $this->add_meta_boxes( $event );

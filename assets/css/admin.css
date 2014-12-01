@@ -81,3 +81,23 @@
 .is-hidden {
     display: none;
 }
+
+#preview-legend {
+    text-align: center;
+}
+#preview-legend li {
+    padding: 0px 10px 0px 10px;
+    display: inline-block;
+    height: 50px;
+}
+#preview-legend span {
+    display: block;
+}
+
+#preview-legend .preview-block{
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border-width: 1px solid rgba(0, 0, 0, .2);;
+}

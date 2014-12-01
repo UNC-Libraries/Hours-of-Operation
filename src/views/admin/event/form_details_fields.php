@@ -122,6 +122,16 @@
     <li>
         <fieldset>
             <legend>Preview</legend>
+            <div id="preview-legend">
+                <ul>
+                    <?php foreach( $this['event-categories'] as $category ) : ?>
+                        <li>
+                            <span><?php echo $category->name ?></span>
+                            <div class="preview-block" style="background-color: <?php echo $category->color ?>;"></div>
+                        </li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
             <div id="preview_calendar"></div>
         </fieldset>
     </li>
