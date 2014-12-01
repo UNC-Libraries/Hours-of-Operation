@@ -12,20 +12,30 @@
         </div>
     </li>
     <li>
-        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
+        <label for="event_is_all_day" class="wpt-form-label wpt-form-textfield-label">24 Hours</label>
+        <input type="hidden" name="event[is_all_day]" value="0"/>
+        <input type="checkbox"
+               name="event[is_all_day]"
+               id="event_is_all_day"
+               class="wpt-form-checkbox form-checkbox checkbox"
+               value="1"
+        <?php echo $this['event']->is_all_day ? 'checked' : '' ?>/>
+    </li>
+    <li>
+        <div class="time-fields js-wpt-field wpt-field js-wpt-textfield wpt-textfield <?php if ( $this['event']->is_all_day ) echo 'is-hidden' ?>">
             <div class="form-item form-item-textfield">
                 <label for="event_end" class="wpt-form-label wpt-form-textfield-label">Hours</label>
                 <input type="text"
                        name="event_start_time"
                        id="event_start_time"
                        class="wpt-form-textfield form-textfield textfield time"
-                       value="<?php echo $this['event']->start->format( 'h:i A' )?>">
+                       value="<?php echo $this['event']->start->format( 'h:i A' )?>"/>
                 <span>-</span>
                 <input type="text"
                        name="event_end_time"
                        id="event_end_time"
                        class="wpt-form-textfield form-textfield textfield time"
-                       value="<?php echo $this['event']->end->format( 'h:i A' )?>">
+                       value="<?php echo $this['event']->end->format( 'h:i A' )?>"/>
             </div>
         </div>
     </li>

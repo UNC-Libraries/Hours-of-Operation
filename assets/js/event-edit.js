@@ -5,6 +5,7 @@ jQuery(function($) {
         $preview_calendar          = $('#preview_calendar'),
         $event_title               = $('#event_title'),
         $event_category            = $('#event_category'),
+        $event_is_all_day          = $('#event_is_all_day'),
 
         current_event_border_color = '#ffff00',
 
@@ -92,6 +93,15 @@ jQuery(function($) {
                         }
                     }
                 );
+                // all day
+
+                $event_is_all_day.on( 'change', function() {
+                    if ( this.checked ) {
+                        $( '.time-fields' ).addClass( 'is-hidden' );
+                    } else {
+                        $( '.time-fields' ).removeClass( 'is-hidden' );
+                    }
+                } );
 
                 // recurrence rules
                 $rrule_frequency.on('change', function() {
