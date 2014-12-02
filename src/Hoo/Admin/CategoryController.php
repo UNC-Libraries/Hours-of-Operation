@@ -63,6 +63,7 @@ class CategoryController {
 
             wp_enqueue_style( 'category-admin' );
 
+            wp_enqueue_script( 'category-visibility' );
             wp_enqueue_script( 'category-delete' );
             wp_enqueue_script( 'category-order' );
 
@@ -74,6 +75,7 @@ class CategoryController {
     public function init_hooks() {
         add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
 
+        add_action( 'wp_ajax_category_is_visible', array( $this, 'ajax_category_is_visible' ) );
         add_action( 'wp_ajax_category_order', array( $this, 'ajax_category_order' ) );
         add_action( 'wp_ajax_category_delete', array( $this, 'ajax_category_delete' ) );
     }
@@ -231,6 +233,18 @@ class CategoryController {
 
         $category = $this->entity_manager->find( '\Hoo\Model\Category', $category_id );
         $this->entity_manager->remove( $category );
+        $this->entity_manager->flush();
+
+        wp_send_json_success();
+        exit;
+    }
+
+    public function ajax_category_is_visible() {
+        $category_id = $_POST['category_id'];
+        $checked = $_POST['checked'] === 'true' ? true : false;
+
+        $category = $this->entity_manager->find( '\Hoo\Model\Category', $category_id );
+        $category->is_visible = $checked;
         $this->entity_manager->flush();
 
         wp_send_json_success();

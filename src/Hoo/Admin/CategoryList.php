@@ -67,7 +67,7 @@ class CategoryList extends \WP_List_Table {
 
     public function column_is_visible( $category ) {
         $checked = $category->is_visible ? 'checked' : '';
-        return sprintf( '<input type="checkbox" value="%s" %s/>', $category->is_visible, $checked );
+        return sprintf( '<input class="category_is_visible" type="checkbox" data-category-id="%s" %s/>', $category->id, $checked );
     }
 
     public function column_default( $category, $column_name ) {
