@@ -7,11 +7,7 @@ jQuery( function( $ ) {
                 'action': 'location_is_visible',
                 'location_id': this.getAttribute( 'data-location-id' ),
                 'checked': this.checked
-            } ),
-
-            success: function( response ) {
-                console.log( response );
-            }
+            } )
         } );
     } );
 } );
