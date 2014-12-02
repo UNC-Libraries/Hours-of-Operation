@@ -45,18 +45,18 @@ class Shortcode {
     }
 
     public function hoo( $attributes ) {
-        $attributes = shortcode_atts( array( 'widget' => 'full' ), $attributes, 'hoo' );
+        $attributes = shortcode_atts( array( 'widget' => 'full', 'header' => null, 'tagline' => null ), $attributes, 'hoo' );
 
 
         if ( method_exists( $this, $attributes['widget'] ) && 'hoo_api' != $attributes['widget'] ) {
             $this->enqueue_script( $attributes['widget'] );
-            $this->$attributes['widget']();
+            $this->$attributes['widget']( $attributes['header'], $attributes['tagline']);
         } else {
             return 'bad widget attribute!!';
         }
     }
 
-    public function full() {
+    public function full( $header, $tagline ) {
         $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
         $locations = $locations_repo->findBy( array( 'parent' => null, 'is_visible' => true ), array( 'position' => 'asc' ) );
 
@@ -78,6 +78,8 @@ class Shortcode {
 
         $view = new View( 'shortcode/location' );
         $view->render( array( 'locations' => $locations,
+                              'header' => $header,
+                              'tagline' => $tagline,
                               'now' => new \DateTime( null, new \DateTimeZone( get_option( 'timezone_string' ) ) )) );
     }
 }
