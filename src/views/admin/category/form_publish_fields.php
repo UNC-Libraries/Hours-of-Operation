@@ -5,7 +5,7 @@
         <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
           <div class="form-item form-item-textfield">
             <label for="category_is_visible">Visible</label>
-            <input type="hidden" name="location[is_visible]" value="0"/>
+            <input type="hidden" name="category[is_visible]" value="0"/>
             <input type="checkbox"
                    name="category[is_visible]"
                    id="category_is_visible"
