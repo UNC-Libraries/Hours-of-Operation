@@ -258,26 +258,11 @@ class EventController {
             $cal_range = new BetweenConstraint( $cal_start, $cal_end, $tz ) ;
 
             foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
-                $event_instances[] = array( 'id' => $event->id,
-                                            'title' => sprintf( "%s\n%s", $event->title, Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ) ),
-                                            'start' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
-                                            'end' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
-                                            'color' => $event->category->color ? $event->category->color : '#ddd000',
-
-                                            // the two are here solely for priority filtering
-                                            'priority' => $event->category->priority ? $event->category->priority : 0,
-                                            'date' => $recurrence->getStart()->format( 'Y-m-d' ) );
+                $event_instances[] = array( 'event' => $event, 'recurrence' => $recurrence );
             }
         }
-
-        foreach( $event_instances as &$event_instance ) {
-            if ( ! isset( $event_dates[ $event_instance['date'] ] ) ) {
-                $event_dates[ $event_instance['date'] ] =& $event_instance;
-            } elseif ( $event_dates[ $event_instance['date'] ]['priority'] > $event_instance['priority'] )
-                $event_dates[ $event_instance['date'] ] =& $event_instance;
-        }
-
-        $event_instances = array_values( $event_dates );
+        $event_instances = Utils::remove_overlapping_events( $event_instances );
+        $event_instances = Utils::event_instances_to_fullcalendar( $event_instances );
         wp_send_json( $event_instances );
         exit;
     }
