@@ -4,13 +4,13 @@
       <li>
         <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
           <div class="form-item form-item-textfield">
-            <label for="location_is_visible">Visible</label>
+            <label for="category_is_visible">Visible</label>
             <input type="hidden" name="location[is_visible]" value="0"/>
             <input type="checkbox"
-                   name="location[is_visible]"
-                   id="location_is_visible"
-                   value="<?php echo $this['location']->is_visible ?>"
-            <?php echo $this['location']->is_visible ? 'checked' : '' ?>/>
+                   name="category[is_visible]"
+                   id="category_is_visible"
+                   value="1"
+            <?php echo $this['category']->is_visible ? 'checked' : '' ?>/>
           </div>
         </div>
       </li>

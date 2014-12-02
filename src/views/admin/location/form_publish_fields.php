@@ -9,7 +9,7 @@
             <input type="checkbox"
                    name="location[is_visible]"
                    id="location_is_visible"
-                   value="<?php echo $this['location']->is_visible ?>"
+                   value="1"
             <?php echo $this['location']->is_visible ? 'checked' : '' ?>/>
           </div>
         </div>
