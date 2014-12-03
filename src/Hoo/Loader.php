@@ -31,7 +31,7 @@ class Loader {
         // TODO:  is this the best way to do this?
         $socket = explode( ':', DB_HOST )[1];
         if ( file_exists( $socket ) ) {
-            $db_params['host'] = '127.0.0.1';
+            $db_params['host'] = 'localhost';
             $db_params['unix_socket'] = $socket;
         }
 
