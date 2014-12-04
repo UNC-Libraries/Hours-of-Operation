@@ -1,5 +1,7 @@
 jQuery(function($) {
-    $('#the-list').sortable({
+    $( '.locations td.position' ).css( 'cursor', 'move' );
+    
+    $( '#the-list' ).sortable({
         items: '.list-item',
         opacity: 0.4,
         cursor: 'move',
@@ -9,17 +11,17 @@ jQuery(function($) {
             $.ajax({
                 url: ajaxurl,
                 type: 'POST',
-                data: $(this).sortable('serialize') + '&action=location_order',
-                success: function(response) {
+                data: $( this ).sortable( 'serialize' ) + '&action=location_order',
+                success: function( response ) {
                     
-                    $('.list-item').each(function(index, row) {
+                    $( '.list-item' ).each( function( index, row ) {
                         // set position text
                         $('.position', row).text( index );
                         // set odd/even colors
                         if ( index % 2 == 0 ) {
-                            $(row).addClass('alternate');
+                            $( row ).addClass( 'alternate' );
                         } else {
-                            $(row).removeClass('alternate');
+                            $( row ).removeClass( 'alternate' );
                         }
                     });
                 }

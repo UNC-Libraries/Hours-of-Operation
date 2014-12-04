@@ -18,19 +18,19 @@ class EventController {
     private $sub_pages = array(
         'index' => array(
             'parent' => null,
-            'permissions' => 'manage_options',
+            'permissions' => 'edit_pages',
             'menu_title' => 'Hours Events',
             'slug' => 'hoo-location-events'
         ),
         'add' => array(
             'parent' => null,
-            'permissions' => 'manage_options',
+            'permissions' => 'edit_pages',
             'menu_title' => 'Add New Location Event',
             'slug' => 'hoo-location-event-add'
         ),
         'edit' => array(
             'parent' => null,
-            'permissions' => 'manage_options',
+            'permissions' => 'edit_pages',
             'menu_title' => 'Edit Location Event',
             'slug' => 'hoo-location-event-edit'
         )

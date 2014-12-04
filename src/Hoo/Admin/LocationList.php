@@ -54,13 +54,11 @@ class LocationList extends \WP_List_Table {
     }
 
     public function column_name( $location ) {
-        $actions = array(
-            'edit' => sprintf( '<a href="?page=%s&location_id=%s">Edit</a>', 'hoo-location-edit', $location->id ),
-            'delete' => sprintf( '<a href="?page=%s&action=%s&location_id=%s" class="location-delete">Delete</a>', 'hoo-location-edit', 'delete', $location->id )
-        );
+        $actions = array( 'edit-hours' => sprintf( '<a href="?page=%s&location_id=%s">Edit Hours</a>', 'hoo-location-events', $location->id ) );
 
-        if ( Utils::check_user_role( 'manage_options' ) ) {
-            $actions['edit-hours'] = sprintf( '<a href="?page=%s&location_id=%s">Edit Hours</a>', 'hoo-location-events', $location->id  );
+        if ( Utils::check_user_role( 'administrator' ) ) {
+            $actions['edit'] = sprintf( '<a href="?page=%s&location_id=%s">Edit</a>', 'hoo-location-edit', $location->id ); 
+            $actions['delete'] = sprintf( '<a href="?page=%s&action=%s&location_id=%s" class="location-delete">Delete</a>', 'hoo-location-edit', 'delete', $location->id ); 
         }
 
         return sprintf( '%1$s %2$s', $location->name, $this->row_actions( $actions ) );
@@ -73,7 +71,8 @@ class LocationList extends \WP_List_Table {
 
     public function column_is_visible( $location ) {
         $checked = $location->is_visible ? 'checked' : '';
-        return sprintf( '<input class="location_is_visible" type="checkbox" data-location-id="%s" %s/>', $location->id, $checked );
+        $enabled = Utils::check_user_role( 'administrator' ) ? '' : 'disabled';
+        return sprintf( '<input class="location_is_visible" type="checkbox" data-location-id="%s" %s %s/>', $location->id, $checked, $enabled );
     }
 
     public function column_default( $location, $column_name ) {

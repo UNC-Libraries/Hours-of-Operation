@@ -110,7 +110,7 @@ class Loader {
         add_menu_page(
             __( 'Locations', 'hoo' ),
             __( 'Hours of Operation', 'hoo' ),
-            'manage_options',
+            'edit_page',
             'hoo',
             array( $this->location_controller, 'index' ),
             HOO__PLUGIN_URL . 'assets/images/hoo-20.png' );
