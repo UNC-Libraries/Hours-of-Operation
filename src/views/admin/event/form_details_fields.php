@@ -7,7 +7,8 @@
                        name="event_start_date"
                        id="event_start_date"
                        class="wpt-form-textfield form-textfield textfield date"
-                       value="<?php echo $this['event']->start->format( 'Y-m-d' ) ?>"/>
+                       value="<?php echo $this['event']->start->format( 'Y-m-d' ) ?>"
+                       required />
             </div>
         </div>
     </li>

@@ -6,6 +6,7 @@ jQuery(function($) {
         $event_title               = $('#event_title'),
         $event_category            = $('#event_category'),
         $event_is_all_day          = $('#event_is_all_day'),
+        $event_form                = $( '#event_form' );
 
         current_event_border_color = '#ffff00',
 
@@ -22,6 +23,8 @@ jQuery(function($) {
         datetime_control_type      = 'select',
         date_format                = 'yy-mm-dd',
         time_format                = 'hh:mm TT';
+
+    $event_form.validate();
 
     // init fullcalendar
     $preview_calendar.fullCalendar({

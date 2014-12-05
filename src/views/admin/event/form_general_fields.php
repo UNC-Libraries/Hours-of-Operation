@@ -7,7 +7,8 @@
                name="event[title]"
                id="event_title"
                class="wpt-form-textfield form-textfield textfield"
-               value="<?php echo $this['event']->title ?>"/>
+               value="<?php echo $this['event']->title ?>"
+               required />
       </div>
     </div>
   </li>
@@ -15,7 +16,7 @@
     <div class="category">
       <div class="form-item form-item-select">
         <label for="event_category" class="wpt-form-label wpt-form-select-label">Category</label>
-        <select id="event_category" name="event[category]">
+        <select id="event_category" name="event[category]" required>
           <option value="">Select a Category</option>
           <?php foreach( $this['event-categories'] as $category ) : ?>
             <option value="<?php echo $category->id ?>"

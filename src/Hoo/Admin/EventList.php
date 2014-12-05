@@ -60,8 +60,8 @@ class EventList extends \WP_List_Table {
                                            ->select( array( 'e', 'c') )
                                            ->from( '\Hoo\Model\Event', 'e')
                                            ->where( 'e.location = :location' )
-                                           ->setParameter( 'location', $_GET['location_id'] )
                                            ->join( 'e.category', 'c' )
+                                           ->setParameter( 'location', $_GET['location_id'] )
                                            ->orderBy( $order_by, $order)
                                            ->getQuery()
                                            ->getResult();

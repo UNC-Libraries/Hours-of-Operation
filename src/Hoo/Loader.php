@@ -135,6 +135,8 @@ class Loader {
                                                  'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
                                                  'timezone' => get_option( 'timezone_string' ) ) );
 
+        wp_register_script( 'validation', HOO__PLUGIN_URL . 'assets/js/vendor/jquery.validate.min.js', array( 'jquery' ) );
+
         global $wp_version;
         wp_register_style( 'jquery-ui', HOO__PLUGIN_URL . 'assets/css/jquery-ui.css' );
         wp_register_style( 'full-calendar', HOO__PLUGIN_URL . 'assets/css/fullcalendar.min.css', array( 'jquery-ui' ) );
@@ -167,7 +169,7 @@ class Loader {
                                   "jquery-ui-slider",
                                   "jquery-ui-datepicker" ) );
 
-        wp_register_script( 'event-edit', HOO__PLUGIN_URL . 'assets/js/event-edit.js', array( 'jquery-timepicker-addon', 'full-calendar' ) );
+        wp_register_script( 'event-edit', HOO__PLUGIN_URL . 'assets/js/event-edit.js', array( 'validation', 'jquery-timepicker-addon', 'full-calendar' ) );
         wp_register_script( 'event-delete', HOO__PLUGIN_URL . 'assets/js/event-delete.js', array( 'jquery' ) );
 
         // shortcode stuff

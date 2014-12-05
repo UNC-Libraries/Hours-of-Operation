@@ -3,6 +3,7 @@
 namespace Hoo\Admin;
 
 use \Hoo\Model\Event;
+use \Hoo\Model\Category;
 use \Hoo\View;
 use \Hoo\Utils;
 
@@ -189,7 +190,7 @@ class EventController {
             $this->entity_manager->persist( $event );
             $this->entity_manager->flush();
 
-            wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $event_data['location']->id ) ) );
+            wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $event->location->id ) ) );
             exit;
         } else {
             $event = new Event();
@@ -230,14 +231,17 @@ class EventController {
         $cal_end = new \DateTime( $_GET['end'], $tz );
 
 
-        $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
-        $events = $events_repo->findBy( array( 'location' => $location_id ) );
+        $location_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+        $location = $location_repo->find( $location_id );
+        $events = $location->events;
 
         if ( empty( $_GET['event']['id'] ) ) {
             $current_event = new Event( $_GET, $this->entity_manager );
-            $current_event->id = 'current';
+            $current_event->title = 'New Event';
+            $current_event->category = new Category( array( 'name' => 'None', 'color' => '#ddd000', 'priority' => 9999999999999 ) );
             $events[] = $current_event;
         }
+        
 
         $rrule_transformer = new RRuleTransformer();
 
@@ -288,26 +292,11 @@ class EventController {
             $cal_range = new BetweenConstraint( $cal_start, $cal_end, $tz );
 
             foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
-                $event_instances[] = array( 'id' => $event->id,
-                                            'title' => Utils::format_time( $recurrence->getStart(), $recurrence->getEnd() ),
-                                            'start' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
-                                            'end' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
-                                            'color' => $event->category->color,
-
-                                            'priority' => $event->category->priority,
-                                            'date'     => $recurrence->getStart()->format( 'Y-m-d' ) );
-
+                $event_instances[] = array( 'event' => $event, 'recurrence' => $recurrence );
             }
         }
-
-        foreach( $event_instances as &$event_instance ) {
-            if ( ! isset( $event_dates[ $event_instance['date'] ] ) ) {
-                $event_dates[ $event_instance['date'] ] =& $event_instance;
-            } elseif ( $event_dates[ $event_instance['date'] ]['priority'] > $event_instance['priority'] )
-                $event_dates[ $event_instance['date'] ] =& $event_instance;
-        }
-
-        $event_instances = array_values( $event_dates );
+        $event_instances = Utils::remove_overlapping_events( $event_instances );
+        $event_instances = Utils::event_instances_to_fullcalendar( $event_instances );
         wp_send_json( $event_instances );
         exit;
     }

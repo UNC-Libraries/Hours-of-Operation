@@ -66,7 +66,7 @@ class Utils {
             $date = $event_instance['recurrence']->getStart()->format( 'Y-m-d' );
             if ( ! isset( $event_dates[ $date ] ) ) {
                 $event_dates[ $date ] =& $event_instance;
-            } elseif ( $event_dates[ $date ]['event']->category->priority > $event_instance['event']->category->priority )
+            } elseif ( $event_dates[ $date ]['event']->category->priority < $event_instance['event']->category->priority )
                 $event_dates[ $date ] =& $event_instance;
         }
         ksort( $event_dates );
@@ -76,14 +76,13 @@ class Utils {
     static public function event_instances_to_fullcalendar ( $event_instances ) {
         $events = array();
         foreach( $event_instances as $index => $instance ) {
-            
             $events[] = array( 'id' => $instance['event']->id,
                                'title' => sprintf( "%s\n%s",
                                                    $instance['event']->title,
                                                    Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() ) ),
                                'start' => $instance['recurrence']->getStart()->format( \DateTime::ISO8601 ),
                                'end' => $instance['recurrence']->getEnd()->format( \DateTime::ISO8601 ),
-                               'color' => $instance['event']->category->color ? $instance['event']->category->color : '#ddd000');
+                               'color' => $instance['event']->category->color  );
         }
         return $events;
     }
