@@ -2,12 +2,25 @@
     <li>
         <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
             <div class="form-item form-item-textfield">
-                <label for="event_start" class="wpt-form-label wpt-form-textfield-label">Start Date</label>
+                <label for="event_start" class="wpt-form-label wpt-form-textfield-label">Starts</label>
                 <input type="text"
-                       name="event_start_date"
-                       id="event_start_date"
-                       class="wpt-form-textfield form-textfield textfield date"
-                       value="<?php echo $this['event']->start->format( 'Y-m-d' ) ?>"
+                       name="event[start]"
+                       id="event_start"
+                       class="wpt-form-textfield form-textfield textfield datetime"
+                       value="<?php echo $this['event']->start->format( 'Y-m-d h:i A' ) ?>"
+                       required />
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
+            <div class="form-item form-item-textfield">
+                <label for="event_end" class="wpt-form-label wpt-form-textfield-label">Ends</label>
+                <input type="text"
+                       name="event[end]"
+                       id="event_end"
+                       class="wpt-form-textfield form-textfield textfield datetime"
+                       value="<?php echo $this['event']->end->format( 'Y-m-d h:i A' ) ?>"
                        required />
             </div>
         </div>
@@ -21,24 +34,6 @@
                class="wpt-form-checkbox form-checkbox checkbox"
                value="1"
         <?php echo $this['event']->is_all_day ? 'checked' : '' ?>/>
-    </li>
-    <li>
-        <div class="time-fields js-wpt-field wpt-field js-wpt-textfield wpt-textfield <?php if ( $this['event']->is_all_day ) echo 'is-hidden' ?>">
-            <div class="form-item form-item-textfield">
-                <label for="event_end" class="wpt-form-label wpt-form-textfield-label">Hours</label>
-                <input type="text"
-                       name="event_start_time"
-                       id="event_start_time"
-                       class="wpt-form-textfield form-textfield textfield time"
-                       value="<?php echo $this['event']->start->format( 'h:i A' )?>"/>
-                <span>-</span>
-                <input type="text"
-                       name="event_end_time"
-                       id="event_end_time"
-                       class="wpt-form-textfield form-textfield textfield time"
-                       value="<?php echo $this['event']->end->format( 'h:i A' )?>"/>
-            </div>
-        </div>
     </li>
     <li>
         <?php $is_custom = count( $this['event']->recurrence_rule ) > 1; ?>

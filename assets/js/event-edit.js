@@ -1,6 +1,6 @@
 jQuery(function($) {
-    var $event_start_date          = $('#event_start_date'),
-        $event_start_time          = $('#event_start_time'),
+    var $event_start               = $('#event_start'),
+        $event_end                 = $('#event_end'),
         $event_end_time            = $('#event_end_time' ),
         $preview_calendar          = $('#preview_calendar'),
         $event_title               = $('#event_title'),
@@ -8,21 +8,20 @@ jQuery(function($) {
         $event_is_all_day          = $('#event_is_all_day'),
         $event_form                = $( '#event_form' );
 
-        current_event_border_color = '#ffff00',
+    current_event_border_color = '#ffff00',
 
-        event_id                   = $('#event_id').val(),
-        event_title                = $event_title.val(),
-        event_category_color       = $event_category.find(':selected').data('color'),
+    event_id                   = $('#event_id').val(),
+    event_title                = $event_title.val(),
+    event_category_color       = $event_category.find(':selected').data('color'),
 
-        $rrule_container           = $('#rrule-custom-container'),
-        $rrule_frequency           = $( '#event_recurrence_rule' ),
-        $rrule_custom_frequency    = $( '#event_recurrence_rule_custom' ),
-        $rrule_until               = $( '#event_recurrence_rule_custom_until' ),
-        $rrule                     = $( '.hoo-rrule' ),
+    $rrule_container           = $('#rrule-custom-container'),
+    $rrule_frequency           = $( '#event_recurrence_rule' ),
+    $rrule_custom_frequency    = $( '#event_recurrence_rule_custom' ),
+    $rrule_until               = $( '#event_recurrence_rule_custom_until' ),
+    $rrule                     = $( '.hoo-rrule' ),
 
-        datetime_control_type      = 'select',
-        date_format                = 'yy-mm-dd',
-        time_format                = 'hh:mm TT';
+    datetime_control_type      = 'select';
+
 
     $event_form.validate();
 
@@ -71,17 +70,13 @@ jQuery(function($) {
                     }
                 } );
 
-                $event_start_date.datepicker( {
-                    onClose: function( select_date ) {
-                        $preview_calendar.fullCalendar( 'refetchEvents' );
-                    }
-                } );
 
-                $.timepicker.timeRange(
-                    $event_start_time,
-                    $event_end_time,
+                $.timepicker.datetimeRange(
+                    $event_start,
+                    $event_end,
                     {
-                        timeFormat: time_format,
+                        dateFormat: 'yy-mm-dd',
+                        timeFormat: 'hh:mm tt',
 
                         start: {
                             onClose: function(dt_text, dt_instance) {
@@ -96,6 +91,14 @@ jQuery(function($) {
                         }
                     }
                 );
+                // title
+
+                $event_title.on( 'change', function() {
+                    var instance = $preview_calendar.fullCalendar( 'clientEvents', event_id )[0];
+                    console.log(instance);
+                    instance.title = $( this ).val();
+                    $preview_calendar.fullCalendar( 'updateEvent', instance);
+                } );
                 // all day
 
                 $event_is_all_day.on( 'change', function() {
@@ -125,7 +128,7 @@ jQuery(function($) {
                 $rrule_custom_frequency.on( 'change', function() {
                     var $option = $(this);
 
-                    // hide all cust	m rule options
+                    // hide all cust    m rule options
                     $( '#rrule-custom-container .rrule-custom').not('.interval').addClass( 'is-hidden' );
 
                     // set unit text
@@ -144,7 +147,7 @@ jQuery(function($) {
 
         eventRender: function( event, element, view ) {
             // render the whole events calendar square with the events category color
-            $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]').css('background-color', event.color);
+            //            $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]').css('background-color', event.color);
         },
         eventAfterAllRender: function( event, element, view ) {
         }

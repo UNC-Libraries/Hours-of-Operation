@@ -60,24 +60,22 @@ class Event {
                 if ( empty( $custom_rr['until'] ) ) {
                     unset( $custom_rr['until']);
                 }
-                $event_data['recurrence_rule'] = UTILS::rrules_to_str( sanitize_text_field( $custom_rr ) );
+                $event_data['recurrence_rule'] = UTILS::rrules_to_str( $custom_rr ) ;
                 break;
             case 'NONE':
                 $event_data['recurrence_rule'] = '';
                 break;
             default:
-                $rrule = strtoupper( sprintf( 'FREQ=%s', sanitize_text_field( $event_data['recurrence_rule'] ) ) );
-                $until = sanitize_text_field( $params['event_recurrence_rule_custom']['until'] );
-                if ( isset( $until ) ) {
+                $rrule = strtoupper( sprintf( 'FREQ=%s', $event_data['recurrence_rule'] ) );
+                $until = $params['event_recurrence_rule_custom']['until'];
+                if ( $until ) {
                     $until_dt = new \DateTime( $until );
                     $rrule .= sprintf( ';UNTIL=%s', $until_dt->format( 'Ymd\THis') );
                 }
                 $event_data['recurrence_rule'] = $rrule;
         }
-        $event_start_dt = sanitize_text_field( sprintf( '%s %s', $params['event_start_date'], $params['event_start_time'] ) );
-        $event_end_dt = sanitize_text_field( sprintf( '%s %s', $params['event_start_date'], $params['event_end_time'] ) );
-        $start = new \Datetime( $event_start_dt, $current_tz );
-        $end = new \Datetime( $event_end_dt, $current_tz );
+        $start = new \Datetime( $event_data['start'], $current_tz );
+        $end = new \Datetime( $event_data['end'], $current_tz );
         $start->setTimezone( $utc_tz );
         $end->setTimezone( $utc_tz );
 

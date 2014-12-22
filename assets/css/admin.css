@@ -29,8 +29,8 @@
     width: 25%;
 }
 
-.metabox-form .inside ul li input[type="text"].date,.time {
-    width: 8em;
+.metabox-form .inside ul li input[type="text"].datetime {
+    width: 11em;
 }
 
 

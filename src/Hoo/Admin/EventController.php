@@ -241,7 +241,6 @@ class EventController {
             $current_event->category = new Category( array( 'name' => 'None', 'color' => '#ddd000', 'priority' => 9999999999999 ) );
             $events[] = $current_event;
         }
-        
 
         $rrule_transformer = new RRuleTransformer();
 
@@ -251,12 +250,10 @@ class EventController {
             if ( $event->id == $_GET['event']['id'] ) {
                 // if we are being called by an ajax event to update so get data from $_GET
                 $event->fromParams( $_GET, $this->entity_manager );
-            } else {
-                // just grabbing from the db, set the timezone to current and move on
-                $event->start->setTimeZone( $tz );
-                $event->end->setTimeZone( $tz );
             }
-
+            // just grabbing from the db, set the timezone to current and move on
+            $event->start->setTimeZone( $tz );
+            $event->end->setTimeZone( $tz );
 
             $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
             $cal_range = new BetweenConstraint( $cal_start, $cal_end, $tz ) ;

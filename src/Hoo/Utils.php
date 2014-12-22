@@ -66,13 +66,13 @@ class Utils {
             $date = $event_instance['recurrence']->getStart()->format( 'Y-m-d' );
             if ( ! isset( $event_dates[ $date ] ) ) {
                 $event_dates[ $date ] =& $event_instance;
-            } elseif ( $event_dates[ $date ]['event']->category->priority < $event_instance['event']->category->priority )
+            } elseif ( $event_dates[ $date ]['event']->category->priority > $event_instance['event']->category->priority )
                 $event_dates[ $date ] =& $event_instance;
         }
         ksort( $event_dates );
         return array_values( $event_dates );
     }
-    
+
     static public function event_instances_to_fullcalendar ( $event_instances ) {
         $events = array();
         foreach( $event_instances as $index => $instance ) {
