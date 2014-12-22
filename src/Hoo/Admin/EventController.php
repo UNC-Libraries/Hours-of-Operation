@@ -171,6 +171,7 @@ class EventController {
                                        'event' => $event,
                                        'action' => 'update',
                                        'page' => $_GET['page'],
+                                       'add-new-page' => sprintf( 'hoo-location-event-add&location_id=%s', $_GET['location_id'] ),
                                        'breadcrumbs' => array( 'Locations' => 'hoo',
                                                                sprintf( '%s Hours', $event->location->name ) => sprintf( '%s&location_id=%s', 'hoo-location-events', $event->location->id ),
                                                                $event->title => null ),
@@ -201,9 +202,12 @@ class EventController {
                                    'columns' => 2 );
 
             $this->add_meta_boxes( $event );
-            $view_options = array_merge( $view_options, array( 'title' => sprintf( 'Add an Hours Event for <em>%s</em>', $location->name ),
+            $view_options = array_merge( $view_options, array( 'title' => sprintf( 'Add an Hours Event for <em>%s</em>', $event->location->name ),
                                                                'event' => $event,
                                                                'action' => 'create',
+                                                               'breadcrumbs' => array( 'Locations' => 'hoo',
+                                                                                       sprintf( '%s Hours', $event->location->name ) => sprintf( '%s&location_id=%s', 'hoo-location-events', $event->location->id ) ),
+                                                               'add-new-page' => sprintf( 'hoo-location-event-add&location_id=%s', $_GET['location_id'] ),
                                                                'action-display' => 'Add' ) );
 
             $view = new View( 'admin/event/event' );

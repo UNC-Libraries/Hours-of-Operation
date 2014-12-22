@@ -149,6 +149,9 @@ class LocationController {
             'title' => 'Edit a Location',
             'action' => 'update',
             'page' => 'hoo-location-edit',
+            'add-new-page' => sprintf( 'hoo-location-add' ),
+            'breadcrumbs' => array( 'Locations' => 'hoo',
+                                    'Edit a Location' => 'hoo-location-edit' ),
             'columns' => 2 );
 
         $location = $this->entity_manager->find( '\Hoo\Model\Location', $_REQUEST['location_id'] );
@@ -231,6 +234,9 @@ class LocationController {
                 'columns' => 2,
                 'location' => $location,
                 'page' => 'hoo-location-add',
+                'add-new-page' => sprintf( 'hoo-location-add' ),
+                'breadcrumbs' => array( 'Locations' => 'hoo',
+                                        'Add a Location' => 'hoo-location-add' ),
                 'action' => 'create',
                 'action-display' => 'Add'
             );

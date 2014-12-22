@@ -195,6 +195,9 @@ class CategoryController {
                 'columns' => 2,
                 'category' => $category,
                 'page' => 'hoo-category-add',
+                'add-new-page' => sprintf( 'hoo-category-add' ),
+                'breadcrumbs' => array( 'Categories' => 'hoo-category',
+                                        'Add a Location' => 'hoo-category-add' ),
                 'action' => 'create',
                 'action-display' => 'Add'
             );
