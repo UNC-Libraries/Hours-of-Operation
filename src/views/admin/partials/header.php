@@ -1,7 +1,7 @@
 <div class="hoo-head">
     <span>HoO</span>
     <a href="?page=<?php echo isset( $this['hoobert-link'] ) ? $this['hoobert-link'] : 'hoo' ?>">
-        <img src="http://library.dev/wp-content/plugins/hoo/assets/images/hoo-100.png"/>
+        <img src="<?php echo HOO__PLUGIN_URL . 'assets/images/hoo-100.png' ?>"/>
     </a>
     <h2 id="wphead">
         <?php echo $this['title'] ?>
