@@ -73,13 +73,59 @@ class Utils {
         return array_values( $event_dates );
     }
 
+    private function prev_was_all_day( $cur, $instances ) {
+        // get array pointer to correct item
+        while ( $val = current( $instances ) ) {
+            if ( $val == $cur ) {
+                $prev = prev( $instances );
+                break;
+            }
+            next( $instances );
+        }
+
+        if ( $prev && $prev['event']->is_all_day ) {
+            if ( $cur['event']->is_all_day ) return false;
+
+            return ( $cur['recurrence']->getStart()->format( 'd' ) - 1 ) == $prev['recurrence']->getEnd()->format( 'd' );
+        }
+        return false;
+    }
+
+    private function next_is_all_day( $cur, $instances ) {
+        // get array pointer to correct item
+        while ( $val = current( $instances ) ) {
+            if ( $val == $cur ) {
+                $next = next( $instances );
+                break;
+            }
+            next( $instances );
+        }
+
+        if ( $next && $next['event']->is_all_day ) {
+            if ( $cur['event']->is_all_day ) return false;
+
+            return ( $cur['recurrence']->getEnd()->format( 'd' ) + 1 ) == $next['recurrence']->getStart()->format( 'd' );
+        }
+        return false;
+    }
+
     static public function event_instances_to_fullcalendar ( $event_instances ) {
         $events = array();
         foreach( $event_instances as $index => $instance ) {
+            if ( $instance['event']->is_all_day ) {
+                $title = 'Open 24 Hours';
+            } elseif ( Utils::prev_was_all_day( $instance, $event_instances ) )  {
+                $title = sprintf( "24 Hours\n-\n%s", Utils::format_time( $instance['recurrence']->getEnd() ) );
+            } elseif ( Utils::next_is_all_day( $instance, $event_instances ) )  {
+                $title = sprintf( "%s\n-\n24 Hours", Utils::format_time( $instance['recurrence']->getStart() ) );
+            } else {
+                $title = sprintf( "%s\n%s", $instance['event']->title,
+                                  Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() ) );
+            }
+
+
             $events[] = array( 'id' => $instance['event']->id,
-                               'title' => sprintf( "%s\n%s",
-                                                   $instance['event']->title,
-                                                   Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() ) ),
+                               'title' => $title,
                                'start' => $instance['recurrence']->getStart()->format( \DateTime::ISO8601 ),
                                'end' => $instance['recurrence']->getEnd()->format( \DateTime::ISO8601 ),
                                'color' => $instance['event']->category->color  );
