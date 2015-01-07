@@ -156,7 +156,7 @@ class EventController {
                 $event->remove();
                 $event->flush();
 
-                wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $even_data['location']->id ) ) );
+                wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $event_data['location']->id ) ) );
                 exit;
             default:
 
