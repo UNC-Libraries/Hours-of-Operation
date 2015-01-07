@@ -17,12 +17,15 @@ class EventList extends \WP_List_Table {
     public function get_columns() {
         return array( 'title'    => __( 'Title / Label' ),
                       'category' => __( 'Category'  ),
+                      'start'    => __( 'Starts' ),
+                      'end'      => __( 'Ends'),
                       'updated_at' => __( 'Modified Date' ) );
     }
 
     public function get_sortable_columns() {
         return array( 'title' => array( 'e.title', false ),
                       'category' => array( 'c.name', false ),
+                      'start'    => array('e.start', false),
                       'updated_at' => array( 'e.updated_at', false ) );
     }
 
@@ -77,6 +80,26 @@ class EventList extends \WP_List_Table {
         );
 
         return sprintf( '%1$s %2$s', $event->title, $this->row_actions( $actions ) );
+    }
+
+    public function column_start( $event ) {
+        $event->start->setTimeZone( new \DateTimeZone( get_option( 'timezone_string' ) ) );
+        return $event->start->format( 'F j, Y g:i a' );
+    }
+
+    public function column_end( $event ) {
+        $rrule = $event->recurrence_rule;
+        if ( empty( $rrule ) ) {
+            $event->end->setTimeZone( new \DateTimeZone( get_option( 'timezone_string' ) ) );
+            return $event->end->format( 'F j, Y g:i a' );
+        } else {
+            if ( preg_match( '/UNTIL=(\w+)(;|$)/', $event->recurrence_rule, $matches ) ) {
+                $end = new \DateTime( $matches[1], new \DateTimeZone( get_option( 'timezone_string' ) ) );
+                return $end->format( 'F j, Y g:i a' );
+            } else {
+                return '∞';
+            }
+        }
     }
 
     public function column_category( $event ) {
