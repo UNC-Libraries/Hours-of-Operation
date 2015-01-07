@@ -162,7 +162,12 @@ class LocationController {
                 $location_data = $_REQUEST['location'];
 
                 // update associations first
-                $location->address->fromArray( $location_data['address'] );
+                if ( $location->address ) {
+                    $location->address->fromArray( $location_data['address'] );
+                } else { // this shouldn't actually be hit
+                    $location->address = new Address( $location_data['address'] );
+                }
+
                 $location->parent = $this->entity_manager->find( '\Hoo\Model\Location', $location_data['parent'] );
 
                 // don't pass association data to fromArray method for location
