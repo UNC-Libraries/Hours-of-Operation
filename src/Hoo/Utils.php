@@ -115,6 +115,8 @@ class Utils {
         foreach( $event_instances as $index => $instance ) {
             if ( $instance['event']->is_all_day ) {
                 $title = 'Open 24 Hours';
+            } elseif ($instance['event']->is_closed ) {
+                $title = 'Closed';
             } elseif ( Utils::prev_was_all_day( $instance, $event_instances ) )  {
                 $title = sprintf( "24 Hours\n-\n%s", Utils::format_time( $instance['recurrence']->getEnd() ) );
             } elseif ( Utils::next_is_all_day( $instance, $event_instances ) )  {

@@ -36,6 +36,9 @@ class Event {
     /** @ORM\Column(type="boolean", options={"default"=0}) */
     protected $is_all_day = false;
 
+    /** @ORM\Column(type="boolean", options={"default"=0}) */
+    protected $is_closed = false;
+
     /** @ORM\Column(type="boolean", options={"default=1"}) */
     protected $is_visible = true;
 

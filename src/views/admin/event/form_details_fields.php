@@ -26,6 +26,16 @@
         </div>
     </li>
     <li>
+        <label for="event_is_all_day" class="wpt-form-label wpt-form-textfield-label">Closed</label>
+        <input type="hidden" name="event[is_closed]" value="0"/>
+        <input type="checkbox"
+               name="event[is_closed]"
+               id="event_is_closed"
+               class="wpt-form-checkbox form-checkbox checkbox"
+               value="1"
+        <?php echo $this['event']->is_closed ? 'checked' : '' ?>/>
+    </li>
+    <li>
         <label for="event_is_all_day" class="wpt-form-label wpt-form-textfield-label">24 Hours</label>
         <input type="hidden" name="event[is_all_day]" value="0"/>
         <input type="checkbox"
