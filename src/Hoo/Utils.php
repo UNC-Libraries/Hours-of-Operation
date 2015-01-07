@@ -86,7 +86,7 @@ class Utils {
         if ( $prev && $prev['event']->is_all_day ) {
             if ( $cur['event']->is_all_day ) return false;
 
-            return ( $cur['recurrence']->getStart()->format( 'd' ) - 1 ) == $prev['recurrence']->getEnd()->format( 'd' );
+            return $cur['recurrence']->getStart()->diff( $prev['recurrence']->getStart() ) == 1;
         }
         return false;
     }
@@ -104,12 +104,13 @@ class Utils {
         if ( $next && $next['event']->is_all_day ) {
             if ( $cur['event']->is_all_day ) return false;
 
-            return ( $cur['recurrence']->getEnd()->format( 'd' ) + 1 ) == $next['recurrence']->getStart()->format( 'd' );
+            return $cur['recurrence']->getStart()->diff( $next['recurrence']->getStart() ) == 1;
         }
         return false;
     }
 
     static public function event_instances_to_fullcalendar ( $event_instances ) {
+        // TODO: refactor the 24 hours / formatting as it is gross
         $events = array();
         foreach( $event_instances as $index => $instance ) {
             if ( $instance['event']->is_all_day ) {
