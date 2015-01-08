@@ -164,6 +164,7 @@ class EventController {
                 $event->start->setTimeZone( $current_tz );
                 $event->end->setTimeZone( $current_tz );
                 $event->recurrence_rule = Utils::str_to_rrules( $event->recurrence_rule );
+                $event->recurrence_rule['UNTIL']  = new \DateTime( $event->recurrence_rule['UNTIL'], $current_tz );
 
                 $view = new View( 'admin/event/event' );
 

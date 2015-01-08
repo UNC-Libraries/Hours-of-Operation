@@ -65,6 +65,7 @@ jQuery(function($) {
                  */
 
                 $rrule_until.datepicker( {
+                    dateFormat: 'yy-mm-dd',
                     onClose: function( select_date ) {
                         $preview_calendar.fullCalendar( 'refetchEvents' );
                     }
