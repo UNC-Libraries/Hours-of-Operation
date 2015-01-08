@@ -148,7 +148,7 @@ jQuery(function($) {
 
         eventRender: function( event, element, view ) {
             // render the whole events calendar square with the events category color
-            //            $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]').css('background-color', event.color);
+            $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]').css('background-color', event.color);
         },
         eventAfterAllRender: function( event, element, view ) {
         }
