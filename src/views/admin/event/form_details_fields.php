@@ -1,26 +1,33 @@
 <ul>
     <li>
-        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
+        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield date-field">
             <div class="form-item form-item-textfield">
-                <label for="event_start" class="wpt-form-label wpt-form-textfield-label">Starts</label>
+                <label for="event_start_date" class="wpt-form-label wpt-form-textfield-label">Start Date</label>
                 <input type="text"
-                       name="event[start]"
-                       id="event_start"
+                       name="event_start_date"
+                       id="event_start_date"
                        class="wpt-form-textfield form-textfield textfield datetime"
-                       value="<?php echo $this['event']->start->format( 'Y-m-d h:i a' ) ?>"
+                       value="<?php echo $this['event']->start->format( 'Y-m-d' ) ?>"
                        required />
             </div>
         </div>
     </li>
     <li>
-        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
+        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield time-field">
             <div class="form-item form-item-textfield">
-                <label for="event_end" class="wpt-form-label wpt-form-textfield-label">Ends</label>
+                <label for="event_end" class="wpt-form-label wpt-form-textfield-label">Hours</label>
                 <input type="text"
-                       name="event[end]"
-                       id="event_end"
-                       class="wpt-form-textfield form-textfield textfield datetime"
-                       value="<?php echo $this['event']->end->format( 'Y-m-d h:i a' ) ?>"
+                       name="event_start_time"
+                       id="event_start_time"
+                       class="wpt-form-textfield form-textfield textfield time"
+                       value="<?php echo $this['event']->start->format( 'h:i a' ) ?>"
+                       required />
+                -
+                <input type="text"
+                       name="event_end_time"
+                       id="event_end_time"
+                       class="wpt-form-textfield form-textfield textfield time"
+                       value="<?php echo $this['event']->end->format( 'h:i a' ) ?>"
                        required />
             </div>
         </div>

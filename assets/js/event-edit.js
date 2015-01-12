@@ -1,26 +1,27 @@
 jQuery(function($) {
-    var $event_start               = $('#event_start'),
-        $event_end                 = $('#event_end'),
-        $event_end_time            = $('#event_end_time' ),
+    var $event_start_date          = $('#event_start_date'),
+        $event_start_time          = $('#event_start_time'),
+        $event_end_time            = $('#event_end_time'),
         $preview_calendar          = $('#preview_calendar'),
         $event_title               = $('#event_title'),
         $event_category            = $('#event_category'),
         $event_is_all_day          = $('#event_is_all_day'),
-        $event_form                = $( '#event_form' );
+        $event_is_closed           = $('#event_is_closed'),
+        $event_form                = $( '#event_form' ),
 
-    current_event_border_color = '#ffff00',
+        current_event_border_color = '#ffff00',
 
-    event_id                   = $('#event_id').val(),
-    event_title                = $event_title.val(),
-    event_category_color       = $event_category.find(':selected').data('color'),
+        event_id                   = $('#event_id').val(),
+        event_title                = $event_title.val(),
+        event_category_color       = $event_category.find(':selected').data('color'),
 
-    $rrule_container           = $('#rrule-custom-container'),
-    $rrule_frequency           = $( '#event_recurrence_rule' ),
-    $rrule_custom_frequency    = $( '#event_recurrence_rule_custom' ),
-    $rrule_until               = $( '#event_recurrence_rule_custom_until' ),
-    $rrule                     = $( '.hoo-rrule' ),
+        $rrule_container           = $('#rrule-custom-container'),
+        $rrule_frequency           = $( '#event_recurrence_rule' ),
+        $rrule_custom_frequency    = $( '#event_recurrence_rule_custom' ),
+        $rrule_until               = $( '#event_recurrence_rule_custom_until' ),
+        $rrule                     = $( '.hoo-rrule' ),
 
-    datetime_control_type      = 'select';
+        datetime_control_type      = 'select';
 
 
     $event_form.validate();
@@ -64,6 +65,14 @@ jQuery(function($) {
                  init date and time pickers
                  */
 
+                $event_start_date.datepicker( {
+                    
+                    dateFormat: 'yy-mm-dd',
+                    onClose: function( select_date ) {
+                        $preview_calendar.fullCalendar( 'refetchEvents' );
+                    }
+                } );
+
                 $rrule_until.datepicker( {
                     dateFormat: 'yy-mm-dd',
                     onClose: function( select_date ) {
@@ -72,11 +81,10 @@ jQuery(function($) {
                 } );
 
 
-                $.timepicker.datetimeRange(
-                    $event_start,
-                    $event_end,
+                $.timepicker.timeRange(
+                    $event_start_time,
+                    $event_end_time,
                     {
-                        dateFormat: 'yy-mm-dd',
                         timeFormat: 'hh:mm tt',
 
                         start: {
@@ -92,23 +100,37 @@ jQuery(function($) {
                         }
                     }
                 );
-                // title
 
+                // title
                 $event_title.on( 'change', function() {
                     var instance = $preview_calendar.fullCalendar( 'clientEvents', event_id )[0];
-                    console.log(instance);
                     instance.title = $( this ).val();
                     $preview_calendar.fullCalendar( 'updateEvent', instance);
                 } );
-                // all day
 
+                // all day
                 $event_is_all_day.on( 'change', function() {
                     if ( this.checked ) {
-                        $( '.time-fields' ).addClass( 'is-hidden' );
+                        $( '.time-field' ).addClass( 'is-hidden' );
+                        $event_is_closed.prop( 'checked', false );
                     } else {
-                        $( '.time-fields' ).removeClass( 'is-hidden' );
+                        $( '.time-field' ).removeClass( 'is-hidden' );
                     }
+                    $preview_calendar.fullCalendar( 'refetchEvents' );
                 } );
+
+                // is closed
+                $event_is_closed.on( 'change', function() {
+                    if ( this.checked ) {
+                        $( '.time-field' ).addClass( 'is-hidden' );
+                        $event_is_all_day.prop( 'checked', false );
+                    } else {
+                        $( '.time-field' ).removeClass( 'is-hidden' );
+                    }
+                    $preview_calendar.fullCalendar( 'refetchEvents' );
+
+                } );
+
 
                 // recurrence rules
                 $rrule_frequency.on('change', function() {

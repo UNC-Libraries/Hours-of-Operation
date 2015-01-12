@@ -77,8 +77,8 @@ class Event {
                 }
                 $event_data['recurrence_rule'] = $rrule;
         }
-        $start = new \Datetime( $event_data['start'], $current_tz );
-        $end = new \Datetime( $event_data['end'], $current_tz );
+        $start = new \Datetime( implode( ' ', array( $params['event_start_date'], $params['event_start_time'] ) ), $current_tz );
+        $end =   new \Datetime( implode( ' ', array( $params['event_start_date'], $params['event_end_time'] ) ), $current_tz );
         $start->setTimezone( $utc_tz );
         $end->setTimezone( $utc_tz );
 
