@@ -27,7 +27,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "simshaun/recurr": "0.3",
-        "doctrine/orm": "~2.2,>=2.2.3"
+        "simshaun/recurr": "*",
+        "doctrine/orm": "*"
     }
 }
