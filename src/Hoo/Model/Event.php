@@ -2,18 +2,19 @@
 namespace Hoo\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use \Recurr\Rule as RRule;
 use \Hoo\Utils;
 
 /**
-   @ORM\Entity
-   @ORM\Table(name="hoo_events")
-   @ORM\HasLifecycleCallbacks()
+ *  @ORM\Entity
+ *  @ORM\Table(name="hoo_events")
+ *  @ORM\HasLifecycleCallbacks()
  */
 class Event {
     /**
-       @ORM\Id
-       @ORM\Column(type="integer")
-       @ORM\GeneratedValue
+     *  @ORM\Id
+     *  @ORM\Column(type="integer")
+     *  @ORM\GeneratedValue
      */
     private $id;
 
@@ -32,6 +33,12 @@ class Event {
 
     /** @ORM\ManyToOne(targetEntity="Category", fetch="EAGER") */
     protected $category;
+
+    /** @ORM\Column(type="boolean", options={"default"=0}) */
+    protected $is_recurring = false;
+
+    /** @ORM\Column(type="boolean", options={"default"=0}) */
+    protected $is_custom_rrule = false;
 
     /** @ORM\Column(type="boolean", options={"default"=0}) */
     protected $is_all_day = false;
@@ -55,41 +62,67 @@ class Event {
         $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
         $utc_tz = new \DateTimeZone( 'UTC' );
 
+        $rrule = new RRule();
+        $rrule->setTimezone( get_option( 'timezone_string' ) );
         $event_data = $params['event'];
+
+        $event_data['is_all_day'] = isset( $event_data['is_all_day'] );
+        $event_data['is_closed'] = isset( $event_data['is_closed'] );
+
+        $start = new \Datetime( implode( ' ', array( $params['event_start_date'], $params['event_start_time'] ) ), $current_tz );
+        $end =   new \Datetime( implode( ' ', array( $params['event_start_date'], $params['event_end_time'] ) ), $current_tz );
+
+        $rrule->setStartDate( $start );
+        $rrule->setEndDate( $end );
+
+        if ( $params['event_recurrence_rule_custom']['BYDAY'] )
+            $rrule->setByDay( $params['event_recurrence_rule_custom']['BYDAY'] );
+
+        if ($params['event_recurrence_rule_custom']['UNTIL'] ) {
+            $until = clone $start;
+            $date = explode( '-', $params['event_recurrence_rule_custom']['UNTIL'] );
+            $until->setDate( intval($date[0]), intval($date[1]), intval($date[2]) );
+            $rrule->setUntil( $until );
+        }
+
+        if ( $params['event_recurrence_rule_custom']['INTERVAL'] )
+            $rrule->setInterval( $params['event_recurrence_rule_custom']['INTERVAL'] );
 
         switch( $event_data['recurrence_rule'] ) {
             case 'CUSTOM':
-                $custom_rr = $params['event_recurrence_rule_custom'];
-                if ( empty( $custom_rr['until'] ) ) {
-                    unset( $custom_rr['until']);
-                }
-                $event_data['recurrence_rule'] = UTILS::rrules_to_str( $custom_rr ) ;
+                // freq rules are in custom fields
+                $event_data['is_recurring'] = true;
+                $event_data['is_custom_rrule'] = true;
+                $rrule->setFreq( $params['event_recurrence_rule_custom']['FREQ'] );
                 break;
             case 'NONE':
-                $event_data['recurrence_rule'] = '';
+                $event_data['is_recurring'] = false;
+                $event_data['is_custom_rrule'] = false;
+                $rrule->setFreq( 1 );
+                $rrule->setCount( 1 );
                 break;
             default:
-                $rrule = strtoupper( sprintf( 'FREQ=%s', $event_data['recurrence_rule'] ) );
-                $until = $params['event_recurrence_rule_custom']['until'];
-                if ( $until ) {
-                    $until_dt = new \DateTime( $until );
-                    $rrule .= sprintf( ';UNTIL=%s', $until_dt->format( 'Ymd\THis') );
-                }
-                $event_data['recurrence_rule'] = $rrule;
+                // freq value is sitting in the recurrence_rule field
+                $event_data['is_recurring'] = true;
+                $event_data['is_custom_rrule'] = false;
+                $rrule->setFreq( $event_data['recurrence_rule'] );
         }
-        $start = new \Datetime( implode( ' ', array( $params['event_start_date'], $params['event_start_time'] ) ), $current_tz );
-        $end =   new \Datetime( implode( ' ', array( $params['event_start_date'], $params['event_end_time'] ) ), $current_tz );
         $start->setTimezone( $utc_tz );
         $end->setTimezone( $utc_tz );
+        $rrule->setTimezone( 'UTC' );
 
         $event = $entity_manager->find( '\Hoo\Model\Event', intval( $event_data['id'] ) );
         $event_data['category'] = $entity_manager->find( '\Hoo\Model\Category', intval( $event_data['category'] ) );
         $event_data['location'] = $entity_manager->find( '\Hoo\Model\Location', intval( $event_data['location'] ) );
         $event_data['start'] = $start;
         $event_data['end'] = $end;
+        $event_data['recurrence_rule'] = $rrule;
 
         $this->fromArray( $event_data );
+
     }
+
+
     public function fromArray( $data ) {
         foreach ( $data as $property => $value ) {
             if ( property_exists( $this, $property ) ) {
@@ -100,6 +133,19 @@ class Event {
         }
 
         return $this;
+    }
+
+    /** 
+     * @ORM\PrePersist 
+     * @ORM\PreUpdate
+     */
+    public function rrule_to_string() {
+        // only save recurrence rule if we are actually recurring :D
+        if ( $this->is_recurring ) {
+            $this->recurrence_rule = $this->recurrence_rule->getString();
+        } else {
+            $this->recurrence_rule = null;
+        }
     }
 
     /** @ORM\PrePersist */
@@ -118,8 +164,9 @@ class Event {
         if ( $initial_values )  {
             $this->fromParams( $initial_values, $entity_manager );
         } else {
-            $this->start = new \DateTime();
-            $this->end = new \DateTime( '+1 hour' );
+            $this->recurrence_rule = new RRule( array( 'FREQ' => 'DAILY', 'COUNT' => '1' ) );
+            $this->start = new \DateTime('now', new \DateTimeZone( get_option( 'timezone_string' ) ) );
+            $this->end = new \DateTime( '+1 hour', new \DateTimeZone( get_option( 'timezone_string' ) )  );
         }
     }
 

@@ -161,10 +161,11 @@ class EventController {
             default:
 
                 $event = $this->entity_manager->find( '\Hoo\Model\Event', $_GET['event_id'] );
+                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, 'UTC' );
+
+                $event->recurrence_rule->setTimezone( get_option( 'timezone_string' ) );
                 $event->start->setTimeZone( $current_tz );
                 $event->end->setTimeZone( $current_tz );
-                $event->recurrence_rule = Utils::str_to_rrules( $event->recurrence_rule );
-                $event->recurrence_rule['UNTIL']  = new \DateTime( $event->recurrence_rule['UNTIL'], $current_tz );
 
                 $view = new View( 'admin/event/event' );
 
@@ -198,7 +199,6 @@ class EventController {
             $event = new Event();
             $event->location = $this->entity_manager->find( '\Hoo\Model\Location', $_GET['location_id'] );
 
-
             $view_options = array( 'page' => 'hoo-location-event-add',
                                    'columns' => 2 );
 
@@ -230,77 +230,15 @@ class EventController {
 
     public function ajax_location_events() {
         $location_id = $_GET['event']['location'];
-        $tz = new \DateTimeZone( get_option( 'timezone_string') );
-
-        $cal_start = new \Datetime( $_GET['start'], $tz );
-        $cal_end = new \DateTime( $_GET['end'], $tz );
-
 
         $location_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
         $location = $location_repo->find( $location_id );
-        $events = $location->events;
 
-        if ( empty( $_GET['event']['id'] ) ) {
-            $current_event = new Event( $_GET, $this->entity_manager );
-            $current_event->title = 'New Event';
-            $current_event->category = new Category( array( 'name' => 'None', 'color' => '#ddd000', 'priority' => 9999999999999 ) );
-            $events[] = $current_event;
-        }
-
-        $rrule_transformer = new RRuleTransformer();
-
-        $event_instances = array();
-        $event_dates = array();
-        foreach( $events as $event ) {
-            if ( $event->id == $_GET['event']['id'] ) {
-                // if we are being called by an ajax event to update so get data from $_GET
-                $event->fromParams( $_GET, $this->entity_manager );
-            }
-            // just grabbing from the db, set the timezone to current and move on
-            $event->start->setTimeZone( $tz );
-            $event->end->setTimeZone( $tz );
-
-            $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
-            $cal_range = new BetweenConstraint( $cal_start, $cal_end, $tz ) ;
-
-            foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
-                $event_instances[] = array( 'event' => $event, 'recurrence' => $recurrence );
-            }
-        }
-        $event_instances = Utils::remove_overlapping_events( $event_instances );
-        $event_instances = Utils::event_instances_to_fullcalendar( $event_instances );
-        wp_send_json( $event_instances );
-        exit;
+        wp_send_json( $location->get_fullcalendar_events( $_GET, $this->entity_manager ) );
     }
 
     public function ajax_hour_events() {
-        $location_id = $_GET['location_id'];
-        $tz = new \DateTimeZone( get_option( 'timezone_string' ) );
-
-        $cal_start = new \DateTime( $_GET['start'], $tz );
-        $cal_end = new \DateTime( $_GET['end'], $tz );
-
-        $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
-        $events = $events_repo->findBy( array( 'location' => $location_id ) );
-
-        $rrule_transformer = new RRuleTransformer();
-
-        $event_instances = array();
-        $event_dates = array();
-        foreach( $events as $event ) {
-            $event->start->setTimeZone( $tz ); $event->end->setTimeZone( $tz );
-
-            $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
-            $cal_range = new BetweenConstraint( $cal_start, $cal_end, $tz );
-
-            foreach( $rrule_transformer->transform( $rrule, nil, $cal_range )->toArray() as $recurrence ) {
-                $event_instances[] = array( 'event' => $event, 'recurrence' => $recurrence );
-            }
-        }
-        $event_instances = Utils::remove_overlapping_events( $event_instances );
-        $event_instances = Utils::event_instances_to_fullcalendar( $event_instances );
-        wp_send_json( $event_instances );
-        exit;
+        // stub
     }
 }
 ?>
