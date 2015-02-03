@@ -32,7 +32,8 @@ jQuery(function($) {
             var ajax_action = 'action=location_events',
                 cal_start = 'start=' + cal_start.format(),
                 cal_end = 'end=' + cal_end.format(),
-                event_inputs = $(':input:visible,#event_id,#event_category,#event_location').serialize();
+                event_inputs = $(':input:visible,#event_id,#event_category,#event_location,#event_start_time,#event_end_time').serialize();
+            console.log(event_inputs);
 
             // reset calendar day
             $('.fc-bg td').css('background-color', 'transparent');
@@ -104,8 +105,7 @@ jQuery(function($) {
                 // title
                 $event_title.on( 'change', function() {
                     var instance = $preview_calendar.fullCalendar( 'clientEvents', event_id )[0];
-                    instance.title = $( this ).val();
-                    $preview_calendar.fullCalendar( 'updateEvent', instance);
+                    $preview_calendar.fullCalendar( 'refetchEvents', instance);
                 } );
 
                 // all day
