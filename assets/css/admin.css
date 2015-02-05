@@ -72,7 +72,17 @@
 #rrule-custom-container {
 }
 
-#rrule-custom-container .weekly,.monthly,.yearly {
+.rrule-custom {
+}
+
+.rrule-custom.weekly, .rrule-custom.monthly, .rrule-custom.yearly {
+    margin-left: 25%;
+}
+
+.rrule-custom.weekly label {
+    white-space:nowrap; 
+    display:inline-block;
+    padding-right: 50px;
 }
 
 .is-hidden {
