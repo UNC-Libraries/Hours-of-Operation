@@ -2,24 +2,41 @@
     position: relative;
     width: 100%;
 }
-.hoo-head img {
-    display: inline-block;
-    vertical-align: middle;
-    padding: 15px 5px 5px 5px;
+
+.hoo-head .hoo-logo {
+    float: left;
+    width: 100px;
+    margin: 0 20px 10px 0;
 }
 
-.hoo-head ol {
-    display: inline-block;
+.hoo-head .hoo-title {
+    padding: 5px;
 }
-.hoo-head span {
+
+.hoo-head .hoo-logo span {
     position: absolute;
     top: 0;
     left: 36px;
     font-size: 1.5em;
 }
-#wphead {
+
+.hoo-head .hoo-logo img {
     display: inline-block;
     vertical-align: middle;
+    padding: 15px 5px 5px 5px;
+}
+
+.hoo-head .hoo-title ol {
+   
+}
+
+.hoo-head .hoo-title ol li {
+    list-style-type: none;
+    display: inline;
+}
+
+#wphead {
+    border-bottom: none;
 }
 #wphead:after {
 }
