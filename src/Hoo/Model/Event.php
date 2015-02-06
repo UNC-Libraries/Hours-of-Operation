@@ -66,15 +66,15 @@ class Event {
         $rrule->setTimezone( get_option( 'timezone_string' ) );
         $event_data = $params['event'];
 
-        $event_data['is_all_day'] = isset( $event_data['is_all_day'] );
-        $event_data['is_closed'] = isset( $event_data['is_closed'] );
+        $event_data['is_all_day'] = isset( $event_data['is_all_day'] ) && $event_data['is_all_day'];
+        $event_data['is_closed'] = isset( $event_data['is_closed'] ) && $event_data['is_closed'];
 
-        if ( isset( $params['event_start_date'] ) ) {
+        if ( $event_data['is_all_day'] || $event_data['is_closed'] ) {
             $start = new \Datetime( $params['event_start_date'], $current_tz );
             $end =   new \Datetime( $params['event_start_date'], $current_tz );
         } else {
-            $start = new \Datetime( $params['event_start_datetime'], $current_tz );
-            $end =   new \Datetime( $params['event_end_datetime'], $current_tz );
+            $start = new \Datetime( $event_data['start'], $current_tz );
+            $end =   new \Datetime( $event_data['end'], $current_tz );
         }
 
         $rrule->setStartDate( $start );
@@ -103,7 +103,7 @@ class Event {
             case 'NONE':
                 $event_data['is_recurring'] = false;
                 $event_data['is_custom_rrule'] = false;
-                $rrule->setFreq( 1 );
+                $rrule->setFreq( 3 ); // daily
                 $rrule->setCount( 1 );
                 break;
             default:

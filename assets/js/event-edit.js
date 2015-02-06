@@ -1,7 +1,7 @@
 jQuery(function($) {
     var $event_start_date          = $('#event_start_date'),
-        $event_start_datetime      = $('#event_start_datetime'),
-        $event_end_datetime        = $('#event_end_datetime'),
+        $event_start_datetime      = $('#event_start'),
+        $event_end_datetime        = $('#event_end'),
         $preview_calendar          = $('#preview_calendar'),
         $event_title               = $('#event_title'),
         $event_category            = $('#event_category'),

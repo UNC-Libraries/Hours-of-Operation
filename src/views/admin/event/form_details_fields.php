@@ -17,15 +17,15 @@
             <div class="form-item form-item-textfield">
                 <label for="event_end" class="wpt-form-label wpt-form-textfield-label">Hours</label>
                 <input type="text"
-                       name="event_start_datetime"
-                       id="event_start_datetime"
+                       name="event[start]"
+                       id="event_start"
                        class="wpt-form-textfield form-textfield textfield datetime"
                        value="<?php echo $this['event']->start->format( 'Y-m-d h:i a' ) ?>"
                        required />
                 -
                 <input type="text"
-                       name="event_end_datetime"
-                       id="event_end_datetime"
+                       name="event[end]"
+                       id="event_end"
                        class="wpt-form-textfield form-textfield textfield datetime"
                        value="<?php echo $this['event']->end->format( 'Y-m-d h:i a' ) ?>"
                        required />
