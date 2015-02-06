@@ -1,33 +1,33 @@
 <ul>
     <li>
-        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield date-field">
+        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield date-field <?php if ( ! ($this['event']->is_closed || $this['event']->is_all_day ) ) echo 'is-hidden' ?>">
             <div class="form-item form-item-textfield">
-                <label for="event_start_date" class="wpt-form-label wpt-form-textfield-label">Start Date</label>
+                <label for="event_start_date" class="wpt-form-label wpt-form-textfield-label">Date</label>
                 <input type="text"
                        name="event_start_date"
                        id="event_start_date"
-                       class="wpt-form-textfield form-textfield textfield datetime"
+                       class="wpt-form-textfield form-textfield textfield date"
                        value="<?php echo $this['event']->start->format( 'Y-m-d' ) ?>"
                        required />
             </div>
         </div>
     </li>
     <li>
-        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield time-field <?php if ( $this['event']->is_closed || $this['event']->is_all_day ) echo 'is-hidden' ?>"">
+        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield datetime-field <?php if ( $this['event']->is_closed || $this['event']->is_all_day ) echo 'is-hidden' ?>"">
             <div class="form-item form-item-textfield">
                 <label for="event_end" class="wpt-form-label wpt-form-textfield-label">Hours</label>
                 <input type="text"
-                       name="event_start_time"
-                       id="event_start_time"
-                       class="wpt-form-textfield form-textfield textfield time"
-                       value="<?php echo $this['event']->start->format( 'h:i a' ) ?>"
+                       name="event_start_datetime"
+                       id="event_start_datetime"
+                       class="wpt-form-textfield form-textfield textfield datetime"
+                       value="<?php echo $this['event']->start->format( 'Y-m-d h:i a' ) ?>"
                        required />
                 -
                 <input type="text"
-                       name="event_end_time"
-                       id="event_end_time"
-                       class="wpt-form-textfield form-textfield textfield time"
-                       value="<?php echo $this['event']->end->format( 'h:i a' ) ?>"
+                       name="event_end_datetime"
+                       id="event_end_datetime"
+                       class="wpt-form-textfield form-textfield textfield datetime"
+                       value="<?php echo $this['event']->end->format( 'Y-m-d h:i a' ) ?>"
                        required />
             </div>
         </div>
@@ -75,7 +75,7 @@
     </li>
     <li>
         <div id="rrule-until" class="form-item rrule-custom until wpt-field wp-textfield <?php if ( ! $this['event']->is_custom_rrule ) echo 'is-hidden' ?>">
-            <label for="event_recurrence_rule_custom_until">Until</label>
+            <label for="event_recurrence_rule_custom_until" class="wpt-form-label">Until</label>
             <input type="text"
                    id="event_recurrence_rule_custom_until"
                    name="event_recurrence_rule_custom[UNTIL]"
@@ -96,7 +96,7 @@
 
             <div class="rrule-custom interval wpt-field wp-textfield">
                 <div class="form-item form-item-textfield">
-                    <label for="event_recurrence_rule_custom_interval">Every</label>
+                    <label for="event_recurrence_rule_custom_interval" class="wpt-form-label">Every</label>
                     <input type="text"
                            id="event_recurrence_rule_custom_interval"
                            name="event_recurrence_rule_custom[INTERVAL]"

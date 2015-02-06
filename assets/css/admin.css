@@ -41,7 +41,7 @@
 #wphead:after {
 }
 
-.metabox-form .inside ul li label {
+.metabox-form .inside ul li label.wpt-form-label {
     display: inline-block;
     width: 25%;
 }

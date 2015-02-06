@@ -1,7 +1,7 @@
 jQuery(function($) {
     var $event_start_date          = $('#event_start_date'),
-        $event_start_time          = $('#event_start_time'),
-        $event_end_time            = $('#event_end_time'),
+        $event_start_datetime      = $('#event_start_datetime'),
+        $event_end_datetime        = $('#event_end_datetime'),
         $preview_calendar          = $('#preview_calendar'),
         $event_title               = $('#event_title'),
         $event_category            = $('#event_category'),
@@ -32,8 +32,7 @@ jQuery(function($) {
             var ajax_action = 'action=location_events',
                 cal_start = 'start=' + cal_start.format(),
                 cal_end = 'end=' + cal_end.format(),
-                event_inputs = $(':input:visible,#event_id,#event_category,#event_location,#event_start_time,#event_end_time').serialize();
-            console.log(event_inputs);
+                event_inputs = $(':input:visible,#event_id,#event_category,#event_location').serialize();
 
             // reset calendar day
             $('.fc-bg td').css('background-color', 'transparent');
@@ -67,7 +66,7 @@ jQuery(function($) {
                  */
 
                 $event_start_date.datepicker( {
-                    
+
                     dateFormat: 'yy-mm-dd',
                     onClose: function( select_date ) {
                         $preview_calendar.fullCalendar( 'refetchEvents' );
@@ -82,21 +81,75 @@ jQuery(function($) {
                 } );
 
 
-                $.timepicker.timeRange(
-                    $event_start_time,
-                    $event_end_time,
+                $event_start_datetime.datetimepicker(
                     {
+                        dateFormat: 'yy-mm-dd',
                         timeFormat: 'hh:mm tt',
 
-                        start: {
-                            onClose: function(dt_text, dt_instance) {
-                                $preview_calendar.fullCalendar( 'refetchEvents' );
+                        onClose: function(dt_text, dt_instance) {
+                            if ( $event_end_datetime.val() != '' ) {
+                                var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
+                                    test_end   = $event_end_datetime.datetimepicker( 'getDate' );
+
+                                if ( test_start > test_end ) {
+                                    $event_end_datetime.datetimepicker( 'setDate', test_start );
+                                }
+                            } else {
+                                $event_end_datetime.val( dt_text );
                             }
+                            $preview_calendar.fullCalendar( 'refetchEvents' );
                         },
 
-                        end: {
-                            onClose: function(dt_text, dt_instance) {
-                                $preview_calendar.fullCalendar( 'refetchEvents' );
+                        onSelect: function ( selected ) {
+                            var selected_dt = new Date( selected),
+                                max_dt = new Date( selected );
+
+                            max_dt.setDate( max_dt.getDate() + 1 );
+
+                            $event_end_datetime.datetimepicker( 'option', 'minDate', selected_dt );
+                            $event_end_datetime.datetimepicker( 'option', 'maxDate', max_dt );
+                            $preview_calendar.fullCalendar( 'refetchEvents' );
+                        }
+                    } );
+
+                var default_max_dt = $event_start_datetime.datetimepicker( 'getDate' );
+                default_max_dt.setDate( default_max_dt.getDate() + 1 );
+
+                $event_end_datetime.datetimepicker(
+                    {
+                        dateFormat: 'yy-mm-dd',
+                        timeFormat: 'hh:mm tt',
+                        minTime: '12:00 am',
+                        maxTime: '11:00 pm',
+                        maxDate: default_max_dt,
+                        showButtonPanel: true,
+
+                        onClose: function(dt_text, dt_instance) {
+                            if ( $event_start_datetime.val() != '' ) {
+                                var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
+                                    test_end   = $event_end_datetime.datetimepicker( 'getDate' );
+
+                                if ( test_start > test_end ) {
+                                    $event_start_datetime.datetimepicker( 'setDate', test_end );
+                                }
+                            } else {
+                                $event_start_datetime.val( dt_text );
+                            }
+                            $preview_calendar.fullCalendar( 'refetchEvents' );
+                        },
+
+                        onSelect: function ( selected_dt ) {
+                            var selected_dt = new Date( selected_dt ),
+                                max_dt = $event_end_datetime.datetimepicker( 'option', 'maxDate');
+
+                            if ( selected_dt.getDate() === max_dt.getDate() ) {
+                                if ( selected_dt.getHours() > 7 ) {
+                                    max_dt.setHours( 7 );
+                                    $event_end_datetime.datetimepicker( 'setDate', max_dt );
+                                }
+                                $event_end_datetime.datetimepicker( 'option', 'maxTime', '7:00 am' );
+                            } else {
+                                $event_end_datetime.datetimepicker( 'option', 'maxTime', '11:00 pm' );
                             }
                         }
                     }
@@ -104,17 +157,18 @@ jQuery(function($) {
 
                 // title
                 $event_title.on( 'change', function() {
-                    var instance = $preview_calendar.fullCalendar( 'clientEvents', event_id )[0];
-                    $preview_calendar.fullCalendar( 'refetchEvents', instance);
+                    $preview_calendar.fullCalendar( 'refetchEvents' );
                 } );
 
                 // all day
                 $event_is_all_day.on( 'change', function() {
                     if ( this.checked ) {
-                        $( '.time-field' ).addClass( 'is-hidden' );
+                        $( '.date-field' ).removeClass( 'is-hidden' );
+                        $( '.datetime-field' ).addClass( 'is-hidden' );
                         $event_is_closed.prop( 'checked', false );
                     } else {
-                        $( '.time-field' ).removeClass( 'is-hidden' );
+                        $( '.date-field' ).addClass( 'is-hidden' );
+                        $( '.datetime-field' ).removeClass( 'is-hidden' );
                     }
                     $preview_calendar.fullCalendar( 'refetchEvents' );
                 } );
@@ -122,10 +176,12 @@ jQuery(function($) {
                 // is closed
                 $event_is_closed.on( 'change', function() {
                     if ( this.checked ) {
-                        $( '.time-field' ).addClass( 'is-hidden' );
+                        $( '.date-field' ).removeClass( 'is-hidden' );
+                        $( '.datetime-field' ).addClass( 'is-hidden' );
                         $event_is_all_day.prop( 'checked', false );
                     } else {
-                        $( '.time-field' ).removeClass( 'is-hidden' );
+                        $( '.date-field' ).addClass( 'is-hidden' );
+                        $( '.datetime-field' ).removeClass( 'is-hidden' );
                     }
                     $preview_calendar.fullCalendar( 'refetchEvents' );
 

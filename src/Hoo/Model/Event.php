@@ -69,8 +69,13 @@ class Event {
         $event_data['is_all_day'] = isset( $event_data['is_all_day'] );
         $event_data['is_closed'] = isset( $event_data['is_closed'] );
 
-        $start = new \Datetime( implode( ' ', array( $params['event_start_date'], $params['event_start_time'] ) ), $current_tz );
-        $end =   new \Datetime( implode( ' ', array( $params['event_start_date'], $params['event_end_time'] ) ), $current_tz );
+        if ( isset( $params['event_start_date'] ) ) {
+            $start = new \Datetime( $params['event_start_date'], $current_tz );
+            $end =   new \Datetime( $params['event_start_date'], $current_tz );
+        } else {
+            $start = new \Datetime( $params['event_start_datetime'], $current_tz );
+            $end =   new \Datetime( $params['event_end_datetime'], $current_tz );
+        }
 
         $rrule->setStartDate( $start );
         $rrule->setEndDate( $end );
