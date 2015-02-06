@@ -121,33 +121,6 @@
                     </label>
                 <?php endforeach ?>
             </div>
-
-            <div class="rrule-custom monthly <?php if ( ! ( $this['event']->is_custom_rrule && $this['event']->recurrence_rule->getByMonthDay() == 'MONTHLY' ) ) echo 'is-hidden' ?>">
-                <?php foreach( range( 1, 31 ) as $day ) : ?>
-                    <label for="<?php sprintf( 'event_recurrence_rule_custom_bymonth_%s', $day ) ?>">
-                        <input type="radio"
-                           id="<?php sprintf( 'event_recurrence_rule_custom_by_month_%s', $day ) ?>"
-                           class="hoo-rrule"
-                           name="event_recurrence_rule_custom[BYMONTH][]"
-                           value="<?php echo $day ?>"
-                           <?php echo $this['event']->is_custom_rrule && $this['event']->recurrence_rule->getByMonthDay() == $day ? 'checked' : '' ?>/>
-                        <?php echo $day ?>
-                    </label>
-                <?php endforeach ?>
-            </div>
-
-            <div class="rrule-custom yearly <?php if ( ! ( $this['event']->is_custom_rrule && $this['event']->recurrence_rule->getFreqAsText() == 'YEARLY' ) ) echo 'is-hidden' ?>">
-                <?php foreach( range( 1, 12 ) as $month ): ?>
-                    <label for="<?php sprintf( 'event_recurrence_rule_custom_byyear_%s', $month ) ?>">
-                        <input type="radio"
-                           id="<?php sprintf( 'event_recurrence_rule_custom_byyear_%s', $month ) ?>"
-                           class="hoo-rrule"
-                           name="event_recurrence_rule_custom[BYYEAR][]"
-                           value="<?php echo $month ?>"/>
-                        <?php echo \DateTime::createFromFormat( '!m', $month )->format( 'M' ) ?>
-                    </label>
-                <?php endforeach ?>
-            </div>
         </div>
     </li>
     <li>

@@ -114,7 +114,7 @@ class EventController {
                       array( 'event' => $event,
                              'freq_values' => $freq_values,
                              'event-categories' => $categories,
-                             'freq_units' => array( 'HOURLY' => 'hour', 'DAILY' => 'day', 'MONTHLY' => 'month', 'WEEKLY' => 'week', 'YEARLY' => 'year' ),
+                             'freq_units' => array( 'HOURLY' => 'hour', 'DAILY' => 'day', 'WEEKLY' => 'week' ),
                              'cust_freq_values' => array_slice( $freq_values, 0, -1 ) ) );
 
     }
