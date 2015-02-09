@@ -1,6 +1,7 @@
 <?php
 
 namespace Hoo;
+use Hoo\Model\Location;
 
 class Shortcode {
     public function __construct( $em ) {
@@ -57,24 +58,8 @@ class Shortcode {
     }
 
     public function full( $header, $tagline ) {
-        $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
-        $locations = $locations_repo->findBy( array( 'parent' => null, 'is_visible' => true ), array( 'position' => 'asc' ) );
+        $locations = Location::get_visible_locations( $this->entity_manager );
 
-        /* quick hack to put the sublocations under the parent
-           TODO: rewrite this in the model
-         */
-        $locations = array_reduce(
-            $locations,
-            function( $locations, $location ) {
-                if ( $location->address->lat && $location->address->lon ) {
-                    $locations[] = $location;
-                    foreach( $location->sublocations->toArray() as $sub ) {
-                        $locations[] = $sub;
-                    }
-                }
-                return $locations;
-            },
-            array() );
 
         $view = new View( 'shortcode/location' );
         $view->render( array( 'locations' => $locations,

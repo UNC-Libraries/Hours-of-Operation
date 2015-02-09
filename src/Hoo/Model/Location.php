@@ -80,15 +80,17 @@ class Location {
         $event_instances = array();
         $event_dates = array();
         foreach( $this->events as $event ) {
+            $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end );
+
             $event->start->setTimeZone( $tz );
             $event->end->setTimeZone( $tz );
-            $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
+            $rrule->setTimezone( get_option( 'timezone_string' ) );
             $cal_range = new BetweenConstraint( $start, $end, $tz ) ;
             foreach( $rrule_transformer->transform( $rrule, null, $cal_range )->toArray() as $recurrence ) {
                 $event_instances[] = array( 'id' => $event->id,
                                             'title' => $event->title,
-                                            'open' => $recurrence->getStart()->format( \DateTime::ISO8601 ),
-                                            'close' => $recurrence->getEnd()->format( \DateTime::ISO8601 ),
+                                            'open' => $recurrence->getStart(),
+                                            'close' => $recurrence->getEnd(),
 
                                             // the two are here solely for priority filtering and are removed before sending
                                             'priority' => $event->category->priority ? $event->category->priority : 0,
@@ -107,12 +109,15 @@ class Location {
         return $event_instances;
     }
 
+
     public function get_hours_for_date( $start ) {
         $tz = new \DateTimeZone( get_option( 'timezone_string') );
 
-        $start = new \DateTime( date( $start ? $start : 'Y-m-d' ), $tz );
-        $end = new \DateTime( $start->format( 'Y-m-d' ), $tz );
+        $start = new \DateTime( date( $start ? $start : 'Y-m-d' ) );
+        $end = new \DateTime( $start->format( 'Y-m-d' ) );
         $end->modify( '+1 day' );
+
+        $start->setTimeZone( $tz ); $end->setTimeZone( $tz );
 
         $hours = $this->get_hours( $start, $end );
 
@@ -207,6 +212,28 @@ class Location {
                                'color' => $instance['event']->category->color  );
         }
         return $events;
+    }
+
+    public static function get_visible_locations( $entity_manager ) {
+        $locations_repo = $entity_manager->getRepository( '\Hoo\Model\Location' );
+        $locations = $locations_repo->findBy( array( 'parent' => null, 'is_visible' => true ), array( 'position' => 'asc' ) );
+
+        // quick hack to put the sublocations under the parent
+        $locations = array_reduce(
+
+            $locations,
+            function( $locations, $location ) {
+                if ( $location->address->lat && $location->address->lon ) {
+                    $locations[] = $location;
+                    foreach( $location->sublocations->toArray() as $sub ) {
+                        $locations[] = $sub;
+                    }
+                }
+                return $locations;
+            },
+            array() );
+
+        return $locations;
     }
 
     /** @ORM\PrePersist **/

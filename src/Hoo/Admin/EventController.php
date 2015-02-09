@@ -238,7 +238,13 @@ class EventController {
     }
 
     public function ajax_hour_events() {
-        // stub
+        // stub but "works"
+        $location_id = $_GET['location_id'];
+
+        $location_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+        $location = $location_repo->find( $location_id );
+
+        wp_send_json( $location->get_fullcalendar_events( $_GET, $this->entity_manager ) );
     }
 }
 ?>
