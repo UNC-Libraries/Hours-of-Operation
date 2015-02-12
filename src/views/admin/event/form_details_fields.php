@@ -66,7 +66,7 @@
                 ?>
                 <?php foreach ( $this['freq_values'] as $freq_value ) : ?>
                     <option value="<?php echo strtoupper( $freq_value ) ?>"
-                            <?php if ( strtoupper( $freq_value ) == $rule ) echo 'selected' ?>>
+                            <?php if ( isset( $rule ) && strtoupper( $freq_value ) == $rule ) echo 'selected' ?>>
                         <?php echo $freq_value  ?>
                     </option>
                 <?php endforeach ?>

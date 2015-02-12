@@ -54,17 +54,15 @@ class EventController {
         add_action( 'wp_ajax_location_event_delete', array( $this, 'ajax_location_event_delete' ) );
     }
 
-    public function enqueue_scripts() {
-        $current_screen = get_current_screen();
-
-        wp_enqueue_script( 'event-delete' );
+    public function enqueue_scripts( $page ) {
+        if ( preg_match( '/hoo-location-event/i', $page ) ) {
+            wp_enqueue_script( 'event-delete' );
+        }
 
         // enqueue edit/add page specific js
-        if ( preg_match( '/hoo-location-event-(add|edit)?/i', $current_screen->id ) ) {
-            wp_enqueue_script( 'event-edit' );
-
-            wp_enqueue_style( 'jquery-ui' );
+        if ( preg_match( '/hoo-location-event-(add|edit)?/i', $page ) ) {
             wp_enqueue_style( 'full-calendar' );
+            wp_enqueue_script( 'event-edit' );
         }
     }
 
@@ -140,7 +138,7 @@ class EventController {
         $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
         $utc_tz = new \DateTimeZone( 'UTC' );
 
-        switch( $_POST['action'] ) {
+        switch( isset( $_POST['action'] ) && $_POST['action'] ) {
             case 'update':
                 $event = $this->entity_manager->find( '\Hoo\Model\Event', $_POST['event']['id'] );
                 $event->fromParams( $_POST, $this->entity_manager );
@@ -169,11 +167,11 @@ class EventController {
 
                 $view = new View( 'admin/event/event' );
 
-                $view_options = array( 'title' => sprintf( 'Edit %s', $event->label ),
+                $view_options = array( 'title' => sprintf( 'Edit %s', $event->title ),
                                        'event' => $event,
                                        'action' => 'update',
                                        'page' => $_GET['page'],
-                                       'add-new-page' => sprintf( 'hoo-location-event-add&location_id=%s', $_GET['location_id'] ),
+                                       'add-new-page' => sprintf( 'hoo-location-event-add&location_id=%s', $event->location->id ),
                                        'breadcrumbs' => array( 'Locations' => 'hoo',
                                                                sprintf( '%s Hours', $event->location->name ) => sprintf( '%s&location_id=%s', 'hoo-location-events', $event->location->id ),
                                                                $event->title => null ),
@@ -188,7 +186,7 @@ class EventController {
 
     public function add() {
 
-        if ( $_POST['action'] == 'create' ) {
+        if ( isset( $_POST['action'] ) && $_POST['action'] == 'create' ) {
             $event = new Event( $_POST, $this->entity_manager );
             $this->entity_manager->persist( $event );
             $this->entity_manager->flush();

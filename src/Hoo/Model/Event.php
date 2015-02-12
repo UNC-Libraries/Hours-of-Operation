@@ -80,17 +80,17 @@ class Event {
         $rrule->setStartDate( $start );
         $rrule->setEndDate( $end );
 
-        if ( $params['event_recurrence_rule_custom']['BYDAY'] )
+        if ( isset( $params['event_recurrence_rule_custom']['BYDAY'] ) )
             $rrule->setByDay( $params['event_recurrence_rule_custom']['BYDAY'] );
 
-        if ($params['event_recurrence_rule_custom']['UNTIL'] ) {
+        if ( isset( $params['event_recurrence_rule_custom']['UNTIL'] ) ) {
             $until = clone $start;
             $date = explode( '-', $params['event_recurrence_rule_custom']['UNTIL'] );
             $until->setDate( intval($date[0]), intval($date[1]), intval($date[2]) );
             $rrule->setUntil( $until );
         }
 
-        if ( $params['event_recurrence_rule_custom']['INTERVAL'] )
+        if ( isset(  $params['event_recurrence_rule_custom']['INTERVAL'] ) )
             $rrule->setInterval( $params['event_recurrence_rule_custom']['INTERVAL'] );
 
         switch( $event_data['recurrence_rule'] ) {
@@ -116,8 +116,20 @@ class Event {
         $end->setTimezone( $utc_tz );
         $rrule->setTimezone( 'UTC' );
 
-        $event = $entity_manager->find( '\Hoo\Model\Event', intval( $event_data['id'] ) );
-        $event_data['category'] = $entity_manager->find( '\Hoo\Model\Category', intval( $event_data['category'] ) );
+//        $event = $entity_manager->find( '\Hoo\Model\Event', intval( $event_data['id'] ) );
+
+
+        if ( empty( $event_data['title'] ) )
+            $event_data['title'] = 'New Event';
+
+        if ( empty( $event_data['category'] ) ) {
+            $event_data['category'] = new Category( array( 'name' => 'None',
+                                                           'color' => '#ddd000',
+                                                           'priority' => 9999999999999 ) );
+        } else {
+            $event_data['category'] = $entity_manager->find( '\Hoo\Model\Category', intval( $event_data['category'] ) );
+        }
+
         $event_data['location'] = $entity_manager->find( '\Hoo\Model\Location', intval( $event_data['location'] ) );
         $event_data['start'] = $start;
         $event_data['end'] = $end;

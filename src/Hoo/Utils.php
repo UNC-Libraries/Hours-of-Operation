@@ -52,15 +52,15 @@ class Utils {
         return array_values( $event_dates );
     }
 
-    public function prev_was_all_day( $cur, $instances ) {
-        for ( $index = 1; $index <= count( $instances ); $index++ ) {
-            if ( $instances[$index] == $cur ) {
+    static public function prev_was_all_day( $cur, $instances ) {
+        for ( $index = 1; $index < count( $instances ); $index++ ) {
+            if ( $instances[ $index ] == $cur ) {
                 $prev = $instances[$index - 1];
                 break;
             }
         }
 
-        if ( $prev && $prev['event']->is_all_day ) {
+        if ( isset( $prev ) && $prev['event']->is_all_day ) {
             if ( $cur['event']->is_all_day ) return false;
 
             $cur_date = new \DateTime( $cur['recurrence']->getStart()->format('Y-m-d') );
@@ -71,15 +71,17 @@ class Utils {
         return false;
     }
 
-    public function next_is_all_day( $cur, $instances ) {
-        for ( $index = 0; $index < count( $instances ); $index++ ) {
-            if ( $instances[$index] == $cur ) {
-                $next = $instances[$index + 1];
+    static public function next_is_all_day( $cur, $instances ) {
+        $num_instances = count( $instances );
+        if ( $num_instances == 1 ) return false;
+        for ( $index = 0; $index < $num_instances; $index++ ) {
+            if ( $instances[ $index ] == $cur ) {
+                $next = $instances[ $index + 1 ];
                 break;
             }
         }
 
-        if ( $next && $next['event']->is_all_day ) {
+        if ( isset( $next ) && $next['event']->is_all_day ) {
             if ( $cur['event']->is_all_day ) return false;
             $cur_date = new \DateTime( $cur['recurrence']->getStart()->format('Y-m-d') );
             $next_date = new \DateTime( $next['recurrence']->getStart()->format('Y-m-d') );

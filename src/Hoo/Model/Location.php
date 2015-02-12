@@ -139,25 +139,12 @@ class Location {
         $event_instances = array();
         $event_dates = array();
 
-        if ( ! $params['event']['id'] ) {
-            $current_event = new Event( $params, $entity_manager );
-
-            if ( ! $current_event->title )
-                $current_event->title = 'New Event';
-            if ( ! $current_event->category )
-                $current_event->category = new Category( array( 'name' => 'None',
-                                                                'color' => '#ddd000',
-                                                                'priority' => 9999999999999 ) );
-
-            $current_event->start->setTimeZone( $tz );
-            $current_event->end->setTimeZone( $tz );
-            $current_event->recurrence_rule->setTimezone( get_option( 'timezone_string' ) );
-
-            $this->events[] = $current_event;
+        if ( empty( $params['event']['id'] ) ) {
+            $current_event = new Event();
+            $this->events->add( $current_event );
         }
 
         foreach( $this->events as $event ) {
-
             if ( $params['event']['id'] == $event->id ) {
                 $event->fromParams( $params, $entity_manager );
             } else if ( $event->is_recurring ) {

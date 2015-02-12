@@ -44,12 +44,7 @@ class Loader {
 
         $this->shortcode = new Shortcode( $entity_manager );
 
-        $this->register_scripts();
-
-        if ( is_admin() ) {
-            $this->init_admin_hooks();
-            $this->init_controllers();
-        }
+        add_action( 'init', array( $this, 'init_hooks' ) );
     }
 
     /**
@@ -79,41 +74,39 @@ class Loader {
     }
 
 
+    public function init_hooks() {
+        add_action( 'wp_enqueue_scripts', array( $this, 'register_shortcode_scripts' ) );
+
+        if ( is_admin() ) {
+            add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_scripts' ) );
+            $this->init_admin_hooks();
+            $this->init_controllers();
+        }
+
+        ob_start();
+    }
+
     /**
        register all the global admin hooks like adding the admin menus
        @return void
      */
-    private function init_admin_hooks() {
+    public function init_admin_hooks() {
 
-
-
-        wp_enqueue_style(
-            'hoo-admin',
-            HOO__PLUGIN_URL . 'assets/css/admin.css',
-            array( 'jquery-ui' ),
-            HOO_VERSION);
-
+        wp_enqueue_style('hoo-admin', HOO__PLUGIN_URL . 'assets/css/admin.css', array( 'jquery-ui' ), HOO_VERSION);
         add_action( 'admin_menu', array( $this, 'add_menu' ) );
 
-        $plugin_basename = HOO__PLUGIN_DIR . SLUG;
+
+        $plugin_basename = HOO__PLUGIN_DIR . $this::SLUG;
         add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
 
-        add_action( 'init', array( $this, 'output_buffer' ) );
-
     }
-
-    public function output_buffer() {
-        ob_start();
-    }
-
     public function add_menu() {
-        add_menu_page(
-            __( 'Locations', 'hoo' ),
-            __( 'Hours of Operation', 'hoo' ),
-            'edit_page',
-            'hoo',
-            array( $this->location_controller, 'index' ),
-            HOO__PLUGIN_URL . 'assets/images/hoo-20.png' );
+        add_menu_page(__( 'Locations', 'hoo' ),
+                      __( 'Hours of Operation', 'hoo' ),
+                      'edit_pages',
+                      'hoo',
+                      array( $this->location_controller, 'index' ),
+                      HOO__PLUGIN_URL . 'assets/images/hoo-20.png' );
     }
 
     public function init_controllers() {
@@ -128,12 +121,9 @@ class Loader {
 
     }
 
-    private function register_scripts() {
+    public function register_admin_scripts() {
 
         wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js', array( 'jquery' ) );
-        wp_localize_script( 'hoo', 'HOO', array( 'page'     => $_GET['page'],
-                                                 'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
-                                                 'timezone' => get_option( 'timezone_string' ) ) );
 
         wp_register_script( 'validation', HOO__PLUGIN_URL . 'assets/js/vendor/jquery.validate.min.js', array( 'jquery' ) );
 
@@ -172,12 +162,16 @@ class Loader {
         wp_register_script( 'event-edit', HOO__PLUGIN_URL . 'assets/js/event-edit.js', array( 'validation', 'jquery-timepicker-addon', 'full-calendar' ) );
         wp_register_script( 'event-delete', HOO__PLUGIN_URL . 'assets/js/event-delete.js', array( 'jquery' ) );
 
-        // shortcode stuff
+
+    }
+    public function register_shortcode_scripts() {
+
+        wp_localize_script( 'hoo', 'HOO', array( 'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
+                                                 'timezone' => get_option( 'timezone_string' ) ) );
         wp_register_style( 'shortcode-main', HOO__PLUGIN_URL . 'assets/css/shortcode-main.css', array( 'full-calendar' ) );
         wp_register_script( 'g-api', sprintf( 'http://google.com/jsapi?key=%s', 'ABQIAAAAoRs91XgpKw60K4liNrOHoBStNMhZCa0lqZKLUDgzjZGRsKl38xSnSmVmaulnWVdBLItzW4KsddHCzA' ) ); // TODO: make plugin settings for this
         wp_register_script( 'g-maps', 'http://maps.googleapis.com/maps/api/js?senesor=false', array( 'g-api', 'jquery' ) );
         wp_register_script( 'shortcode-main', HOO__PLUGIN_URL . 'assets/js/shortcode-main.js', array( 'g-maps', 'jquery', 'jquery-ui-tabs', 'jquery-effects-slide', 'jquery-effects-fade', 'full-calendar' ) );
-
     }
 }
 ?>
