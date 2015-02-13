@@ -57,17 +57,14 @@ class LocationController {
     }
 
 
-    public function enqueue_scripts() {
-        $current_screen = get_current_screen();
+    public function enqueue_scripts( $page ) {
 
         // only enqueue for location pages
-        if ( preg_match( '/hoo(-location)?/i', $current_screen->id ) ) {
-
-            wp_localize_script( 'event-edit', 'HOO', array( 'timezone' => get_option( 'timezone_string' ) ) );
-
+        if ( preg_match( '/hoo(-location)?/i', $page ) ) {
             wp_enqueue_style( 'location-admin' );
             wp_enqueue_style( 'thickbox' );
             wp_enqueue_script( 'location-image' );
+
             if ( \Hoo\Utils::check_user_role( 'administrator' ) ) { // only enqueue if we need to
                 wp_enqueue_script( 'location-visibility' );
                 wp_enqueue_script( 'location-delete' );
@@ -157,9 +154,9 @@ class LocationController {
         $location = $this->entity_manager->find( '\Hoo\Model\Location', $_REQUEST['location_id'] );
         $this->entity_manager->persist( $location );
 
-        switch( $_POST['action'] ) {
+        switch( isset( $_POST['action'] ) && $_POST['action'] ) {
             case 'update':
-                $location_data = $_REQUEST['location'];
+                $location_data = $_POST['location'];
 
                 // update associations first
                 if ( $location->address ) {

@@ -109,7 +109,7 @@ class CategoryController {
     }
 
     public function edit() {
-        $category = $this->entity_manager->find( '\Hoo\Model\Category', $_GET['category_id'] );
+        $category = $this->entity_manager->find( '\Hoo\Model\Category', $_REQUEST['category_id'] );
         $view = new View( 'admin/category/category' );
         $view_options = array('title'   => sprintf( 'Edit %s Category', $category->name ),
                               'action'  => 'update',
