@@ -8,14 +8,11 @@
     <div class="hoo-title">
         <?php if ( isset( $this['breadcrumbs'] ) ) : ?>
         <ol class="breadcrumbs">
-            <?php $last_crumb = end( $this['breadcrumbs'] ); reset( $this['breadcrumbs'] ); ?>
-            <?php foreach( $this['breadcrumbs'] as $title => $url ) : ?>
-                <?php  if ( $last_crumb == $url ) : ?>
-                    <li class="active"><?php echo $title ?></li>
-                <?php else : ?>
-                    <li><a href="admin.php?page=<?php echo $url ?>"><?php echo $title ?></a> | </li>
-                <?php endif ?>
-            <?php endforeach ?>
+            <?php $last_crumb = count( $this['breadcrumbs'] ) - 1; $titles = array_keys( $this['breadcrumbs'] ); ?>
+            <?php for( $index = 0; $index < $last_crumb ; $index++) : ?>
+                <li><a href="admin.php?page=<?php echo $this['breadcrumbs'][ $titles[ $index ] ] ?>"><?php echo $titles[ $index ] ?></a> | </li>
+            <?php endfor ?>
+                <li class="active"><?php echo $titles[ $index ] ?></li>
         </ol>
         <?php endif ?>
         <h2 id="wphead">
