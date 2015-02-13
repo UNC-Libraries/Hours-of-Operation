@@ -109,13 +109,15 @@ class CategoryController {
     }
 
     public function edit() {
+        $category = $this->entity_manager->find( '\Hoo\Model\Category', $_GET['category_id'] );
         $view = new View( 'admin/category/category' );
-        $view_options = array('title'   => 'Edit a Category',
+        $view_options = array('title'   => sprintf( 'Edit %s Category', $category->name ),
                               'action'  => 'update',
                               'page'    => 'hoo-category-edit',
+                              'breadcrumbs'    => array( 'Categories'    => 'hoo-category',
+                                                         $category->name => null ),
                               'columns' => 2 );
 
-        $category = $this->entity_manager->find( '\Hoo\Model\Category', $_GET['category_id'] );
         $this->entity_manager->persist( $category );
 
         switch( isset( $_POST['action'] ) && $_POST['action'] ) {
