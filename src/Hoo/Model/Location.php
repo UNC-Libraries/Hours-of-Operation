@@ -3,6 +3,7 @@
 namespace Hoo\Model;
 
 use \Hoo\Utils;
+use Hoo\Model\Address;
 use \Doctrine\ORM\Mapping as ORM;
 
 use \Recurr\Rule as RRule;
@@ -282,8 +283,10 @@ class Location {
                 $this->$property = $value;
             }
 
-            $this->sublocations = new \Doctrine\Common\Collections\ArrayCollection();
         }
+
+        $this->address = new Address();
+        $this->sublocations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }
 
