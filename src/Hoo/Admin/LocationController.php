@@ -205,7 +205,7 @@ class LocationController {
 
     public function add() {
 
-        if ( $_REQUEST['action'] == 'create' ) {
+        if ( isset( $_POST['action'] ) && $_POST['action'] == 'create' ) {
             $location_data = $_REQUEST['location'];
 
             $location_data['address'] = new Address( $location_data['address'] );
