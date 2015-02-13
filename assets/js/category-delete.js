@@ -3,7 +3,7 @@ jQuery(function($) {
         if(confirm('Are you sure you want to delete this category?')) {
             e.preventDefault();
 
-            var location_id = $(this).closest('tr').first().attr('id');
+            var category_id = $(this).closest('tr').first().attr('id');
             $.ajax({
                 url: ajaxurl,
                 type: 'POST',

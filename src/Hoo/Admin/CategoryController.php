@@ -8,9 +8,6 @@ use \Hoo\View;
 defined( 'ABSPATH' ) or die();
 
 class CategoryController {
-    protected $screen_hook_suffix = null;
-
-    private $actions = array( 'add', 'create', 'edit', 'update', 'delete' );
 
     private $sub_pages = array(
         'index' => array(
@@ -38,8 +35,6 @@ class CategoryController {
     public function __construct($entity_manager) {
         $this->entity_manager = $entity_manager;
 
-        add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
-        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         $this->init_hooks();
     }
 
@@ -55,18 +50,14 @@ class CategoryController {
         }
     }
 
-    public function enqueue_scripts() {
-        $current_screen = get_current_screen();
+    public function enqueue_scripts( $page ) {
+
+        wp_enqueue_script( 'category-delete' );
+        wp_enqueue_script( 'category-visibility' );
+        wp_enqueue_script( 'category-order' );
 
         // only enqueue for category pages
-        if ( preg_match( '/hoo-category(-edit|-add)?/i', $current_screen->id ) ) {
-
-            wp_enqueue_style( 'category-admin' );
-
-            wp_enqueue_script( 'category-visibility' );
-            wp_enqueue_script( 'category-delete' );
-            wp_enqueue_script( 'category-order' );
-
+        if ( preg_match( '/hoo-category-(edit|add)?/i', $page ) ) {
             wp_enqueue_script( 'category-color-picker' );
             wp_enqueue_style( 'category-color-picker' );
         }
@@ -74,6 +65,7 @@ class CategoryController {
 
     public function init_hooks() {
         add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
         add_action( 'wp_ajax_category_is_visible', array( $this, 'ajax_category_is_visible' ) );
         add_action( 'wp_ajax_category_order', array( $this, 'ajax_category_order' ) );
@@ -99,39 +91,36 @@ class CategoryController {
         $category_info_fields = new View( 'admin/category/form_info_fields' );
         $category_publish_fields = new View( 'admin/category/form_publish_fields' );
 
-        add_meta_box(
-            'category-publish',
-            'Publish',
-            array( $category_publish_fields, 'render_metabox' ),
-            $_GET['page'],
-            'side',
-            'high',
-            array( 'category' => $category ) );
+        add_meta_box('category-publish',
+                     'Publish',
+                     array( $category_publish_fields, 'render_metabox' ),
+                     $_GET['page'],
+                     'side',
+                     'high',
+                     array( 'category' => $category ) );
 
-        add_meta_box(
-            'category-info',
-            'Category Info',
-            array( $category_info_fields, 'render_metabox' ),
-            $_GET['page'],
-            'normal',
-            'high',array( 'category' => $category ) );
+        add_meta_box( 'category-info',
+                      'Category Info',
+                      array( $category_info_fields, 'render_metabox' ),
+                      $_GET['page'],
+                      'normal',
+                      'high',array( 'category' => $category ) );
 
     }
 
     public function edit() {
         $view = new View( 'admin/category/category' );
-        $view_options = array(
-            'title' => 'Edit a Category',
-            'action' => 'update',
-            'page' => 'hoo-category-edit',
-            'columns' => 2 );
+        $view_options = array('title'   => 'Edit a Category',
+                              'action'  => 'update',
+                              'page'    => 'hoo-category-edit',
+                              'columns' => 2 );
 
-        $category = $this->entity_manager->find( '\Hoo\Model\Category', $_REQUEST['category_id'] );
+        $category = $this->entity_manager->find( '\Hoo\Model\Category', $_GET['category_id'] );
         $this->entity_manager->persist( $category );
 
-        switch( $_POST['action'] ) {
+        switch( isset( $_POST['action'] ) && $_POST['action'] ) {
             case 'update':
-                $category_data = $_REQUEST['category'];
+                $category_data = $_POST['category'];
 
                 // set main category data now
                 $category = $category->fromArray( $category_data );
@@ -152,10 +141,8 @@ class CategoryController {
                 $category->remove();
                 $category->flush();
 
-                $view_options = array(
-                    'categories-table' => $categories_table,
-                    'notification' => array( 'type' => 'updated', 'message' => 'category Added' )
-                );
+                $view_options = array( 'categories-table' => $categories_table,
+                                       'notification'     => array( 'type' => 'updated', 'message' => 'category Added' ) );
                 $view = new View( 'admin/category/index' );
             default:
                 $this->add_meta_boxes( $category );
@@ -168,8 +155,8 @@ class CategoryController {
 
     public function add() {
 
-        if ( $_REQUEST['action'] == 'create' ) {
-            $category_data = $_REQUEST['category'];
+        if ( isset( $_POST['action'] ) && $_POST['action'] == 'create' ) {
+            $category_data = $_POST['category'];
 
             $category = new Category( $category_data );
             $this->entity_manager->persist( $category );
@@ -178,9 +165,9 @@ class CategoryController {
             $categories_table = new CategoryList( $this->entity_manager );
             $categories_table->prepare_items();
 
-            $view_options = array(
-                'categories-table' => $categories_table,
-                'notification' => array( 'type' => 'updated', 'message' => 'Category Added' )
+            $view_options = array( 'title'            => 'Categories',
+                                   'categories-table' => $categories_table,
+                                   'notification'     => array( 'type' => 'updated', 'message' => 'Category Added' )
             );
 
             $view = new View( 'admin/category/index' );
@@ -190,16 +177,15 @@ class CategoryController {
             $view = new View( 'admin/category/category' );
 
             $this->add_meta_boxes( $category );
-            $view_options = array(
-                'title' => 'Add a Category',
-                'columns' => 2,
-                'category' => $category,
-                'page' => 'hoo-category-add',
-                'add-new-page' => sprintf( 'hoo-category-add' ),
-                'breadcrumbs' => array( 'Categories' => 'hoo-category',
-                                        'Add a Location' => 'hoo-category-add' ),
-                'action' => 'create',
-                'action-display' => 'Add'
+            $view_options = array( 'title'          => 'Add a Category',
+                                   'columns'        => 2,
+                                   'category'       => $category,
+                                   'page'           => 'hoo-category-add',
+                                   'add-new-page'   => sprintf( 'hoo-category-add' ),
+                                   'breadcrumbs'    => array( 'Categories'     => 'hoo-category',
+                                                              'Add a Location' => 'hoo-category-add' ),
+                                   'action'         => 'create',
+                                   'action-display' => 'Add'
             );
 
         }
@@ -209,9 +195,7 @@ class CategoryController {
 
     public function add_action_links( $links ) {
 
-        return array_merge(
-            array(
-                'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>' ),
+        return array_merge( array( 'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>' ),
             $links );
 
     }
@@ -252,9 +236,6 @@ class CategoryController {
 
         wp_send_json_success();
         exit;
-    }
-
-    public static function get_page_url() {
     }
 }
 

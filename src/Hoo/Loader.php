@@ -75,6 +75,9 @@ class Loader {
 
 
     public function init_hooks() {
+
+        wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js', array( 'jquery' ) );
+
         add_action( 'wp_enqueue_scripts', array( $this, 'register_shortcode_scripts' ) );
 
         if ( is_admin() ) {
@@ -91,6 +94,9 @@ class Loader {
        @return void
      */
     public function init_admin_hooks() {
+
+        wp_localize_script( 'hoo', 'HOO', array( 'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
+                                                 'timezone' => get_option( 'timezone_string' ) ) );
 
         wp_enqueue_style('hoo-admin', HOO__PLUGIN_URL . 'assets/css/admin.css', array( 'jquery-ui' ), HOO_VERSION);
         add_action( 'admin_menu', array( $this, 'add_menu' ) );
@@ -123,20 +129,13 @@ class Loader {
 
     public function register_admin_scripts() {
 
-        wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js', array( 'jquery' ) );
+        wp_enqueue_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
 
         wp_register_script( 'validation', HOO__PLUGIN_URL . 'assets/js/vendor/jquery.validate.min.js', array( 'jquery' ) );
 
-        global $wp_version;
         wp_register_style( 'jquery-ui', HOO__PLUGIN_URL . 'assets/css/jquery-ui.css' );
         wp_register_style( 'full-calendar', HOO__PLUGIN_URL . 'assets/css/fullcalendar.min.css', array( 'jquery-ui' ) );
 
-        wp_enqueue_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
-
-        // category stuff
-        $color_picker = 3.4 <= $wp_version ? 'wp-color-picker' : 'farbtastic';
-        wp_register_script( 'category-color-picker', HOO__PLUGIN_URL . 'assets/js/color-picker.js', array( $color_picker ) );
-        wp_register_style( 'category-color-picker', NULL, array( $color_picker ) );
 
         // location stuff
         wp_register_script( 'location-visibility', HOO__PLUGIN_URL . 'assets/js/location-visibility.js', array( 'jquery' ) );
@@ -146,9 +145,13 @@ class Loader {
 
         // category stuff
         wp_register_script( 'category-visibility', HOO__PLUGIN_URL . 'assets/js/category-visibility.js', array( 'jquery' ) );
-        wp_register_script( 'category-color-picker', HOO__PLUGIN_URL . 'assets/js/color-picker.js', array( 'jquery' ) );
         wp_register_script( 'category-order', HOO__PLUGIN_URL . 'assets/js/category-order.js', array( 'jquery-ui-sortable' ) );
         wp_register_script( 'category-delete', HOO__PLUGIN_URL . 'assets/js/category-delete.js', array( 'jquery' ) );
+
+        global $wp_version;
+        $color_picker = 3.4 <= $wp_version ? 'wp-color-picker' : 'farbtastic';
+        wp_register_script( 'category-color-picker', HOO__PLUGIN_URL . 'assets/js/color-picker.js', array( $color_picker ) );
+        wp_register_style( 'category-color-picker', NULL, array( $color_picker ) );
 
         // event stuff
         wp_register_script( 'moment', HOO__PLUGIN_URL . 'assets/js/vendor/moment.min.js' );
@@ -166,8 +169,7 @@ class Loader {
     }
     public function register_shortcode_scripts() {
 
-        wp_localize_script( 'hoo', 'HOO', array( 'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
-                                                 'timezone' => get_option( 'timezone_string' ) ) );
+
         wp_register_style( 'shortcode-main', HOO__PLUGIN_URL . 'assets/css/shortcode-main.css', array( 'full-calendar' ) );
         wp_register_script( 'g-api', sprintf( 'http://google.com/jsapi?key=%s', 'ABQIAAAAoRs91XgpKw60K4liNrOHoBStNMhZCa0lqZKLUDgzjZGRsKl38xSnSmVmaulnWVdBLItzW4KsddHCzA' ) ); // TODO: make plugin settings for this
         wp_register_script( 'g-maps', 'http://maps.googleapis.com/maps/api/js?senesor=false', array( 'g-api', 'jquery' ) );
