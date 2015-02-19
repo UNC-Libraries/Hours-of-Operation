@@ -45,7 +45,7 @@ class CategoryList extends \WP_List_Table {
         );
 
         // fetch categories
-        $order_by = isset( $_REQUEST['orderby'] ) ? array( $_REQUEST['orderby'] => $_REQUEST['order'] ) : array( 'priority' => 'asc' );
+        $order_by = isset( $_REQUEST['orderby'] ) ? array( $_REQUEST['orderby'] => $_REQUEST['order'] ) : array( 'priority' => 'desc' );
         $categories_repo = $this->entity_manager->getRepository( '\Hoo\Model\Category' );
         $categories = $categories_repo->findBy( array(), $order_by );
 
