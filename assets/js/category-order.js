@@ -1,4 +1,6 @@
 jQuery(function($) {
+    $( '.categories td.priority').css( 'cursor', 'move' );
+
     $('#the-list').sortable({
         items: '.list-item',
         opacity: 0.4,
