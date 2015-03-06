@@ -75,7 +75,7 @@ class Loader {
 
     public function init_hooks() {
 
-        wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js', array( 'shortcode-main' ) );
+        wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js');
         wp_localize_script( 'hoo', 'HOO', array( 'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
                                                  'timezone' => get_option( 'timezone_string' ) ) );
 
@@ -131,10 +131,8 @@ class Loader {
         wp_enqueue_script( 'init-postbox', HOO__PLUGIN_URL . 'assets/js/init_postbox.js', array( 'postbox' ) );
 
         wp_register_script( 'validation', HOO__PLUGIN_URL . 'assets/js/vendor/jquery.validate.min.js', array( 'jquery' ) );
-
         wp_register_style( 'jquery-ui', HOO__PLUGIN_URL . 'assets/css/jquery-ui.css' );
         wp_register_style( 'full-calendar', HOO__PLUGIN_URL . 'assets/css/fullcalendar.min.css', array( 'jquery-ui' ) );
-
 
         // location stuff
         wp_register_script( 'location-visibility', HOO__PLUGIN_URL . 'assets/js/location-visibility.js', array( 'jquery' ) );
