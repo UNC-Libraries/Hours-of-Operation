@@ -51,10 +51,11 @@ class CategoryController {
     }
 
     public function enqueue_scripts( $page ) {
-
-        wp_enqueue_script( 'category-delete' );
-        wp_enqueue_script( 'category-visibility' );
-        wp_enqueue_script( 'category-order' );
+        if ( preg_match( '/hoo-category/i', $page ) ) {
+            wp_enqueue_script( 'category-delete' );
+            wp_enqueue_script( 'category-visibility' );
+            wp_enqueue_script( 'category-order' );
+        }
 
         // only enqueue for category pages
         if ( preg_match( '/hoo-category-(edit|add)?/i', $page ) ) {
