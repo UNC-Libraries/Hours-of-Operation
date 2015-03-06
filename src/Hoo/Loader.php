@@ -42,7 +42,6 @@ class Loader {
 
         $this->entity_manager = $entity_manager;
 
-        $this->shortcode = new Shortcode( $entity_manager );
 
         add_action( 'init', array( $this, 'init_hooks' ) );
     }
@@ -76,16 +75,18 @@ class Loader {
 
     public function init_hooks() {
 
-        wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js', array( 'jquery' ) );
-
-        add_action( 'wp_enqueue_scripts', array( $this, 'register_shortcode_scripts' ) );
+        wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js', array( 'shortcode-main' ) );
+        wp_localize_script( 'hoo', 'HOO', array( 'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
+                                                 'timezone' => get_option( 'timezone_string' ) ) );
 
         if ( is_admin() ) {
-            add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_scripts' ) );
+            $this->register_admin_scripts();
             $this->init_admin_hooks();
             $this->init_controllers();
+        } else {
+            $this->register_shortcode_scripts();
+            $this->shortcode = new Shortcode( $this->entity_manager );
         }
-
         ob_start();
     }
 
@@ -95,8 +96,6 @@ class Loader {
      */
     public function init_admin_hooks() {
 
-        wp_localize_script( 'hoo', 'HOO', array( 'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
-                                                 'timezone' => get_option( 'timezone_string' ) ) );
 
         wp_enqueue_style('hoo-admin', HOO__PLUGIN_URL . 'assets/css/admin.css', array( 'jquery-ui' ), HOO_VERSION);
         add_action( 'admin_menu', array( $this, 'add_menu' ) );
@@ -169,8 +168,12 @@ class Loader {
     }
     public function register_shortcode_scripts() {
 
-
+        wp_register_style( 'jquery-ui', HOO__PLUGIN_URL . 'assets/css/jquery-ui.css' );
+        wp_register_style( 'full-calendar', HOO__PLUGIN_URL . 'assets/css/fullcalendar.min.css', array( 'jquery-ui' ) );
         wp_register_style( 'shortcode-main', HOO__PLUGIN_URL . 'assets/css/shortcode-main.css', array( 'full-calendar' ) );
+
+        wp_register_script( 'moment', HOO__PLUGIN_URL . 'assets/js/vendor/moment.min.js' );
+        wp_register_script( 'full-calendar', HOO__PLUGIN_URL . 'assets/js/vendor/fullcalendar.min.js', array( 'jquery', 'moment' ) );
         wp_register_script( 'g-api', sprintf( 'http://google.com/jsapi?key=%s', 'ABQIAAAAoRs91XgpKw60K4liNrOHoBStNMhZCa0lqZKLUDgzjZGRsKl38xSnSmVmaulnWVdBLItzW4KsddHCzA' ) ); // TODO: make plugin settings for this
         wp_register_script( 'g-maps', 'http://maps.googleapis.com/maps/api/js?senesor=false', array( 'g-api', 'jquery' ) );
         wp_register_script( 'shortcode-main', HOO__PLUGIN_URL . 'assets/js/shortcode-main.js', array( 'g-maps', 'jquery', 'jquery-ui-tabs', 'jquery-effects-slide', 'jquery-effects-fade', 'full-calendar' ) );
