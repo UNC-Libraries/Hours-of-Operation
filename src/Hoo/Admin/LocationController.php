@@ -11,8 +11,6 @@ defined( 'ABSPATH' ) or die();
 class LocationController {
     protected $screen_hook_suffix = null;
 
-    private $actions = array( 'add', 'create', 'edit', 'update', 'delete' );
-
     private $sub_pages = array(
         'index' => array(
             'parent' => 'hoo',
@@ -85,13 +83,15 @@ class LocationController {
     }
 
     public function index() {
-        $view_options = array( 'title' => 'Locations' );
-
         $locations_table = new LocationList( $this->entity_manager );
-
         $locations_table->prepare_items();
-        $view_options['locations-table'] = $locations_table;
-        $view_options['add-new-page'] = 'hoo-location-add';
+
+        $view_options = array( 'title'           => 'Locations',
+                               'locations-table' => $locations_table,
+                               'add-new-page'    => 'hoo-location-add' );
+
+        if ( isset ( $_GET['updated'] ) )
+            $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Location Added' );
 
         $view = new View( 'admin/location/index' );
         $view->render( $view_options );
@@ -180,7 +180,6 @@ class LocationController {
                 break;
 
             case 'delete':
-
                 $location_id = $_POST['location_id'];
 
                 $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
@@ -189,11 +188,8 @@ class LocationController {
                 $location->remove();
                 $location->flush();
 
-                $view_options = array(
-                    'locations-table' => $locations_table,
-                    'notification' => array( 'type' => 'updated', 'message' => 'Location Added' )
-                );
-                $view = new View( 'admin/location/index' );
+                wp_safe_redirect( admin_url( 'admin.php?page=hoo&updated=2' ) );
+                exit;
             default:
                 $this->add_meta_boxes( $location );
         }
@@ -206,44 +202,39 @@ class LocationController {
     public function add() {
 
         if ( isset( $_POST['action'] ) && $_POST['action'] == 'create' ) {
-            $location_data = $_REQUEST['location'];
+            try {
+                $location_data = $_REQUEST['location'];
 
-            $location_data['address'] = new Address( $location_data['address'] );
-            $location_data['parent'] =  $this->entity_manager->find( '\Hoo\Model\Location', $location_data['parent'] );
+                $location_data['address'] = new Address( $location_data['address'] );
+                $location_data['parent'] =  $this->entity_manager->find( '\Hoo\Model\Location', $location_data['parent'] );
 
-            $location = new Location( $location_data );
-            $this->entity_manager->persist( $location );
-            $this->entity_manager->flush();
+                $location = new Location( $location_data );
+                $this->entity_manager->persist( $location );
+                $this->entity_manager->flush();
 
-            $locations_table = new LocationList( $this->entity_manager );
-            $locations_table->prepare_items();
-
-            $view_options = array(
-                'locations-table' => $locations_table,
-                'notification' => array( 'type' => 'updated', 'message' => 'Location Added' )
-            );
-
-            $view = new View( 'admin/location/index' );
-
+                wp_safe_redirect( admin_url( 'admin.php?page=hoo&updated=1' ) );
+                exit();
+            } catch ( Exception $e ) {
+            }
         } else {
             $location = new Location();
-            $view = new View( 'admin/location/location' );
-
-
-            $this->add_meta_boxes( $location );
-            $view_options = array(
-                'title' => 'Add a Location',
-                'columns' => 2,
-                'location' => $location,
-                'page' => 'hoo-location-add',
-                'add-new-page' => sprintf( 'hoo-location-add' ),
-                'breadcrumbs' => array( 'Locations' => 'hoo',
-                                        'Add a Location' => 'hoo-location-add' ),
-                'action' => 'create',
-                'action-display' => 'Add'
-            );
-
         }
+
+        $view = new View( 'admin/location/location' );
+
+        $this->add_meta_boxes( $location );
+        $view_options = array(
+            'title' => 'Add a Location',
+            'columns' => 2,
+            'location' => $location,
+            'page' => 'hoo-location-add',
+            'add-new-page' => sprintf( 'hoo-location-add' ),
+            'breadcrumbs' => array( 'Locations' => 'hoo',
+                                    'Add a Location' => 'hoo-location-add' ),
+            'action' => 'create',
+            'action-display' => 'Add'
+        );
+
 
         $view->render( $view_options );
     }
