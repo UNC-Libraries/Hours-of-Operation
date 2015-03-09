@@ -64,7 +64,7 @@ class Location {
      **/
     protected $parent;
 
-    /** @ORM\OneToMany(targetEntity="Event", mappedBy="location") **/
+    /** @ORM\OneToMany(targetEntity="Event", mappedBy="location", fetch="EAGER") **/
     protected $events;
 
     /** @ORM\Column(name="created_at", type="datetime") **/
@@ -122,7 +122,7 @@ class Location {
 
         $hours = $this->get_hours( $start, $end );
 
-        $current_event = $hours[0];
+        $current_event = isset( $hours[0] ) ? $hours[0] : null;
 
         unset( $current_event['priority'] ); unset( $current_event['date'] );
 
@@ -148,10 +148,13 @@ class Location {
         foreach( $this->events as $event ) {
             if ( $params['event']['id'] == $event->id ) {
                 $event->fromParams( $params, $entity_manager );
-            } else if ( $event->is_recurring ) {
-                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, 'UTC' );
-            } else if ( ! $event->is_recurring )  {
-                $event->recurrence_rule = new RRule( array( 'FREQ' => 'YEARLY', 'COUNT' => 1 ), $event->start, $event->end, 'UTC' );
+            } else {
+                if ( $event->is_recurring ) {
+                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, 'UTC' );
+                } else {
+                    $event->recurrence_rule = new RRule( array('COUNT' => 1 ), $event->start, $event->end, 'UTC' );
+                }
+
             }
 
             $event->start->setTimeZone( $tz );
