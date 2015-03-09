@@ -53,11 +53,13 @@ class Utils {
     }
 
     static public function prev_was_all_day( $cur, $instances ) {
-        for ( $index = 1; $index < count( $instances ); $index++ ) {
+        $index = 1;
+        while ( $index < count( $instances ) ) {
             if ( $instances[ $index ] == $cur ) {
                 $prev = $instances[$index - 1];
                 break;
             }
+            $index++;
         }
 
         if ( isset( $prev ) && $prev['event']->is_all_day ) {
@@ -73,12 +75,14 @@ class Utils {
 
     static public function next_is_all_day( $cur, $instances ) {
         $num_instances = count( $instances );
+        $index = 0;
         if ( $num_instances == 1 ) return false;
-        for ( $index = 0; $index < $num_instances; $index++ ) {
+        while ( $index < $num_instances - 1 ) {
             if ( $instances[ $index ] == $cur ) {
                 $next = $instances[ $index + 1 ];
                 break;
             }
+            $index++;
         }
 
         if ( isset( $next ) && $next['event']->is_all_day ) {
