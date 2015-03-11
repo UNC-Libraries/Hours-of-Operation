@@ -7,39 +7,64 @@
     min-height: 700px;
 }
 
-#hoo-main ul { list-style: none; }
-
 #hoo-main .location-row:hover {
     cursor: pointer;
 }
 
 #hoo-main #location-list-container {
-    border-radius: 5px 5px 0 0;
-    box-shadow: 1px 1px 3px 0 #aaa;
     float: left;
     width: 45%;
     min-height: 700px;
 }
 
-#hoo-main #location-list-container li div{
-    display: inline-block;
-    vertical-align: middle;
-    padding: 7.5px 2px 7.5px 8px;
+#hoo-main #locations-list {
+    width: 100%;
+    table-layout: fixed;
 }
 
-#hoo-main #location-list-container .list-header div {
-    padding: 5px 2px 5px 8px;
-}
-
-#hoo-main #location-list-container .list-header {
+#hoo-main #location-list-container #locations-list .list-header {
     background-color: #666;
     color: #fff;
-    border-radius: 5px 5px 0 0;
+}
+#hoo-main #location-list-container #locations-list th {
+    padding: 5px;
+}
+#hoo-main #location-list-container #locations-list th.location-name {
+    vertical-align: middle;
+    text-align: left;
+}
+#hoo-main #location-list-container #locations-list th.location-status {
+    vertical-align: middle;
+    width: 25%;
 }
 
-#hoo-main #location-list-container .location-row {
-    overflow: auto;
-    border-bottom: 1px solid #ddddff;
+#hoo-main #location-list-container td {
+    border-bottom: 0 solid #fff;
+    padding: 10px 5px 10px 5px;
+}
+
+#hoo-main #location-list-container td.location-name {
+    font-weight: bold;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+#hoo-main #location-list-container td.location-status {
+    text-align: center;
+}
+#hoo-main #location-list-container td.location-status span {
+    display: block;
+}
+
+#hoo-main #location-list-container #locations-list td.location-status span.open {
+    color: #006600;
+    font-size: 18px;
+}
+#hoo-main #location-list-container #locations-list td.location-status span.closed {
+    color: #990000;
+    font-size: 18px;
 }
 
 #hoo-main #location-list-container .location-row:hover {
@@ -48,20 +73,6 @@
 #hoo-main #location-list-container .location-row.highlight {
     background-color: #ddddff;
 }
-
-#hoo-main #location-list-container .location-row:hover .location-name {
-    border-right: 1px solid #ddddff;
-}
-
-#hoo-main #location-list-container .location-name {
-}
-#hoo-main #location-list-container .location-status {
-    width: 25%;
-    border-left: 1px solid #ccc;
-    float: right;
-    text-align: center;
-}
-
 
 #hoo-main #panel-container {
     padding-top: 10px;
