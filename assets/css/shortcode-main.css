@@ -13,7 +13,7 @@
 
 #hoo-main #location-list-container {
     float: left;
-    width: 45%;
+    width: 35%;
     min-height: 700px;
 }
 
@@ -46,9 +46,6 @@
 #hoo-main #location-list-container td.location-name {
     font-weight: bold;
     font-size: 16px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     vertical-align: middle;
 }
 #hoo-main #location-list-container td.location-status {
@@ -75,16 +72,17 @@
 }
 
 #hoo-main #panel-container {
-    padding-top: 10px;
+    padding: 2px 2px 2px 0px;
     position: relative;
-    margin-left: 45%;
-}
-#hoo-main .panel {
+    margin-left: 35%;
+    overflow: scroll;
     border-top: 1px solid #aaa;
     border-right: 1px solid #aaa;
     border-bottom: 1px solid #aaa;
     border-radius: 0 5px 5px 0;
     box-shadow: 1px 1px 3px 0px #aaa;
+}
+#hoo-main .panel {
 
     padding: 10px;
     min-height: 675px;
@@ -94,22 +92,77 @@
     display: none;
 }
 
+#hoo-main .panel .location-detail {
+    height: 100%;
+}
+
+#hoo-main .panel .location-detail  h4{
+    margin-bottom: 5px;
+}
+
+#hoo-main .panel .location-detail .hours-calendar {
+    display: block;
+}
+#hoo-main .panel .location-detail .contact {
+    padding: 10px 0 0 1px;
+    display: block;
+}
+
+#hoo-main .panel .location-detail .contact .address-picture-wrapper {
+    float: left;
+    width: 40%;
+    min-height: 200px;
+    border: 1px solid #eee;
+    padding: 5px;
+    margin-right: 5px;
+    box-shadow: 0px 1px 3px #ccc;
+}
+#hoo-main .panel .location-detail .contact .location-address h5 {
+    margin-bottom: 5px;
+}
+
 #hoo-main #map-canvas {
     min-height: 685px;
 }
+
 
 .is-hidden {
     display: none;
 }
 
-#hoo-main .address-picture-wrapper .location-image {
-    float: left;
-    width: 50%;
+#hoo-main ul {
+    list-style: none;
 }
 
-.fc-content {
-    text-align: center;
+#hoo-main .hours-calendar {
+    min-width: 475px;
+    margin: 0 auto;
 }
-.fc-container {
-    line-height: 1em;
+
+#hoo-main .fc-header-title h2 {
+    white-space: normal !important;
+}
+
+#hoo-main .fc-view-month .fc-event {
+    width: 2px !important;
+}
+
+#hoo-main .fc-button-content {
+    padding: 0;
+}
+#hoo-main .fc-event-container {
+}
+#hoo-main .fc-content {
+}
+
+#hoo-main .fc tr td {
+    padding: 0px;
+}
+
+#hoo-main .fc-button-content {
+    padding: 0;
+}
+
+.ui-panel-inner {
+    overflow: auto;
 }

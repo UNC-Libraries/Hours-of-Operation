@@ -129,7 +129,7 @@ class Location {
         return $current_event;
     }
 
-    public function get_fullcalendar_events( $params, $entity_manager ) {
+    public function get_fullcalendar_events( $params, $entity_manager, $with_title = true ) {
         $rrule_transformer = new RRuleTransformer();
         $tz = new \DateTimeZone( get_option( 'timezone_string') );
         $utc_tz = new \DateTimeZone( 'UTC' );
@@ -146,13 +146,13 @@ class Location {
         }
 
         foreach( $this->events as $event ) {
-            if ( $params['event']['id'] == $event->id ) {
+            if ( isset( $params['event']['id'] ) && $params['event']['id'] == $event->id ) {
                 $event->fromParams( $params, $entity_manager );
             } else {
                 if ( $event->is_recurring ) {
                     $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, 'UTC' );
                 } else {
-                    $event->recurrence_rule = new RRule( array('COUNT' => 1 ), $event->start, $event->end, 'UTC' );
+                    $event->recurrence_rule = new RRule( null, $event->start, $event->end, 'UTC' );
                 }
 
             }
@@ -179,20 +179,20 @@ class Location {
             $next_all_day = Utils::next_is_all_day( $instance, $event_instances );
 
             if ( $prev_all_day && $next_all_day ) {
-                $title = sprintf( "%s\n%s", $instance['event']->title,
-                                  Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() ) );
+                $title = $with_title ? $instance['event']->title . "\n" : '';
+                $title .= Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() );
             }
             elseif ( $prev_all_day ) {
-                $title = sprintf( "24 Hours\n-\n%s", Utils::format_time( $instance['recurrence']->getEnd() ) );
+                $title = sprintf( "24 Hours - %s", Utils::format_time( $instance['recurrence']->getEnd() ) );
             } elseif ( $next_all_day )  {
-                $title = sprintf( "%s\n-\n24 Hours", Utils::format_time( $instance['recurrence']->getStart() ) );
+                $title = sprintf( "%s - 24 Hours", Utils::format_time( $instance['recurrence']->getStart() ) );
             } elseif ( $instance['event']->is_all_day ) {
                 $title = sprintf( "%s\nOpen 24 Hours", $instance['event']->title );
             } elseif ($instance['event']->is_closed ) {
                 $title = sprintf( "%s\nClosed", $instance['event']->title );
             } else {
-                $title = sprintf( "%s\n%s", $instance['event']->title,
-                                  Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() ) );
+                $title = $with_title ? $instance['event']->title . "\n" : '';
+                $title .= Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() );
             }
 
 

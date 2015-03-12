@@ -8,39 +8,45 @@
                 <h4><span><?php echo $location->name ?></span></h4>
             <?php endif ?>
 
-            <div class="location-description">
-                <?php echo $location->description ?>
-            </div>
+            <?php if ($location->description ) : ?>
+                <div class="location-description">
+                    <?php echo $location->description ?>
+                </div>
+            <?php endif ?>
 
             <div class="hours-calendar" data-location-id="<?php echo $location->id ?>"></div>
 
-            <div class="address-picture-wrapper">
-                <?php if ( $location->image ) : ?>
-                    <div class="location-image">
-                        <img src="<?php echo $location->image ?>"/>
-                    </div>
-                <?php endif ?>
-                <?php if ( $location->address ) : ?>
-                    <div class="location-address">
-                        <ul>
-                            <li>Address</li>
-                        </ul>
-                            <li><?php echo $location->address->line1 ?></li>
-                            <li><?php echo $location->address->line2 ?></li>
-                            <li><?php echo $location->address->line3 ?></li>
-                            <li><?php echo sprintf( '%s, %s',  $location->address->city, $location->address->state ) ?></li>
-                            <li><?php echo $location->address->zip ?></li>
-                        <?php if ( $location->is_handicap_accessible ) : ?>
-                            <span>Disability Access</span>
-                        <?php endif ?>
-                    </div>
-                <?php endif ?>
-                <div class="location-phone">
+            <div class="contact">
+                <div class="address-picture-wrapper">
+                    <?php if ( $location->image ) : ?>
+                        <div class="location-image">
+                            <img src="<?php echo $location->image ?>"/>
+                        </div>
+                    <?php endif ?>
+                </div>
+                <div class="location-address">
+                    <h5>Address</h5>
                     <ul>
-                        <li>Phone</li>
-                        <li><?php echo $location->phone ?></li>
+                        <li><?php if ( $location->address->line1 ) echo $location->address->line1 ?></li>
+                        <li><?php if ( $location->address->line2 ) echo $location->address->line2 ?></li>
+                        <li><?php if ( $location->address->line2 ) echo $location->address->line3 ?></li>
+                        <li><?php if ( $location->address->line2 ) echo sprintf( '%s, %s',  $location->address->city, $location->address->state ) ?></li>
+                        <li><?php if ( $location->address->line2 ) echo $location->address->zip ?></li>
                     </ul>
                 </div>
+                <?php if ( $location->is_handicap_accessible ) : ?>
+                    <div class="handicap">
+                        <span>Disability Access</span>
+                    </div>
+                <?php endif ?>
+                <?php if ( $location->phone ) : ?>
+                    <div class="location-phone">
+                        <h5>Phone</h5>
+                        <ul>
+                            <li><?php echo $location->phone ?></li>
+                        </ul>
+                    </div>
+                <?php endif ?>
             </div>
         </div>
     </div>

@@ -55,6 +55,8 @@ jQuery( function( $ ) {
 
     $hours_calendars.each( function( index, hour_cal ) {
         $( hour_cal ).fullCalendar( {
+            aspectRatio: 1.5,
+            
             events: function( cal_start, cal_end, tz, cb ) {
 
                 $.ajax( {
@@ -70,10 +72,6 @@ jQuery( function( $ ) {
                         cb ( response );
                     }
                 });
-            },
-            eventRender: function( event, element, view ) {
-                // render the whole events calendar square with the events category color
-                $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]', hour_cal).css('background-color', event.color);
             },
             timezone: 'local',
             timeFormat: '',
