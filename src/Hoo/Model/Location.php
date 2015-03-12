@@ -129,6 +129,56 @@ class Location {
         return $current_event;
     }
 
+    public function is_open() {
+        $tz = new \DateTimeZone( get_option( 'timezone_string') );
+        $now = new \DateTime( null, $tz );
+
+        $now_start = new \DateTime( date( 'Y-m-d' ), $tz );
+        $now_end = new \DateTime( $now_start->format( 'Y-m-d' ), $tz );
+        $now_end->modify( '+1 day' );
+        $event_instances = $this->get_event_instances( $now_start, $now_end );
+
+        if ( count ( $event_instances ) > 0 ) {
+            return ( $now >= $event_instances[0]->start && $now <= $event_instances[0]->end ) ? $event_instances[0]->end : false;
+        } 
+        return null;
+    }
+
+    public function get_event_instances( $start = null, $end = null ) {
+        $tz = new \DateTimeZone( get_option( 'timezone_string') );
+        $event_instances = array();
+        $rrule_transformer = new RRuleTransformer();
+
+        foreach( $this->events as $event ) {
+            if ( $event->is_recurring ) {
+                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end );
+
+                $event->start->setTimeZone( $tz );
+                $event->end->setTimeZone( $tz );
+                $event->recurrence_rule->setTimezone( get_option( 'timezone_string' ) );
+
+                if ( $start && $end ) {
+                    $range = new BetweenConstraint( $start, $end, true ) ;
+                    $recurrences = $rrule_transformer->transform( $event->recurrence_rule, 40, $range)->toArray();
+                } else {
+                    $recurrences = $rrule_transformer->transform( $event->recurrence_rule, 40)->toArray();
+                }
+
+                foreach ( $recurrences as $recur ) {
+                    $tmp_event = clone $event;
+                    $tmp_event->start = $recur->getStart();
+                    $tmp_event->end = $recur->getEnd();
+                    $event_instances[] = $tmp_event;
+                }
+            } else {
+                $event_instances[] = $event;
+            }
+        }
+        
+        return $event_instances;
+    }
+
+
     public function get_fullcalendar_events( $params, $entity_manager, $with_title = true ) {
         $rrule_transformer = new RRuleTransformer();
         $tz = new \DateTimeZone( get_option( 'timezone_string') );
