@@ -3,10 +3,11 @@
         <div class="location-detail">
             <?php if ( $location->url ) : ?>
                 <h4><span><a href="<?php echo $location->url ?>"><?php echo $location->name ?></a></span></h4>
-                <p><a href="<?echo $location->url ?>"><?php echo $location->url ?></a></p>
             <?php else :?>
                 <h4><span><?php echo $location->name ?></span></h4>
             <?php endif ?>
+
+            <div class="hours-calendar" data-location-id="<?php echo $location->id ?>"></div>
 
             <?php if ($location->description ) : ?>
                 <div class="location-description">
@@ -14,7 +15,9 @@
                 </div>
             <?php endif ?>
 
-            <div class="hours-calendar" data-location-id="<?php echo $location->id ?>"></div>
+            <?php if ( $location->url ) : ?>
+            <p><a href="<?echo $location->url ?>"><?php echo $location->url ?></a></p>
+            <?php endif ?>
 
             <div class="contact">
                 <div class="address-picture-wrapper">

@@ -4,7 +4,7 @@
 }
 
 #hoo-main {
-    min-height: 700px;
+    min-height: 750px;
 }
 
 #hoo-main .location-row:hover {
@@ -14,7 +14,7 @@
 #hoo-main #location-list-container {
     float: left;
     width: 35%;
-    min-height: 700px;
+    min-height: 750px;
 }
 
 #hoo-main #locations-list {
@@ -81,11 +81,12 @@
     border-bottom: 1px solid #aaa;
     border-radius: 0 5px 5px 0;
     box-shadow: 1px 1px 3px 0px #aaa;
+    min-height: 750px;
 }
 #hoo-main .panel {
 
     padding: 10px;
-    min-height: 675px;
+    min-height: 750px;
     background-color: white;
     position: absolute;
     z-index: 88888;
@@ -122,7 +123,7 @@
 }
 
 #hoo-main #map-canvas {
-    min-height: 685px;
+    min-height: 750px;
 }
 
 
