@@ -74,13 +74,13 @@
         </div>
     </li>
     <li>
-        <div id="rrule-until" class="form-item rrule-custom until wpt-field wp-textfield <?php if ( ! $this['event']->is_custom_rrule ) echo 'is-hidden' ?>">
+        <div id="rrule-until" class="form-item rrule-custom until wpt-field wp-textfield <?php if ( ! $this['event']->is_recurring ) echo 'is-hidden' ?>">
             <label for="event_recurrence_rule_custom_until" class="wpt-form-label">Until</label>
             <input type="text"
                    id="event_recurrence_rule_custom_until"
                    name="event_recurrence_rule_custom[UNTIL]"
                    class="wpt-form-textfield form-textfield textfield hoo-rrule date"
-                   value="<?php if ( $this['event']->is_custom_rrule && $this['event']->recurrence_rule->getUntil() ) echo $this['event']->recurrence_rule->getUntil()->format( 'Y-m-d' ) ?>"/>
+                   value="<?php if ( $this['event']->is_recurring && $this['event']->recurrence_rule->getUntil() ) echo $this['event']->recurrence_rule->getUntil()->format( 'Y-m-d' ) ?>"/>
         </div>
     </li>
     <li>
