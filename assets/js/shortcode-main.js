@@ -1,6 +1,12 @@
 jQuery( function( $ ) {
     var $hoo_list_rows = $( '.location-row' ),
+        $hoo_list_rows_td = $('.location-row td' ),
+        $hoo_panel_close = $( '.location-detail .close' ),
         $hours_calendars = $( '.hours-calendar' ),
+        $locations_list = $( '#locations-list'),
+        $panel_container = $( '#panel-container' );
+        $hoo_main       = $( '#hoo-main'),
+        $hoo_map        = $( '#hoo-map'),
 
         map_options = {
             center: {
@@ -10,6 +16,7 @@ jQuery( function( $ ) {
             zoom: 8,
             disableDefaultUI: true
         },
+
 
         locations_map = new google.maps.Map( document.getElementById( 'map-canvas' ), map_options ),
         locations_bounds = new google.maps.LatLngBounds(),
@@ -43,6 +50,10 @@ jQuery( function( $ ) {
             return marker;
         };
 
+    $hoo_main.height( $locations_list.height() );
+    $hoo_map.height( $panel_container.height() );
+    
+
 
     $hoo_list_rows.each( function( index, location ) {
         location_markers[ location.dataset.id ] = create_location_marker( location );
@@ -52,10 +63,11 @@ jQuery( function( $ ) {
     } );
 
     locations_map.fitBounds( locations_bounds );
+    google.maps.event.trigger( locations_map, 'resize' );
 
     $hours_calendars.each( function( index, hour_cal ) {
         $( hour_cal ).fullCalendar( {
-            aspectRatio: 1.5,
+            aspectRatio: 1.4,
             
             events: function( cal_start, cal_end, tz, cb ) {
 
@@ -79,6 +91,10 @@ jQuery( function( $ ) {
         });
     } );
 
+
+    $hoo_panel_close.on( 'click', function( e) {
+        $( this ).closest( '.panel' ).hide( 'slide', { direction: 'left', easing: 'easeOutExpo' }, 500 );
+    } );
 
     $hoo_list_rows.on( 'click', function( e ) {
         var location_id = $( this ).data( 'panel' ).split( '-' )[1],
