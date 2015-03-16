@@ -135,8 +135,7 @@ class Event {
         $event_data['end'] = $end;
         $event_data['recurrence_rule'] = $rrule;
 
-        $this->fromArray( $event_data );
-
+        return $this->fromArray( $event_data );
     }
 
 
