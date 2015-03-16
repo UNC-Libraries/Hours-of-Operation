@@ -206,7 +206,7 @@ class CategoryController {
 
     public function ajax_category_order() {
 
-        $categories_order = $_POST['category'];
+        $categories_order = array_reverse( $_POST['category'] );
 
         foreach( $categories_order as $priority => $category_id ) {
             $category = $this->entity_manager->find( '\Hoo\Model\Category', $category_id );

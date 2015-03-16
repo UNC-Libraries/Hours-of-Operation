@@ -1,7 +1,7 @@
 jQuery(function($) {
     $( '.categories td.priority').css( 'cursor', 'move' );
 
-    $('#the-list').sortable({
+    $( '#the-list' ).sortable({
         items: '.list-item',
         opacity: 0.4,
         cursor: 'move',
@@ -11,17 +11,17 @@ jQuery(function($) {
             $.ajax({
                 url: ajaxurl,
                 type: 'POST',
-                data: $(this).sortable('serialize') + '&action=category_order',
-                success: function(response) {
+                data: $( this ).sortable( 'serialize' ) + '&action=category_order',
+                success: function( response ) {
                     
-                    $('.list-item').each(function(index, row) {
+                    $( $( '.list-item' ).get().reverse() ).each( function( index, row ) {
                         // set priority text
                         $('.priority', row).text( index );
                         // set odd/even colors
                         if ( index % 2 == 0 ) {
-                            $(row).addClass('alternate');
+                            $( row ).addClass( 'alternate' );
                         } else {
-                            $(row).removeClass('alternate');
+                            $( row ).removeClass( 'alternate' );
                         }
                     });
                 }
