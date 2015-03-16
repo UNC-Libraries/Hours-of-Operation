@@ -293,9 +293,13 @@ class Location {
         return $this->name;
     }
 
-    /**
-
-     */
+    public function fromParams( $data, $entity_manager ) {
+        $location_data = $data['location'];
+        $location_data['address'] = new Address( $location_data['address'] );
+        $location_data['parent'] = $entity_manager->find( '\Hoo\Model\Location', $location_data['parent'] );
+        
+        return $this->fromArray( $location_data );
+    }
     public function fromArray( $data ) {
         foreach ( $data as $property => $value ) {
             if ( property_exists( $this, $property ) ) {
@@ -312,14 +316,12 @@ class Location {
        a little getter/setter magic
      */
     public function __get( $property ) {
-
         if ( property_exists( $this, $property ) ){
             return $this->$property;
         }
     }
 
     public function __set( $property, $value ) {
-
         if ( property_exists( $this, $property ) ) {
             $this->$property = $value;
         } else {
@@ -330,16 +332,13 @@ class Location {
 
     }
 
-    public function __construct( $initial_values = array() ) {
-        foreach ( $initial_values as $property => $value ) {
-            if ( property_exists( $this, $property ) ) {
-                $this->$property = $value;
-            }
-
+    public function __construct( $initial_values = array(), $entity_manager = null ) {
+        if ( $initial_values )  {
+            $this->fromParams( $initial_values, $entity_manager );
+        } else {
+            $this->address = new Address();
+            $this->sublocations = new \Doctrine\Common\Collections\ArrayCollection();
         }
-
-        $this->address = new Address();
-        $this->sublocations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }
 

@@ -151,33 +151,16 @@ class LocationController {
                                     'Edit a Location' => 'hoo-location-edit' ),
             'columns' => 2 );
 
-        $location = $this->entity_manager->find( '\Hoo\Model\Location', $_REQUEST['location_id'] );
-        $this->entity_manager->persist( $location );
 
         switch( isset( $_POST['action'] ) && $_POST['action'] ) {
             case 'update':
-                $location_data = $_POST['location'];
+                $location = $this->entity_manager->find( '\Hoo\Model\Location', $_POST['location']['id'] );
+                $this->entity_manager->persist( $location );
+                $location->fromParams( $_POST, $this->entity_manager );
 
-                // update associations first
-                if ( $location->address ) {
-                    $location->address->fromArray( $location_data['address'] );
-                } else { // this shouldn't actually be hit
-                    $location->address = new Address( $location_data['address'] );
-                }
-
-                $location->parent = $this->entity_manager->find( '\Hoo\Model\Location', $location_data['parent'] );
-
-                // don't pass association data to fromArray method for location
-                unset( $location_data['address'] ); unset( $location_data['parent'] );
-
-                // set main location data now
-                $location = $location->fromArray( $location_data );
-
-                $view_options['location'] = $location;
-                $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Location updated' );
                 $this->entity_manager->flush();
-                $this->add_meta_boxes( $location );
-                break;
+                wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s&updated=2', 'hoo-location-edit', $_POST['location']['id'] ) ) );
+                exit;
 
             case 'delete':
                 $location_id = $_POST['location_id'];
@@ -191,11 +174,16 @@ class LocationController {
                 wp_safe_redirect( admin_url( 'admin.php?page=hoo&updated=2' ) );
                 exit;
             default:
+                $location = $this->entity_manager->find( '\Hoo\Model\Location', $_GET['location_id'] );
+
                 $this->add_meta_boxes( $location );
+                if ( isset ( $_GET['updated'] ) )
+                    $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Location Updated' );
+
+                $view_options['location'] = $location;
+                $view->render( $view_options );
         }
 
-        $view_options['location'] = $location;
-        $view->render( $view_options );
 
     }
 
@@ -203,12 +191,7 @@ class LocationController {
 
         if ( isset( $_POST['action'] ) && $_POST['action'] == 'create' ) {
             try {
-                $location_data = $_REQUEST['location'];
-
-                $location_data['address'] = new Address( $location_data['address'] );
-                $location_data['parent'] =  $this->entity_manager->find( '\Hoo\Model\Location', $location_data['parent'] );
-
-                $location = new Location( $location_data );
+                $location = new Location( $_POST, $this->entity_manager );
                 $this->entity_manager->persist( $location );
                 $this->entity_manager->flush();
 
