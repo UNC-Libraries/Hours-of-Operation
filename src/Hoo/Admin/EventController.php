@@ -129,6 +129,9 @@ class EventController {
         $events_table = new EventList( $this->entity_manager, $location );
 
         $events_table->prepare_items();
+
+        if ( isset ( $_GET['updated'] ) )
+            $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Event Added' );
         $view_options['events-table'] = $events_table;
 
         $view->render( $view_options );
@@ -145,7 +148,7 @@ class EventController {
                 $this->entity_manager->persist( $event );
                 $this->entity_manager->flush();
 
-                wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&event_id=%s', 'hoo-location-event-edit', $_POST['event']['id'] ) ) );
+                wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&event_id=%s&updated=2', 'hoo-location-event-edit', $_POST['event']['id'] ) ) );
                 exit;
             case 'delete':
                 $event = $this->entity_manager->find( '\Hoo\Model\Event', $_POST['event']['id'] );
@@ -178,6 +181,9 @@ class EventController {
 
                                        'columns' => 2 );
 
+                if ( isset ( $_GET['updated'] ) )
+                    $view_options['notification'] = array( 'type' => 'updated', 'message' => 'Event Updated' );
+                
                 $this->add_meta_boxes( $event );
 
                 $view->render( $view_options );
@@ -191,7 +197,7 @@ class EventController {
             $this->entity_manager->persist( $event );
             $this->entity_manager->flush();
 
-            wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s', 'hoo-location-events', $event->location->id ) ) );
+            wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&location_id=%s&updated=1', 'hoo-location-events', $event->location->id ) ) );
             exit;
         } else {
             $event = new Event();
