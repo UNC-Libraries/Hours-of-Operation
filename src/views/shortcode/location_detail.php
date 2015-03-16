@@ -1,11 +1,16 @@
 <?php foreach( $this['locations'] as $location ) : ?>
     <div id="panel-<?php echo $location->id ?>" class="panel">
         <div class="location-detail">
-            <?php if ( $location->url ) : ?>
-                <h4><span><a href="<?php echo $location->url ?>"><?php echo $location->name ?></a></span></h4>
-            <?php else :?>
-                <h4><span><?php echo $location->name ?></span></h4>
-            <?php endif ?>
+            <h2 class="post-entry">
+                <span class="location-name">
+                    <?php if ( $location->url ) : ?>
+                        <a href="<?php echo $location->url ?>"><?php echo $location->name ?></a>
+                    <?php else :?>
+                        <?php echo $location->name ?>
+                    <?php endif ?>
+                </span>
+                <span class="close-panel">&#x21e6;</span>
+            </h2>
 
             <div class="hours-calendar" data-location-id="<?php echo $location->id ?>"></div>
 
@@ -16,7 +21,7 @@
             <?php endif ?>
 
             <?php if ( $location->url ) : ?>
-            <p><a href="<?echo $location->url ?>"><?php echo $location->url ?></a></p>
+                <p><a href="<?echo $location->url ?>"><?php echo $location->url ?></a></p>
             <?php endif ?>
 
             <div class="contact">

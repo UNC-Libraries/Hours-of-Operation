@@ -1,7 +1,7 @@
 jQuery( function( $ ) {
     var $hoo_list_rows = $( '.location-row' ),
         $hoo_list_rows_td = $('.location-row td' ),
-        $hoo_panel_close = $( '.location-detail .close' ),
+        $hoo_panel_close = $( '.location-detail .close-panel' ),
         $hours_calendars = $( '.hours-calendar' ),
         $locations_list = $( '#locations-list'),
         $panel_container = $( '#panel-container' );

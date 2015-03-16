@@ -73,8 +73,8 @@
 
 #hoo-main #panel-container {
     padding: 2px 2px 2px 0px;
+    margin: 32px 0px 0px 35%;
     position: relative;
-    margin-left: 35%;
     overflow: scroll;
     border-top: 1px solid #aaa;
     border-right: 1px solid #aaa;
@@ -97,8 +97,20 @@
     height: 100%;
 }
 
-#hoo-main .panel .location-detail  h4{
-    margin-bottom: 5px;
+#hoo-main .panel .location-detail h2{
+    padding-right: 25px;
+    margin-bottom: 20px;
+}
+
+#hoo-main .panel .location-detail h2 a {
+    color: #3b9bdb;
+}
+
+#hoo-main .panel .location-detail h2 span.close-panel {
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 5px;
 }
 
 #hoo-main .panel .location-detail .hours-calendar {
@@ -158,6 +170,9 @@
 
 #hoo-main .fc tr td {
     padding: 0px;
+}
+#hoo-main .fc .toolbar h2 {
+    font-size: 1em;
 }
 
 #hoo-main .fc-button-content {

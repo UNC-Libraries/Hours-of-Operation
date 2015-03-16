@@ -2,7 +2,7 @@
     <thead>
         <tr class="list-header">
             <th class="location-name">Location Name</th>
-            <th class="location-status">at <?php echo $this['now']->format( 'h:i a') ?></th>
+            <th class="location-status"><?php echo $this['now']->format( 'h:i a') ?></th>
         </tr>
     </thead>
     <tbody>
