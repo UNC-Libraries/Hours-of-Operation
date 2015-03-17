@@ -243,9 +243,9 @@ class Location {
             } elseif ( $next_all_day )  {
                 $title = sprintf( "%s - 24 Hours", Utils::format_time( $instance['recurrence']->getStart() ) );
             } elseif ( $instance['event']->is_all_day ) {
-                $title = sprintf( "%s\nOpen 24 Hours", $instance['event']->title );
+                $title = sprintf( "%s\nOpen 24 Hours", $with_title ? $instance['event']->title : '');
             } elseif ($instance['event']->is_closed ) {
-                $title = sprintf( "%s\nClosed", $instance['event']->title );
+                $title = sprintf( "%s\nClosed", $with_title ? $instance['event']->title : '');
             } else {
                 $title = $with_title ? $instance['event']->title . "\n" : '';
                 $title .= Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() );
