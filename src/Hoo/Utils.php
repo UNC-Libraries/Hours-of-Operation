@@ -27,11 +27,6 @@ class Utils {
 
     }
 
-    static public function is_open( $hours ) {
-        $now = new \DateTime();
-        return $now >= new \DateTime( $recurrence['open'] ) && $now <= new \DateTime( $recurrence['close'] );
-    }
-
     static public function remove_overlapping_events( $event_instances ) {
         $event_dates = array();
         foreach( $event_instances as &$event_instance ) {
