@@ -139,6 +139,12 @@ class Location {
         $event_instances = $this->get_event_instances( $now_start, $now_end );
 
         if ( count ( $event_instances ) > 0 ) {
+            // special cases
+            if ( $event_instances[0]->is_all_day )
+                return '24 hours';
+            elseif ( $event_instances[0]->is_closed )
+                return false;
+
             return ( $now >= $event_instances[0]->start && $now <= $event_instances[0]->end ) ? $event_instances[0]->end : false;
         } 
         return null;

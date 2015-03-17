@@ -9,9 +9,12 @@
         <td class="location-status">
             <?php if ( is_null( $current_hours ) ) : ?>
                 <span class="na">N/A</span>
-            <?php elseif ( $current_hours ) : ?>
+            <?php elseif ( is_object( $current_hours ) ) : ?>
                 <span class="open">Open</span>
                 <span class="until">Until <?php echo \Hoo\Utils::format_time( $current_hours )?> </span>
+            <?php elseif ( is_string( $current_hours ) ) : ?>
+                <span class="open">Open</span>
+                <span class="all-day"><?php echo $current_hours ?></span>
             <?php else : ?>
                 <span class="closed">Closed</span>
             <?php endif ?>
