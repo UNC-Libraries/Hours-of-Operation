@@ -39,6 +39,23 @@
         </div>
     </li>
     <li>
+        <label for="location_is_handicap_accessible" class="wpt-form-label wpt-form-checkbox-label">Handicap Accessible?</label>
+        <input type="checkbox"
+               name="location[is_handicap_accessible]"
+               id="location_is_handicap_accessible"
+               class="wpt-form-checkbox form-checkbox checkbox" 
+               value="1"
+               <?php if ( $this['location']->is_handicap_accessible ) echo 'checked' ?>/>
+    </li>
+    <li>
+        <label for="location_handicap_link" class="wpt-form-label wpt-form-textfield-label">Handicap Access Link</label>
+        <input type="url"
+               name="location[handicap_link]"
+               id="location_handicap_link"
+               class="wpt-form-textfield form-textfield textfield" 
+               value="<?php echo $this['location']->handicap_link ?>"/>
+    </li>
+    <li>
         <div class="form-item">
             <label for="location_image" class="">Image</label>
             <input type="hidden"

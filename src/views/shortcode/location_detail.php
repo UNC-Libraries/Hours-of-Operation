@@ -44,7 +44,20 @@
                 </div>
                 <?php if ( $location->is_handicap_accessible ) : ?>
                     <div class="handicap">
+                        <?php if ( $location->handicap_link ) : ?>
+                            <a href="<?php echo $location->handicap_link ?>">
+                        <?php endif ?>
+                        <img src="<?php echo HOO__PLUGIN_URL . 'assets/images/wheelchair-32.png' ?>"/>
+                        <?php if ( $location->handicap_link ) : ?>
+                            </a>
+                        <?php endif ?>
+                        <?php if ( $location->handicap_link ) : ?>
+                            <a href="<?php echo $location->handicap_link ?>">
+                        <?php endif ?>
                         <span>Disability Access</span>
+                        <?php if ( $location->handicap_link ) : ?>
+                            </a>
+                        <?php endif ?>
                     </div>
                 <?php endif ?>
                 <?php if ( $location->phone ) : ?>

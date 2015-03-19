@@ -44,6 +44,9 @@ class Location {
     /** @ORM\Column(name="handicap_accessible", type="boolean", options={"default" = 1}) **/
     protected $is_handicap_accessible = true;
 
+    /** @ORM\Column(type="string", length=256, nullable=true) **/
+    protected $handicap_link;
+
     /** @ORM\Column(name="is_visible", type="boolean", options={"default" = 1}) **/
     protected $is_visible = true;
 
@@ -270,7 +273,7 @@ class Location {
 
             $locations,
             function( $locations, $location ) {
-                if ( $location->address->lat && $location->address->lon ) {
+                if ( $location->address && $location->address->lat && $location->address->lon ) {
                     $locations[] = $location;
                     foreach( $location->sublocations->toArray() as $sub ) {
                         $locations[] = $sub;
@@ -303,6 +306,8 @@ class Location {
         $location_data = $data['location'];
         $location_data['address'] = new Address( $location_data['address'] );
         $location_data['parent'] = $entity_manager->find( '\Hoo\Model\Location', $location_data['parent'] );
+
+        $location_data['is_handicap_accessible'] = isset( $location_data['is_handicap_accessible'] ) && $location_data['is_handicap_accessible'];
         
         return $this->fromArray( $location_data );
     }
