@@ -12,6 +12,14 @@
                 <span class="close-panel">&#x21e6;</span>
             </h2>
 
+            <?php if ( $location->notice ) : ?>
+                <div class="location-notice">
+                    <p>
+                        <?php echo $location->notice ?>
+                    </p>
+                </div>
+            <?php endif ?>
+
             <div class="hours-calendar" data-location-id="<?php echo $location->id ?>"></div>
 
             <?php if ($location->description ) : ?>

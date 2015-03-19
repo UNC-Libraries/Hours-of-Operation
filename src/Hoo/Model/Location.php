@@ -41,6 +41,9 @@ class Location {
     /** @ORM\Column(type="text", nullable=true) **/
     protected $description;
 
+    /** @ORM\Column(type="string", length=256, nullable=true) **/
+    protected $notice;
+
     /** @ORM\Column(name="handicap_accessible", type="boolean", options={"default" = 1}) **/
     protected $is_handicap_accessible = true;
 

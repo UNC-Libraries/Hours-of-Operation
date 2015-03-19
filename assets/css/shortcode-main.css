@@ -113,6 +113,11 @@
     top: 5px;
 }
 
+#hoo-main .panel .location-detail .location-notice {
+    padding: 10px;
+    color: #990000;
+}
+
 #hoo-main .panel .location-detail .hours-calendar {
     display: block;
 }
