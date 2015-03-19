@@ -212,9 +212,9 @@ class Location {
                 $event->fromParams( $params, $entity_manager );
             } else {
                 if ( $event->is_recurring ) {
-                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, 'UTC' );
+                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
                 } else {
-                    $event->recurrence_rule = new RRule( null, $event->start, $event->end, 'UTC' );
+                    $event->recurrence_rule = new RRule( null, $event->start, $event->end, get_option( 'timezone_string' ) );
                 }
 
             }
