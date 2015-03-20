@@ -85,6 +85,7 @@ jQuery(function($) {
                     {
                         dateFormat: 'yy-mm-dd',
                         timeFormat: 'hh:mm tt',
+                        stepMinute: 15,
 
                         onClose: function(dt_text, dt_instance) {
                             if ( $event_end_datetime.val() != '' ) {
@@ -110,6 +111,7 @@ jQuery(function($) {
                     {
                         dateFormat: 'yy-mm-dd',
                         timeFormat: 'hh:mm tt',
+                        stepMinute: 15,
                         showButtonPanel: true,
 
                         onClose: function(dt_text, dt_instance) {
