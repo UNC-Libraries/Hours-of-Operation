@@ -101,56 +101,32 @@ jQuery(function($) {
                         },
 
                         onSelect: function ( selected ) {
-                            var selected_dt = new Date( selected),
-                                max_dt = new Date( selected );
-
-                            max_dt.setDate( max_dt.getDate() + 1 );
-
-                            $event_end_datetime.datetimepicker( 'option', 'minDate', selected_dt );
-                            $event_end_datetime.datetimepicker( 'option', 'maxDate', max_dt );
+                            $event_end_datetime.datetimepicker( 'option', 'minDate', $event_start_datetime.datetimepicker( 'getDate' ) );
                             $preview_calendar.fullCalendar( 'refetchEvents' );
                         }
                     } );
-
-                var default_max_dt = $event_start_datetime.datetimepicker( 'getDate' );
-                default_max_dt.setDate( default_max_dt.getDate() + 1 );
 
                 $event_end_datetime.datetimepicker(
                     {
                         dateFormat: 'yy-mm-dd',
                         timeFormat: 'hh:mm tt',
-                        minTime: '12:00 am',
-                        maxTime: '11:00 pm',
-                        maxDate: default_max_dt,
                         showButtonPanel: true,
 
                         onClose: function(dt_text, dt_instance) {
                             if ( $event_start_datetime.val() != '' ) {
                                 var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
-                                    test_end   = $event_end_datetime.datetimepicker( 'getDate' );
+                                    test_end   = $event_end_datetime.datetickepicker( 'getDate' );
 
-                                if ( test_start > test_end ) {
+                                if ( test_start > test_end )
                                     $event_start_datetime.datetimepicker( 'setDate', test_end );
-                                }
-                            } else {
-                                $event_start_datetime.val( dt_text );
                             }
+
                             $preview_calendar.fullCalendar( 'refetchEvents' );
                         },
 
                         onSelect: function ( selected_dt ) {
-                            var selected_dt = new Date( selected_dt ),
-                                max_dt = $event_end_datetime.datetimepicker( 'option', 'maxDate');
-
-                            if ( selected_dt.getDate() === max_dt.getDate() ) {
-                                if ( selected_dt.getHours() > 7 ) {
-                                    max_dt.setHours( 7 );
-                                    $event_end_datetime.datetimepicker( 'setDate', max_dt );
-                                }
-                                $event_end_datetime.datetimepicker( 'option', 'maxTime', '7:00 am' );
-                            } else {
-                                $event_end_datetime.datetimepicker( 'option', 'maxTime', '11:00 pm' );
-                            }
+                            $event_start_datetime.datetimepicker( 'option', 'maxDate', $event_end_datetime.datetimepicker( 'getDate' ) );
+                            $preview_calendar.fullCalendar( 'refetchEvents' );
                         }
                     }
                 );
@@ -222,13 +198,6 @@ jQuery(function($) {
                     $preview_calendar.fullCalendar( 'refetchEvents' );
                 });
             } // is_loading
-        }, // loading
-
-        eventRender: function( event, element, view ) {
-            // render the whole events calendar square with the events category color
-            $('.fc-bg td[data-date="' + event.start.format('YYYY-MM-DD') + '"]').css('background-color', event.color);
-        },
-        eventAfterAllRender: function( event, element, view ) {
-        }
+        } // loading
     }); // fullcalendar
 }); // jquery
