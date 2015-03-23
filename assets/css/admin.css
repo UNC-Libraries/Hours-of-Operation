@@ -72,6 +72,10 @@
     padding: 0 5px 0 0;
 }
 
+.fc-content {
+    text-align: center;
+}
+
 /* css for timepicker */
 #ui-datepicker-div { display: none; }
 .ui-datepicker{ z-index: 99999999 !important;}
