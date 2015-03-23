@@ -171,9 +171,9 @@ class Location {
 
                 if ( $start && $end ) {
                     $range = new BetweenConstraint( $start, $end, true ) ;
-                    $recurrences = $rrule_transformer->transform( $event->recurrence_rule, 40, $range)->toArray();
+                    $recurrences = $rrule_transformer->transform( $event->recurrence_rule, $range )->toArray();
                 } else {
-                    $recurrences = $rrule_transformer->transform( $event->recurrence_rule, 40)->toArray();
+                    $recurrences = $rrule_transformer->transform( $event->recurrence_rule )->toArray();
                 }
 
                 foreach ( $recurrences as $recur ) {
