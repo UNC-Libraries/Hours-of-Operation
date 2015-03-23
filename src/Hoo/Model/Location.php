@@ -92,7 +92,7 @@ class Location {
             $event->start->setTimeZone( $tz );
             $event->end->setTimeZone( $tz );
             $rrule->setTimezone( get_option( 'timezone_string' ) );
-            $cal_range = new BetweenConstraint( $start, $end, $tz ) ;
+            $cal_range = new BetweenConstraint( $start, $end, $tz, true ) ;
             foreach( $rrule_transformer->transform( $rrule, null, $cal_range )->toArray() as $recurrence ) {
                 $event_instances[] = array( 'id' => $event->id,
                                             'title' => $event->title,
@@ -225,7 +225,7 @@ class Location {
 
             // get all recurrences
             $cal_range = new BetweenConstraint( $cal_start, $cal_end, true ) ;
-            $recurrences = $rrule_transformer->transform( $event->recurrence_rule, 40, $cal_range)->toArray();
+            $recurrences = $rrule_transformer->transform( $event->recurrence_rule, $cal_range)->toArray();
             foreach( $recurrences as $recurrence ) {
                 $event_instances[] = array( 'event' => $event, 'recurrence' => $recurrence );
             }
