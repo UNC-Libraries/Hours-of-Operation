@@ -5,7 +5,6 @@
                 <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
                     <div class="form-item form-item-textfield">
                         <label for="event_is_visible">Visible</label>
-                        <input type="hidden" name="event[is_visible]" value="0"/>
                         <input type="checkbox"
                                name="event[is_visible]"
                                id="event_is_visible"

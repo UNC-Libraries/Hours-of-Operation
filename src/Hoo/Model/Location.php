@@ -86,6 +86,7 @@ class Location {
 
         $event_instances = array();
         $event_dates = array();
+
         foreach( $this->events as $event ) {
             $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end );
 
@@ -208,6 +209,7 @@ class Location {
         }
 
         foreach( $this->events as $event ) {
+            
             if ( isset( $params['event']['id'] ) && $params['event']['id'] == $event->id ) {
                 $event->fromParams( $params, $entity_manager );
             } else {
@@ -218,6 +220,7 @@ class Location {
                 }
 
             }
+            if ( ! $event->is_visible ) continue;
 
             $event->start->setTimeZone( $tz );
             $event->end->setTimeZone( $tz );
@@ -245,13 +248,13 @@ class Location {
                 $title .= Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() );
             }
             elseif ( $prev_all_day ) {
-                $title = sprintf( "24 Hours - %s", Utils::format_time( $instance['recurrence']->getEnd() ) );
+                $title = sprintf( "%s24 Hours\n%s", $with_title? $instance['event']->title . "\n" : '', Utils::format_time( $instance['recurrence']->getEnd() ) );
             } elseif ( $next_all_day )  {
-                $title = sprintf( "%s - 24 Hours", Utils::format_time( $instance['recurrence']->getStart() ) );
+                $title = sprintf( "%s%s\n24 Hours", $with_title? $instance['event']->title . "\n" : '', Utils::format_time( $instance['recurrence']->getStart() ) );
             } elseif ( $instance['event']->is_all_day ) {
-                $title = sprintf( "%s\nOpen 24 Hours", $with_title ? $instance['event']->title : '');
+                $title = sprintf( "%sOpen\n24 Hours", $with_title ? $instance['event']->title . "\n" : '');
             } elseif ($instance['event']->is_closed ) {
-                $title = sprintf( "%s\nClosed", $with_title ? $instance['event']->title : '');
+                $title = sprintf( "%sClosed", $with_title ? $instance['event']->title . "\n" : '');
             } else {
                 $title = $with_title ? $instance['event']->title . "\n" : '';
                 $title .= Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() );

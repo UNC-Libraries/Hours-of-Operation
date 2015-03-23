@@ -6,6 +6,7 @@ jQuery(function($) {
         $event_title               = $( '#event_title' ),
         $event_category            = $( '#event_category' ),
         $event_is_all_day          = $( '#event_is_all_day' ),
+        $event_is_visible          = $( '#event_is_visible' ),
         $event_is_closed           = $( '#event_is_closed' ),
         $event_form                = $( '#event_form' ),
 
@@ -33,7 +34,7 @@ jQuery(function($) {
                 var ajax_action  = 'action=location_events',
                     cal_start    = 'start=' + cal_start.format(),
                     cal_end      = 'end=' + cal_end.format(),
-                    event_inputs = $( ':input:visible,#event_id,#event_category,#event_location' ).serialize();
+                    event_inputs = $( ':input:visible,#event_id,#event_category,#event_location,#event_is_visible' ).serialize(); 
 
                 $.ajax(
                     {
@@ -124,6 +125,11 @@ jQuery(function($) {
 
                     // title
                     $event_title.on( 'change', function() {
+                        $preview_calendar.fullCalendar( 'refetchEvents' );
+                    } );
+
+                    // visibility
+                    $event_is_visible.on( 'change', function() {
                         $preview_calendar.fullCalendar( 'refetchEvents' );
                     } );
 

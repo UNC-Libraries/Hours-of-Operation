@@ -67,6 +67,7 @@ class Event {
         $rrule->setTimezone( get_option( 'timezone_string' ) );
         $event_data = $params['event'];
 
+        $event_data['is_visible'] = isset( $event_data['is_visible'] ) && $event_data['is_visible'];
         $event_data['is_all_day'] = isset( $event_data['is_all_day'] ) && $event_data['is_all_day'];
         $event_data['is_closed'] = isset( $event_data['is_closed'] ) && $event_data['is_closed'];
 
