@@ -87,22 +87,16 @@ jQuery(function($) {
                         timeFormat: 'hh:mm tt',
                         stepMinute: 15,
 
-                        onClose: function(dt_text, dt_instance) {
+                        onSelect: function ( selected ) {
                             if ( $event_end_datetime.val() != '' ) {
                                 var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
                                     test_end   = $event_end_datetime.datetimepicker( 'getDate' );
 
-                                if ( test_start > test_end ) {
+                                if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
+                                    test_start.setHours( test_end.getHours(), test_end.getMinutes() );
                                     $event_end_datetime.datetimepicker( 'setDate', test_start );
                                 }
-                            } else {
-                                $event_end_datetime.val( dt_text );
-                            }
-                            $preview_calendar.fullCalendar( 'refetchEvents' );
-                        },
-
-                        onSelect: function ( selected ) {
-                            $event_end_datetime.datetimepicker( 'option', 'minDate', $event_start_datetime.datetimepicker( 'getDate' ) );
+                            } 
                             $preview_calendar.fullCalendar( 'refetchEvents' );
                         }
                     } );
@@ -114,24 +108,20 @@ jQuery(function($) {
                         stepMinute: 15,
                         showButtonPanel: true,
 
-                        onClose: function(dt_text, dt_instance) {
+                        onSelect: function ( selected ) {
                             if ( $event_start_datetime.val() != '' ) {
                                 var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
-                                    test_end   = $event_end_datetime.datetickepicker( 'getDate' );
+                                    test_end   = $event_end_datetime.datetimepicker( 'getDate' );
 
-                                if ( test_start > test_end )
+                                if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
+                                    test_end.setHours( test_start.getHours(), test_start.getMinutes() );
                                     $event_start_datetime.datetimepicker( 'setDate', test_end );
+                                } 
+
+                                $preview_calendar.fullCalendar( 'refetchEvents' );
                             }
-
-                            $preview_calendar.fullCalendar( 'refetchEvents' );
-                        },
-
-                        onSelect: function ( selected_dt ) {
-                            $event_start_datetime.datetimepicker( 'option', 'maxDate', $event_end_datetime.datetimepicker( 'getDate' ) );
-                            $preview_calendar.fullCalendar( 'refetchEvents' );
                         }
-                    }
-                );
+                    } );
 
                 // title
                 $event_title.on( 'change', function() {
