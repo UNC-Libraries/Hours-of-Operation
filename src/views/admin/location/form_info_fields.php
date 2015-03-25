@@ -56,6 +56,16 @@
                value="<?php echo $this['location']->handicap_link ?>"/>
     </li>
     <li>
+        <label for="location_notice" class="wpt-form-label wpt-form-textfield-label">* Notice</label>
+        <input type="text"
+               name="location[notice]"
+               id="location_notice"
+               class="wpt-form-textfield form-textfield textfield" 
+               size="60"
+               maxlength="256"
+               value="<?php echo $this['location']->notice ?>"/>
+    </li>
+    <li>
         <div class="form-item">
             <label for="location_image" class="">Image</label>
             <input type="hidden"
