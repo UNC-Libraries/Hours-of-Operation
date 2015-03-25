@@ -68,6 +68,12 @@ jQuery( function( $ ) {
     $hours_calendars.each( function( index, hour_cal ) {
         $( hour_cal ).fullCalendar( {
             aspectRatio: 1.4,
+            header: {
+                left: '',
+                center: 'title',
+                right: 'today prev,next'
+            },
+               
             
             events: function( cal_start, cal_end, tz, cb ) {
 
