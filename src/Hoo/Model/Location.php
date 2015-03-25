@@ -218,13 +218,14 @@ class Location {
 
         foreach( $this->events as $event ) {
             
+
             if ( isset( $params['event']['id'] ) && $params['event']['id'] == $event->id ) {
                 $event->fromParams( $params, $entity_manager );
             } else {
                 if ( $event->is_recurring ) {
-                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
+                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'UTC' ) );
                 } else {
-                    $event->recurrence_rule = new RRule( null, $event->start, $event->end, get_option( 'timezone_string' ) );
+                    $event->recurrence_rule = new RRule( null, $event->start, $event->end, get_option( 'UTC' ) );
                 }
 
             }
