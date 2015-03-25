@@ -126,6 +126,15 @@
 #hoo-main .panel .location-detail .hours-calendar {
     display: block;
 }
+
+#hoo-main .panel .location-detail .location-desciption {
+    padding: 10px;
+}
+
+#hoo-main .panel .location-detail .location-url {
+    padding-left: 10px;
+}
+
 #hoo-main .panel .location-detail .contact {
     padding: 10px 0 0 1px;
     display: block;
