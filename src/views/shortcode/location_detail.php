@@ -43,11 +43,13 @@
                 <div class="location-address">
                     <h5>Address</h5>
                     <ul>
-                        <li><?php if ( $location->address->line1 ) echo $location->address->line1 ?></li>
-                        <li><?php if ( $location->address->line2 ) echo $location->address->line2 ?></li>
-                        <li><?php if ( $location->address->line2 ) echo $location->address->line3 ?></li>
-                        <li><?php if ( $location->address->line2 ) echo sprintf( '%s, %s',  $location->address->city, $location->address->state ) ?></li>
-                        <li><?php if ( $location->address->line2 ) echo $location->address->zip ?></li>
+                        <a href="<?php echo $location->google_map_url() ?>" title="View on Google Maps">
+                            <li><?php if ( $location->address->line1 ) echo $location->address->line1 ?></li>
+                            <li><?php if ( $location->address->line2 ) echo $location->address->line2 ?></li>
+                            <li><?php if ( $location->address->line2 ) echo $location->address->line3 ?></li>
+                            <li><?php if ( $location->address->line2 ) echo sprintf( '%s, %s',  $location->address->city, $location->address->state ) ?></li>
+                            <li><?php if ( $location->address->line2 ) echo $location->address->zip ?></li>
+                        </a>
                     </ul>
                 </div>
                 <?php if ( $location->is_handicap_accessible ) : ?>

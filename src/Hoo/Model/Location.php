@@ -157,6 +157,14 @@ class Location {
         return null;
     }
 
+    public function google_map_url() {
+        $ll = implode( ',', array( $this->address->lat, $this->address->lon ) );
+        $name = implode( '+', explode( ' ', $this->name ) );
+        $url_template = 'http://maps.google.com/maps?q=%s+(%s)&z=16&ll=%s&iwloc=A';
+
+        return sprintf( $url_template, $ll, $name, $ll );
+    }
+
     public function get_event_instances( $start = null, $end = null ) {
         $tz = new \DateTimeZone( get_option( 'timezone_string') );
         $event_instances = array();
