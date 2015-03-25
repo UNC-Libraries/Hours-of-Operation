@@ -237,7 +237,7 @@ class Location {
 
             // get all recurrences
             $cal_range = new BetweenConstraint( $cal_start, $cal_end, true ) ;
-            $recurrences = $rrule_transformer->transform( $event->recurrence_rule, $cal_range)->toArray();
+            $recurrences = $rrule_transformer->transform( $event->recurrence_rule, 60, $cal_range)->toArray();
             foreach( $recurrences as $recurrence ) {
                 $event_instances[] = array( 'event' => $event, 'recurrence' => $recurrence );
             }
