@@ -1,7 +1,7 @@
 <?php foreach( $this['locations'] as $location ) : ?>
     <?php $current_hours = $location->is_open(); ?>
     <tr class="location-row" data-panel="panel-<?php echo $location->id ?>" data-lat="<?php echo $location->address->lat ?>" data-lon="<?php echo $location->address->lon ?>" data-id="<?php echo $location->id ?>">
-        <td class="location-name">
+        <td class="location-name<?php if ( $location->parent ) echo ' child' ?>">
             <a href="#location">
                 <?php echo $location->name ?>
             </a>

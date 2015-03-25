@@ -33,6 +33,7 @@
     vertical-align: middle;
     text-align: left;
 }
+
 #hoo-main #location-list-container #locations-list th.location-status {
     vertical-align: middle;
     width: 25%;
@@ -41,6 +42,10 @@
 #hoo-main #location-list-container td {
     border-bottom: 0 solid #fff;
     padding: 10px 5px 10px 5px;
+}
+
+#hoo-main #location-list-container #locations-list td.child {
+    padding-left: 25px;
 }
 
 #hoo-main #location-list-container td.location-name {
