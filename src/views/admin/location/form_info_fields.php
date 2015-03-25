@@ -7,6 +7,8 @@
                        name="location[url]"
                        id="location_url"
                        class="wpt-form-textfield form-textfield textfield"
+                       size="60"
+                       maxlength="256"
                        value="<?php echo $this['location']->url ?>"/>
             </div>
         </div>
@@ -19,6 +21,8 @@
                        name="location[phone]"
                        id="location_phone"
                        class="wpt-form-textfield form-textfield textfield"
+                       size="20"
+                       maxlength="256"
                        value="<?php echo $this['location']->phone ?>"/>
             </div>
         </div>
