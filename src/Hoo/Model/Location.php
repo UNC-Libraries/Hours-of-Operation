@@ -80,20 +80,15 @@ class Location {
     private $updated_at;
 
     public function get_hours( \DateTime $start, \DateTime $end) {
-        $tz = new \DateTimeZone( get_option( 'timezone_string') );
-
         $rrule_transformer = new RRuleTransformer();
 
         $event_instances = array();
         $event_dates = array();
 
         foreach( $this->events as $event ) {
-            $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end );
+            $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
 
-            $event->start->setTimeZone( $tz );
-            $event->end->setTimeZone( $tz );
-            $rrule->setTimezone( get_option( 'timezone_string' ) );
-            $cal_range = new BetweenConstraint( $start, $end, $tz, true ) ;
+            $cal_range = new BetweenConstraint( $start, $end, null, true ) ;
             foreach( $rrule_transformer->transform( $rrule, null, $cal_range )->toArray() as $recurrence ) {
                 $event_instances[] = array( 'id' => $event->id,
                                             'title' => $event->title,
@@ -119,13 +114,9 @@ class Location {
 
 
     public function get_hours_for_date( $start ) {
-        $tz = new \DateTimeZone( get_option( 'timezone_string') );
-
         $start = new \DateTime( date( $start ? $start : 'Y-m-d' ) );
         $end = new \DateTime( $start->format( 'Y-m-d' ) );
         $end->modify( '+1 day' );
-
-        $start->setTimeZone( $tz ); $end->setTimeZone( $tz );
 
         $hours = $this->get_hours( $start, $end );
 
@@ -137,12 +128,9 @@ class Location {
     }
 
     public function is_open() {
-
-        $tz = new \DateTimeZone( get_option( 'timezone_string' ) );
-        $now = new \DateTime( null, $tz );
-
-        $now_start = new \DateTime( date( 'Y-m-d' ), $tz );
-        $now_end = new \DateTime( $now_start->format( 'Y-m-d' ), $tz );
+        $now = new \DateTime();
+        $now_start = new \DateTime( date( 'Y-m-d' ) );
+        $now_end = new \DateTime( $now_start->format( 'Y-m-d' ) );
         $now_end->modify( '+1 day' );
         $event_instances = $this->get_event_instances( $now_start, $now_end );
 
@@ -167,13 +155,12 @@ class Location {
     }
 
     public function get_event_instances( $start = null, $end = null ) {
-        $tz = new \DateTimeZone( get_option( 'timezone_string') );
         $event_instances = array();
         $rrule_transformer = new RRuleTransformer();
 
         foreach( $this->events as $event ) {
             if ( $event->is_recurring ) {
-                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
+                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end );
 
 
                 if ( $start && $end ) {
@@ -200,11 +187,8 @@ class Location {
     public function get_fullcalendar_events( $params, $entity_manager, $with_title = true ) {
         // TODO: convert this to how the is_open/get_instances works
         $rrule_transformer = new RRuleTransformer();
-        $tz = new \DateTimeZone( get_option( 'timezone_string') );
-        $utc_tz = new \DateTimeZone( 'UTC' );
-
-        $cal_start = new \Datetime( $params['start'], $tz );
-        $cal_end = new \DateTime( $params['end'], $tz );
+        $cal_start = new \Datetime( $params['start']);
+        $cal_end = new \DateTime( $params['end']);
 
         $event_instances = array();
         $event_dates = array();
@@ -221,9 +205,9 @@ class Location {
                 $event->fromParams( $params, $entity_manager );
             } else {
                 if ( $event->is_recurring ) {
-                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
+                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end );
                 } else {
-                    $event->recurrence_rule = new RRule( null, $event->start, $event->end, get_option( 'timezone_string' ) );
+                    $event->recurrence_rule = new RRule( null, $event->start, $event->end );
                 }
 
             }
@@ -263,7 +247,6 @@ class Location {
                 $title .= Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() );
             }
 
-
             $events[] = array( 'id' => $instance['event']->id,
                                'title' => $title,
                                'start' => $instance['recurrence']->getStart()->format( \DateTime::ISO8601 ),
@@ -297,14 +280,14 @@ class Location {
 
     /** @ORM\PrePersist **/
     public function set_created_at() {
-        $datetime = new \DateTime( null, new \DateTimeZone( get_option( 'timezone_string' ) ) );
+        $datetime = new \DateTime();
         $this->updated_at = $datetime;
         $this->created_at = $datetime;
     }
 
     /** @ORM\PreUpdate **/
     public function set_updated_at() {
-        $this->updated_at = new \DateTime( null, new \DateTimeZone( get_option( 'timezone_string' ) ) );
+        $this->updated_at = new \DateTime();
     }
 
     public function __toString(){

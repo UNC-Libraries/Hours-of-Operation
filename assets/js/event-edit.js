@@ -49,7 +49,6 @@ jQuery(function($) {
                 );
             },
 
-            timezone: 'local',
             timeFormat: '',
             editable: false,
 

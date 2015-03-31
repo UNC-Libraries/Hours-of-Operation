@@ -65,7 +65,7 @@ class Shortcode {
         $view->render( array( 'locations' => $locations,
                               'header' => $header,
                               'tagline' => $tagline,
-                              'now' => new \DateTime( null, new \DateTimeZone( get_option( 'timezone_string' ) ) )) );
+                              'now' => new \DateTime() ) );
     }
 }
 ?>

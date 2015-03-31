@@ -32,6 +32,7 @@ define( 'HOO__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 
 require_once( HOO__PLUGIN_DIR . 'vendor/autoload.php' );
+date_default_timezone_set( get_option( 'timezone_string' ) );
 
 $loader = new Hoo\Loader();
 

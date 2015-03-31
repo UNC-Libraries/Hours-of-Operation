@@ -60,10 +60,7 @@ class Event {
     private $updated_at;
 
     public function fromParams( $params, $entity_manager ) {
-        $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
-
         $rrule = new RRule();
-        $rrule->setTimezone( get_option( 'timezone_string' ) );
         $event_data = $params['event'];
 
         $event_data['is_visible'] = isset( $event_data['is_visible'] ) && $event_data['is_visible'];
@@ -71,11 +68,11 @@ class Event {
         $event_data['is_closed'] = isset( $event_data['is_closed'] ) && $event_data['is_closed'];
 
         if ( $event_data['is_all_day'] || $event_data['is_closed'] ) {
-            $start = new \Datetime( $params['event_start_date'], $current_tz );
-            $end =   new \Datetime( $params['event_start_date'], $current_tz );
+            $start = new \Datetime( $params['event_start_date'] );
+            $end =   new \Datetime( $params['event_start_date'] );
         } else {
-            $start = new \Datetime( $event_data['start'], $current_tz );
-            $end =   new \Datetime( $event_data['end'], $current_tz );
+            $start = new \Datetime( $event_data['start'] );
+            $end =   new \Datetime( $event_data['end'] );
         }
 
         $rrule->setStartDate( $start );
@@ -162,14 +159,14 @@ class Event {
 
     /** @ORM\PrePersist */
     public function set_created_at() {
-        $datetime = new \DateTime( null, new \DateTimeZone( get_option( 'timezone_string' ) ));
+        $datetime = new \DateTime();
         $this->updated_at = $datetime;
         $this->created_at = $datetime;
     }
 
     /** @ORM\PreUpdate */
     public function set_updated_at() {
-        $this->updated_at = new \DateTime( null, new \DateTimeZone( get_option( 'timezone_string' ) ));
+        $this->updated_at = new \DateTime();
     }
 
     public function __construct( $initial_values = array(), $entity_manager = null) {
@@ -178,8 +175,8 @@ class Event {
         } else {
             $this->category = new Category();
             $this->recurrence_rule = new RRule( array( 'FREQ' => 'DAILY', 'COUNT' => '1' ) );
-            $this->start = new \DateTime('now', new \DateTimeZone( get_option( 'timezone_string' ) ) );
-            $this->end = new \DateTime( '+1 hour', new \DateTimeZone( get_option( 'timezone_string' ) )  );
+            $this->start = new \DateTime();
+            $this->end = new \DateTime( '+1 hour' );
         }
     }
 
