@@ -138,7 +138,7 @@ class Location {
 
     public function is_open() {
 
-        $tz = new \DateTimeZone( 'UTC' );
+        $tz = new \DateTimeZone( get_option( 'timezone_string' ) );
         $now = new \DateTime( null, $tz );
 
         $now_start = new \DateTime( date( 'Y-m-d' ), $tz );
@@ -173,7 +173,7 @@ class Location {
 
         foreach( $this->events as $event ) {
             if ( $event->is_recurring ) {
-                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, 'UTC' );
+                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
 
 
                 if ( $start && $end ) {
@@ -220,17 +220,13 @@ class Location {
                 $event->fromParams( $params, $entity_manager );
             } else {
                 if ( $event->is_recurring ) {
-                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, 'UTC' );
+                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
                 } else {
-                    $event->recurrence_rule = new RRule( null, $event->start, $event->end, 'UTC' );
+                    $event->recurrence_rule = new RRule( null, $event->start, $event->end, get_option( 'timezone_string' ) );
                 }
 
             }
             if ( ! $event->is_visible ) continue;
-
-            $event->start->setTimeZone( $tz );
-            $event->end->setTimeZone( $tz );
-            $event->recurrence_rule->setTimezone( get_option( 'timezone_string' ) );
 
             // get all recurrences
             $cal_range = new BetweenConstraint( $cal_start, $cal_end, true ) ;

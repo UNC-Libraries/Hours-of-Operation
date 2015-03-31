@@ -139,7 +139,6 @@ class EventController {
 
     public function edit() {
         $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
-        $utc_tz = new \DateTimeZone( 'UTC' );
 
         switch( isset( $_POST['action'] ) && $_POST['action'] ) {
             case 'update':
@@ -162,11 +161,7 @@ class EventController {
             default:
 
                 $event = $this->entity_manager->find( '\Hoo\Model\Event', $_GET['event_id'] );
-                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, 'UTC' );
-
-                $event->recurrence_rule->setTimezone( get_option( 'timezone_string' ) );
-                $event->start->setTimeZone( $current_tz );
-                $event->end->setTimeZone( $current_tz );
+                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
 
                 $view = new View( 'admin/event/event' );
 

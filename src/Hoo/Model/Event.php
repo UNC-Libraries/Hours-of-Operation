@@ -115,10 +115,6 @@ class Event {
                 $event_data['is_custom_rrule'] = false;
                 $rrule->setFreq( $event_data['recurrence_rule'] );
         }
-        $start->setTimezone( $utc_tz );
-        $end->setTimezone( $utc_tz );
-        $rrule->setTimezone( 'UTC' );
-
 
         if ( empty( $event_data['title'] ) )
             $event_data['title'] = 'New Event';
