@@ -297,14 +297,14 @@ class Location {
 
     /** @ORM\PrePersist **/
     public function set_created_at() {
-        $datetime = new \DateTime();
+        $datetime = new \DateTime( null, new \DateTimeZone( get_option( 'timezone_string' ) ) );
         $this->updated_at = $datetime;
         $this->created_at = $datetime;
     }
 
     /** @ORM\PreUpdate **/
     public function set_updated_at() {
-        $this->updated_at = new \DateTime();
+        $this->updated_at = new \DateTime( null, new \DateTimeZone( get_option( 'timezone_string' ) ) );
     }
 
     public function __toString(){
