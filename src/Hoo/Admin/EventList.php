@@ -105,7 +105,6 @@ class EventList extends \WP_List_Table {
     }
 
     public function column_updated_at( $event ) {
-        $event->updated_at->setTimeZone( new \DateTimeZone( get_option( 'timezone_string' ) ) );
         return $event->updated_at->format( 'F j, Y g:i a' );
     }
 
