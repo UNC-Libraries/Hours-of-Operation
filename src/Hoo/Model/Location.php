@@ -137,7 +137,8 @@ class Location {
     }
 
     public function is_open() {
-        $tz = new \DateTimeZone( get_option( 'timezone_string') );
+
+        $tz = new \DateTimeZone( 'UTC' );
         $now = new \DateTime( null, $tz );
 
         $now_start = new \DateTime( date( 'Y-m-d' ), $tz );
@@ -153,7 +154,7 @@ class Location {
                 return false;
 
             return ( $now >= $event_instances[0]->start && $now <= $event_instances[0]->end ) ? $event_instances[0]->end : false;
-        } 
+        }
         return null;
     }
 
@@ -172,17 +173,14 @@ class Location {
 
         foreach( $this->events as $event ) {
             if ( $event->is_recurring ) {
-                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end );
+                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, 'UTC' );
 
-                $event->start->setTimeZone( $tz );
-                $event->end->setTimeZone( $tz );
-                $event->recurrence_rule->setTimezone( get_option( 'timezone_string' ) );
 
                 if ( $start && $end ) {
                     $range = new BetweenConstraint( $start, $end, true ) ;
-                    $recurrences = $rrule_transformer->transform( $event->recurrence_rule, $range )->toArray();
+                    $recurrences = $rrule_transformer->transform( $event->recurrence_rule, 60, $range )->toArray();
                 } else {
-                    $recurrences = $rrule_transformer->transform( $event->recurrence_rule )->toArray();
+                    $recurrences = $rrule_transformer->transform( $event->recurrence_rule, 60 )->toArray();
                 }
 
                 foreach ( $recurrences as $recur ) {
@@ -191,11 +189,10 @@ class Location {
                     $tmp_event->end = $recur->getEnd();
                     $event_instances[] = $tmp_event;
                 }
-            } else {
+            } elseif ( ( $start >= $event->start ) && ( $end <= $event->end ) ) {
                 $event_instances[] = $event;
             }
         }
-        
         return $event_instances;
     }
 
@@ -217,15 +214,15 @@ class Location {
         }
 
         foreach( $this->events as $event ) {
-            
+
 
             if ( isset( $params['event']['id'] ) && $params['event']['id'] == $event->id ) {
                 $event->fromParams( $params, $entity_manager );
             } else {
                 if ( $event->is_recurring ) {
-                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'UTC' ) );
+                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, 'UTC' );
                 } else {
-                    $event->recurrence_rule = new RRule( null, $event->start, $event->end, get_option( 'UTC' ) );
+                    $event->recurrence_rule = new RRule( null, $event->start, $event->end, 'UTC' );
                 }
 
             }
@@ -323,7 +320,7 @@ class Location {
         $location_data['parent'] = $entity_manager->find( '\Hoo\Model\Location', $location_data['parent'] );
 
         $location_data['is_handicap_accessible'] = isset( $location_data['is_handicap_accessible'] ) && $location_data['is_handicap_accessible'];
-        
+
         return $this->fromArray( $location_data );
     }
     public function fromArray( $data ) {

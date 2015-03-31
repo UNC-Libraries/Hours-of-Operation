@@ -10,6 +10,7 @@
             <?php if ( is_null( $current_hours ) ) : ?>
                 <span class="na">N/A</span>
             <?php elseif ( is_object( $current_hours ) ) : ?>
+                <?php $current_hours->setTimeZone( new \DateTimeZone( get_option( 'timezone_string' ) ) ) ?>
                 <span class="open">Open</span>
                 <span class="until">Until <?php echo \Hoo\Utils::format_time( $current_hours )?> </span>
             <?php elseif ( is_string( $current_hours ) ) : ?>
