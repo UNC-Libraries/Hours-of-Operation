@@ -65,7 +65,6 @@ class LocationList extends \WP_List_Table {
     }
 
     public function column_updated_at( $location ) {
-        $location->updated_at->setTimeZone( new \DateTimeZone( get_option( 'timezone_string' ) ) );
         return $location->updated_at->format( 'F j, Y g:i a' );
     }
 

@@ -61,7 +61,6 @@ class Event {
 
     public function fromParams( $params, $entity_manager ) {
         $current_tz = new \DateTimeZone( get_option( 'timezone_string' ) );
-        $utc_tz = new \DateTimeZone( 'UTC' );
 
         $rrule = new RRule();
         $rrule->setTimezone( get_option( 'timezone_string' ) );
@@ -163,14 +162,14 @@ class Event {
 
     /** @ORM\PrePersist */
     public function set_created_at() {
-        $datetime = new \DateTime();
+        $datetime = new \DateTime( null, new \DateTimeZone( get_option( 'timezone_string' ) ));
         $this->updated_at = $datetime;
         $this->created_at = $datetime;
     }
 
     /** @ORM\PreUpdate */
     public function set_updated_at() {
-        $this->updated_at = new \DateTime();
+        $this->updated_at = new \DateTime( null, new \DateTimeZone( get_option( 'timezone_string' ) ));
     }
 
     public function __construct( $initial_values = array(), $entity_manager = null) {
