@@ -198,6 +198,7 @@ class Location {
 
 
     public function get_fullcalendar_events( $params, $entity_manager, $with_title = true ) {
+        // TODO: convert this to how the is_open/get_instances works
         $rrule_transformer = new RRuleTransformer();
         $tz = new \DateTimeZone( get_option( 'timezone_string') );
         $utc_tz = new \DateTimeZone( 'UTC' );
