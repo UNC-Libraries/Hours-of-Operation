@@ -83,16 +83,17 @@ class EventList extends \WP_List_Table {
     }
 
     public function column_start( $event ) {
-        return $event->start->format( 'F j, Y g:i a' );
+        return $event->start->format( 'F j, Y' );
     }
 
     public function column_end( $event ) {
         $rrule = $event->recurrence_rule;
         if ( empty( $rrule ) ) {
-            return $event->end->format( 'F j, Y g:i a' );
+            return $event->end->format( 'F j, Y' );
         } else {
             if ( preg_match( '/UNTIL=(\w+)(;|$)/', $event->recurrence_rule, $matches ) ) {
-                return $end->format( 'F j, Y g:i a' );
+                $end = new \DateTime( $matches[1], new \DateTimeZone( get_option( 'timezone_string' ) ) );
+                return $end->format( 'F j, Y' );
             } else {
                 return '∞';
             }
@@ -104,6 +105,7 @@ class EventList extends \WP_List_Table {
     }
 
     public function column_updated_at( $event ) {
+        $event->updated_at->setTimeZone( new \DateTimeZone( get_option( 'timezone_string' ) ) );
         return $event->updated_at->format( 'F j, Y g:i a' );
     }
 
