@@ -209,7 +209,7 @@ class Location {
         $event_instances = array();
         $event_dates = array();
 
-        if ( empty( $params['event']['id'] ) ) {
+        if ( isset( $params['event']['id'] ) && empty( $params['event']['id'] ) ) {
             $current_event = new Event();
             $this->events->add( $current_event );
         }
