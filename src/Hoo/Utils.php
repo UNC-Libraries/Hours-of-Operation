@@ -16,7 +16,7 @@ class Utils {
     }
 
     static public function format_time( \DateTime $start, \DateTime $end = null) {
-        $start_format = ( $start->format('i') == '00' ? 'g ' : 'g:i ' ) . 'a';
+        $start_format = ( $start->format('i') == '00' ? 'g:i ' : 'g:i ' ) . 'a';
 
         if ( ! is_null( $end ) ) {
             $end_format = ( $end->format('i') == '00' ? 'g:i ' : 'g:i ' ) . 'a';
