@@ -92,9 +92,9 @@ class Shortcode {
 
             $hours = array();
             $day = 0;
-            while ( $day <= 6 ) {
+            while ( $day < 7 ) {
                 $start = $day; $end = $day;
-                while ( $end <= 6 && ( $weekly_events[ $start ] == $weekly_events[ $end ] ) ) {
+                while ( $end < 7 && ( $weekly_events[ $start ] == $weekly_events[ $end ] ) ) {
                     $end++;
                 };
 
@@ -103,7 +103,7 @@ class Shortcode {
                     $hours[ $dow_text ] = $weekly_events[ $day ];
                 } else {
                     $start_dow_text = date( 'D', strtotime( "sunday last week +$start days" ) );
-                    $end_dow_text = date( 'D', strtotime( "sunday last week +$end days" ) );
+                    $end_dow_text = date( 'D', strtotime( sprintf( 'sunday last week +%s days', $end - 1 ) ) );
                     $range_text = sprintf( '%s - %s', $start_dow_text, $end_dow_text );
                     $hours[ $range_text ] = $weekly_events[ $day ];
                 }
