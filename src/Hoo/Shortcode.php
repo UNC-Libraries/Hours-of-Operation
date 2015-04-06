@@ -68,6 +68,16 @@ class Shortcode {
                                     'now' => new \DateTime() ) );
     }
 
+    public function today( $attributes ) {
+        $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+        $location = isset( $attributes['location'] ) ? $locations_repo->findOneBy( array( 'id' => $attributes['location'], 'is_visible' => true ) ) : null;
+        
+        if ( $location ) {
+            $view = new View( 'shortcode/today' );
+            return $view->fetch( array( 'current_hours' => $location->is_open() ) );
+        }
+    }
+
     public function weekly( $attributes ) {
         $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
         $location = isset( $attributes['location'] ) ? $locations_repo->findOneBy( array( 'id' => $attributes['location'], 'is_visible' => true ) ) : null;
