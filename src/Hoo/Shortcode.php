@@ -51,7 +51,7 @@ class Shortcode {
 
         if ( method_exists( $this, $attributes['widget'] ) && 'hoo_api' != $attributes['widget'] ) {
             $this->enqueue_script( $attributes['widget'] );
-            $this->$attributes['widget']( $attributes );
+            return $this->$attributes['widget']( $attributes );
         } else {
             return 'bad widget attribute!!';
         }
@@ -62,10 +62,10 @@ class Shortcode {
 
 
         $view = new View( 'shortcode/location' );
-        $view->render( array( 'locations' => $locations,
-                              'header' => $attributes['header'],
-                              'tagline' => $attributes['tagline'],
-                              'now' => new \DateTime() ) );
+        return $view->fetch( array( 'locations' => $locations,
+                                    'header' => $attributes['header'],
+                                    'tagline' => $attributes['tagline'],
+                                    'now' => new \DateTime() ) );
     }
 
     public function weekly( $attributes ) {
@@ -111,9 +111,9 @@ class Shortcode {
             }
 
             $view = new View( 'shortcode/weekly' );
-            $view->render( array( 'location' => $location,
-                                  'header' => $attributes['header'],
-                                  'hours'    => $hours ) );
+            return $view->fetch( array( 'location' => $location,
+                                        'header' => $attributes['header'],
+                                        'hours'    => $hours ) );
         }
     }
 }
