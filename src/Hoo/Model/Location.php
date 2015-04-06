@@ -174,10 +174,30 @@ class Location {
                     $tmp_event = clone $event;
                     $tmp_event->start = $recur->getStart();
                     $tmp_event->end = $recur->getEnd();
-                    $event_instances[] = $tmp_event;
+                    $tmp_ymd = $tmp_event->start->format( 'Y-m-d' );
+                    $tmp_priority = $tmp_event->category->priority;
+
+                    // check priority
+                    if ( array_key_exists( $tmp_ymd, $event_instances ) ) {
+                        if ( $tmp_priority > $event_instances[$tmp_ymd]->category->priority ) {
+                            $event_instances[$tmp_ymd] = $tmp_event;
+                        }
+                    } else {
+                        $event_instances[$tmp_ymd] = $tmp_event;
+                    }
                 }
             } elseif ( ( $start >= $event->start ) && ( $end <= $event->end ) ) {
-                $event_instances[] = $event;
+                $event_ymd = $event->start->format( 'Y-m-d' );
+                $event_priority = $event->category->priority;
+
+                // check priority
+                if ( array_key_exists( $event_ymd, $event_instances ) ) {
+                    if ( $event_priority > $event_instances[$tmp_ymd]->category->priority ) {
+                        $event_instances[$event_ymd] = $event;
+                    }
+                } else {
+                    $event_instances[$event_ymd] = $event;
+                }
             }
         }
         return $event_instances;
