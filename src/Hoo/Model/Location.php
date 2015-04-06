@@ -159,7 +159,9 @@ class Location {
         $event_instances = array();
         $rrule_transformer = new RRuleTransformer();
 
-        foreach( $this->events as $event ) {
+        $events = $this->events->filter(function( $event ) { return $event->is_visible ;} );
+
+        foreach( $events as $event ) {
             if ( $event->is_recurring ) {
                 $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end );
 
