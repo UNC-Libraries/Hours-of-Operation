@@ -186,13 +186,13 @@ class Location {
                         $event_instances[$tmp_ymd] = $tmp_event;
                     }
                 }
-            } elseif ( ( $start >= $event->start ) && ( $end <= $event->end ) ) {
+            } elseif ( $start <= $event->start && $end >= $event->end ) {
                 $event_ymd = $event->start->format( 'Y-m-d' );
                 $event_priority = $event->category->priority;
 
                 // check priority
                 if ( array_key_exists( $event_ymd, $event_instances ) ) {
-                    if ( $event_priority > $event_instances[$tmp_ymd]->category->priority ) {
+                    if ( $event_priority > $event_instances[$event_ymd]->category->priority ) {
                         $event_instances[$event_ymd] = $event;
                     }
                 } else {
