@@ -130,18 +130,19 @@ class Location {
     public function is_open() {
         $now = new \DateTime();
         $now_start = new \DateTime( date( 'Y-m-d' ) );
+        $now_ymd = $now_start->format( 'Y-m-d' );
         $now_end = new \DateTime( $now_start->format( 'Y-m-d' ) );
         $now_end->modify( '+1 day' );
         $event_instances = $this->get_event_instances( $now_start, $now_end );
 
         if ( count ( $event_instances ) > 0 ) {
             // special cases
-            if ( $event_instances[0]->is_all_day )
+            if ( $event_instances[ $now_ymd ]->is_all_day )
                 return '24 hours';
-            elseif ( $event_instances[0]->is_closed )
+            elseif ( $event_instances[ $now_ymd ]->is_closed )
                 return false;
 
-            return ( $now >= $event_instances[0]->start && $now <= $event_instances[0]->end ) ? $event_instances[0]->end : false;
+            return ( $now >= $event_instances[ $now_ymd ]->start && $now <= $event_instances[ $now_ymd ]->end ) ? $event_instances[ $now_ymd ]->end : false;
         }
         return null;
     }
