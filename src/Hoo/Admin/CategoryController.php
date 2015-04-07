@@ -170,6 +170,7 @@ class CategoryController {
 
             $view_options = array( 'title'            => 'Categories',
                                    'categories-table' => $categories_table,
+                                   'add-new-page'   => sprintf( 'hoo-category-add' ),
                                    'notification'     => array( 'type' => 'updated', 'message' => 'Category Added' )
             );
 
