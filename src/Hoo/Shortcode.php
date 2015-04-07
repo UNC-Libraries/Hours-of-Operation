@@ -48,7 +48,6 @@ class Shortcode {
     public function hoo( $attributes ) {
         $attributes = shortcode_atts( array( 'widget' => 'full', 'header' => null, 'tagline' => null, 'location' => null ), $attributes, 'hoo' );
 
-
         if ( method_exists( $this, $attributes['widget'] ) && 'hoo_api' != $attributes['widget'] ) {
             $this->enqueue_script( $attributes['widget'] );
             return $this->$attributes['widget']( $attributes );
@@ -75,6 +74,8 @@ class Shortcode {
         if ( $location ) {
             $view = new View( 'shortcode/today' );
             return $view->fetch( array( 'current_hours' => $location->is_open() ) );
+        } else {
+            return '';
         }
     }
 
@@ -120,10 +121,13 @@ class Shortcode {
                 $day = $end++;
             }
 
+
             $view = new View( 'shortcode/weekly' );
             return $view->fetch( array( 'location' => $location,
                                         'header' => $attributes['header'],
                                         'hours'    => $hours ) );
+        } else {
+            return '';
         }
     }
 }
