@@ -29,8 +29,7 @@ class CategoryList extends \WP_List_Table {
     public function get_sortable_columns() {
         return array(
             'name' => array( 'name', false ),
-            'updated_at' => array( 'updated_at', false ),
-            'priority' => array( 'priority', true )
+            'updated_at' => array( 'updated_at', false )
         );
     }
 
