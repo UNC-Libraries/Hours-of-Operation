@@ -19,6 +19,7 @@ class CategoryList extends \WP_List_Table {
     public function get_columns() {
         return array(
             'name' => __( 'Name' ),
+            'color' => __( 'Color' ),
             'updated_at' => __( 'Modified Date' ),
             'is_visible' => __( 'Visible?' ),
             'priority' => __( 'Priority' )
@@ -60,6 +61,11 @@ class CategoryList extends \WP_List_Table {
 
         return sprintf( '%1$s %2$s', $category->name, $this->row_actions( $actions ) );
     }
+
+    public function column_color( $category ) {
+        return sprintf( '<div class="preview-list-block" style="background-color:%s"></div>', $category->color );
+    }
+
 
     public function column_updated_at( $category ) {
         return $category->updated_at->format( 'F j, Y g:i a' );
