@@ -4,6 +4,8 @@ namespace Hoo;
 use Hoo\Model\Location;
 
 class Shortcode {
+    private $valid_widgets = array( 'full', 'today',  'weekly' );
+    
     public function __construct( $em ) {
         $this->entity_manager = $em;
 
@@ -48,7 +50,7 @@ class Shortcode {
     public function hoo( $attributes ) {
         $attributes = shortcode_atts( array( 'widget' => 'full', 'header' => null, 'tagline' => null, 'location' => null ), $attributes, 'hoo' );
 
-        if ( method_exists( $this, $attributes['widget'] ) && 'hoo_api' != $attributes['widget'] ) {
+        if ( method_exists( $this, $attributes['widget'] ) && in_array( $attributes['widget'], $valid_widgets ) ) {
             $this->enqueue_script( $attributes['widget'] );
             return $this->$attributes['widget']( $attributes );
         } else {
