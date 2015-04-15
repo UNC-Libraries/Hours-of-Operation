@@ -8,7 +8,7 @@ class Shortcode {
     private static $valid_widget_attributes = array( 'header' => array( 'full', 'weekly' ),
                                                      'location' => array( 'weekly', 'today' ),
                                                      'tagline' => array( 'full' ) );
-    
+
     static public function available_widgets() {
         return self::$valid_widgets;
     }
@@ -62,7 +62,7 @@ class Shortcode {
     public function hoo( $attributes ) {
         $attributes = shortcode_atts( array( 'widget' => 'full', 'header' => null, 'tagline' => null, 'location' => null ), $attributes, 'hoo' );
 
-        if ( method_exists( $this, $attributes['widget'] ) && in_array( $attributes['widget'], $this->valid_widgets ) ) {
+        if ( method_exists( $this, $attributes['widget'] ) && in_array( $attributes['widget'], self::$valid_widgets ) ) {
             $this->enqueue_script( $attributes['widget'] );
             return $this->$attributes['widget']( $attributes );
         } else {
@@ -84,7 +84,7 @@ class Shortcode {
     public function today( $attributes ) {
         $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
         $location = isset( $attributes['location'] ) ? $locations_repo->findOneBy( array( 'id' => $attributes['location'], 'is_visible' => true ) ) : null;
-        
+
         if ( $location ) {
             $view = new View( 'shortcode/today' );
             return $view->fetch( array( 'current_hours' => $location->is_open() ) );
