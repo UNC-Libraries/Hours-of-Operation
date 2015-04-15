@@ -18,13 +18,10 @@ jQuery( function( $ ) {
         $shortcode_attributes.each( function() {
             if ( 'widget' === this.name ) return;
 
-            var valid_widgets = $( this ).data( 'validWidgets' ).split( ' ' );
+            var valid_widgets = $( this ).data( 'validWidgets' ).split( ' ' ),
+                is_valid = ! ( -1 < $.inArray( selected_widget, valid_widgets ) );
 
-            if ( -1 < $.inArray( selected_widget, valid_widgets ) ) {
-                $( this ).prop( 'disabled', false );
-            } else {
-                $( this ).prop( 'disabled', true );
-            }
+                $( this ).prop( 'disabled', is_valid );
         } );
     } );
 
