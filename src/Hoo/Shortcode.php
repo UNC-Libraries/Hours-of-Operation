@@ -4,8 +4,19 @@ namespace Hoo;
 use Hoo\Model\Location;
 
 class Shortcode {
-    private $valid_widgets = array( 'full', 'today',  'weekly' );
+    private static $valid_widgets = array( 'full', 'today',  'weekly' );
+    private static $valid_widget_attributes = array( 'header' => array( 'full', 'weekly' ),
+                                                     'location' => array( 'weekly', 'today' ),
+                                                     'tagline' => array( 'full' ) );
     
+    static public function available_widgets() {
+        return self::$valid_widgets;
+    }
+
+    static public function valid_widget_attributes() {
+        return self::$valid_widget_attributes;
+    }
+
     public function __construct( $em ) {
         $this->entity_manager = $em;
 
@@ -21,6 +32,7 @@ class Shortcode {
         add_shortcode( 'hoo-api', array( $this, 'hoo_api' ) );
         add_action( 'template_redirect', array( $this, 'hoo_api' ) );
     }
+
 
     public function enqueue_script( $widget ) {
         switch( $widget ){
@@ -50,7 +62,7 @@ class Shortcode {
     public function hoo( $attributes ) {
         $attributes = shortcode_atts( array( 'widget' => 'full', 'header' => null, 'tagline' => null, 'location' => null ), $attributes, 'hoo' );
 
-        if ( method_exists( $this, $attributes['widget'] ) && in_array( $attributes['widget'], $valid_widgets ) ) {
+        if ( method_exists( $this, $attributes['widget'] ) && in_array( $attributes['widget'], $this->valid_widgets ) ) {
             $this->enqueue_script( $attributes['widget'] );
             return $this->$attributes['widget']( $attributes );
         } else {

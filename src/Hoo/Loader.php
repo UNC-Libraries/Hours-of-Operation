@@ -115,7 +115,7 @@ class Loader {
     }
 
     public function init_controllers() {
-        $controller_classes = array( 'LocationController', 'CategoryController', 'EventController' );
+        $controller_classes = array( 'LocationController', 'CategoryController', 'EventController', 'ShortcodeController' );
         foreach ( $controller_classes as $class_name ) {
             $property_name = strtolower( preg_replace( '/([a-z])([A-Z])/', '$1_$2', $class_name ) ); // convert to snake
 
@@ -161,6 +161,8 @@ class Loader {
 
         wp_register_script( 'event-edit', HOO__PLUGIN_URL . 'assets/js/event-edit.js', array( 'validation', 'jquery-timepicker-addon', 'full-calendar' ) );
         wp_register_script( 'event-delete', HOO__PLUGIN_URL . 'assets/js/event-delete.js', array( 'jquery' ) );
+
+        wp_register_script( 'hoo-shortcodes', HOO__PLUGIN_URL . 'assets/js/hoo-shortcodes.js', array( 'jquery' ) );
 
 
     }
