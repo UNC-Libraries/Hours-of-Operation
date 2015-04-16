@@ -112,19 +112,20 @@ class Location {
         return $event_instances;
     }
 
+    public function to_api_response() {
+        $attributes = array( 'id', 'name', 'url', 'phone', 'notice', 'is_handicap_accessible', 'handicap_link' );
+
+        return array_reduce( $attributes,
+                             function( $attrs, $attr ) { $attrs[$attr] = $this->$attr; return $attrs; },
+                             array() );
+    }
+
 
     public function get_hours_for_date( $start ) {
-        $start = new \DateTime( date( $start ? $start : 'Y-m-d' ) );
         $end = new \DateTime( $start->format( 'Y-m-d' ) );
         $end->modify( '+1 day' );
-
-        $hours = $this->get_hours( $start, $end );
-
-        $current_event = isset( $hours[0] ) ? $hours[0] : null;
-
-        unset( $current_event['priority'] ); unset( $current_event['date'] );
-
-        return $current_event;
+        $events = $this->get_event_instances( $start, $end );
+        return ( 1 == count( $events ) ) ? reset( $events ) : null;
     }
 
     public function is_open() {

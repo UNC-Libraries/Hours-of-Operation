@@ -49,12 +49,27 @@ class Shortcode {
         // /if the page containts the hoo-api shortcode send json and exit :}
         if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'hoo-api' ) ) {
             $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+            $json_response = array();
+            $date = isset( $_GET['date'] ) ? new \DateTime( $_GET['date'] ) : new \DateTime ( date( 'Y-m-d' ) );
 
             if ( isset( $_GET['location_id'] ) ) {
                 $location = $locations_repo->findOneBy( array( 'id' => $_GET['location_id'], 'is_visible' => true ) );
-                $hours = $location->get_hours_for_date( $_GET['date'] );
-                wp_send_json( $hours );
+                $hours = $location->get_hours_for_date( $date );
+
+                $json_response['location'] = $location->to_api_response();
+                $json_response['location']['address'] = $location->address->to_api_response();
+                $json_response['hours'] = $hours ? $hours->to_api_response() : null;
+
+            } else {
+                foreach ( $locations_repo->findBy( array( 'is_visible' => true ) ) as $location ) {
+                    $hours = $location->get_hours_for_date( $date );
+                    $json_response[]['location'] = $location->to_api_response();
+                    $json_response[]['location']['address'] = $location->address->to_api_response();
+                    $json_response[]['hours'] = $hours ? $hours->to_api_response() : null;
+                }
             }
+
+            wp_send_json( $json_response );
             exit;
         }
     }

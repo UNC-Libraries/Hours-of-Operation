@@ -59,6 +59,15 @@ class Event {
     /** @ORM\column(name="updated_at", type="datetime") */
     private $updated_at;
 
+    public function to_api_response() {
+        $no_hours = $this->is_all_day || $this->is_closed;
+        return array( 'category'   => $this->category->name,
+                      'is_all_day' => $this->is_all_day,
+                      'is_closed'  => $this->is_closed,
+                      'open'       => $no_hours ? null : $this->start,
+                      'close'      => $no_hours ? null : $this->end );
+    }
+
     public function fromParams( $params, $entity_manager ) {
         $rrule = new RRule();
         $event_data = $params['event'];
