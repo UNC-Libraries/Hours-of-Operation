@@ -75,6 +75,9 @@
 #hoo-main #location-list-container .location-row.highlight {
     background-color: #ddddff;
 }
+#hoo-main #location-list-container .location-row.active {
+    background-color: #ddddff;
+}
 
 #hoo-main #panel-container {
     padding: 2px 2px 2px 0px;
