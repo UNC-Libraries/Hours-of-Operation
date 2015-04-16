@@ -184,8 +184,8 @@ class Event {
         } else {
             $this->category = new Category();
             $this->recurrence_rule = new RRule( array( 'FREQ' => 'DAILY', 'COUNT' => '1' ) );
-            $this->start = new \DateTime();
-            $this->end = new \DateTime( '+1 hour' );
+            $this->start = new \DateTime( '8 am');
+            $this->end = new \DateTime( '9 pm' );
         }
     }
 
