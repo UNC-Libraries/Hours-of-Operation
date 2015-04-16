@@ -96,6 +96,7 @@ jQuery(function($) {
                                         $event_end_datetime.datetimepicker( 'setDate', test_start );
                                     }
                                 }
+                                $preview_calendar.fullCalendar('gotoDate', $event_start_datetime.datetimepicker( 'getDate' ));
                                 $preview_calendar.fullCalendar( 'refetchEvents' );
                             }
                         } );
@@ -117,6 +118,7 @@ jQuery(function($) {
                                         $event_start_datetime.datetimepicker( 'setDate', test_end );
                                     }
 
+                                    $preview_calendar.fullCalendar('gotoDate', $event_end_datetime.datetimepicker( 'getDate' ));
                                     $preview_calendar.fullCalendar( 'refetchEvents' );
                                 }
                             }
