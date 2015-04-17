@@ -2,6 +2,7 @@
 
 namespace Hoo;
 use Hoo\Model\Location;
+use Hoo\Model\Category;
 
 class Shortcode {
     private static $valid_widgets = array( 'full', 'today',  'weekly' );
@@ -87,10 +88,12 @@ class Shortcode {
 
     public function full( $attributes ) {
         $locations = Location::get_visible_locations( $this->entity_manager );
+        $categories = Category::get_visible_categories( $this->entity_manager ); 
 
 
         $view = new View( 'shortcode/location' );
         return $view->fetch( array( 'locations' => $locations,
+                                    'categories' => $categories,
                                     'header' => $attributes['header'],
                                     'tagline' => $attributes['tagline'],
                                     'now' => new \DateTime() ) );

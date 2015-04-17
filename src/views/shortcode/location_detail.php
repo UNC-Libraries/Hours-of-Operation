@@ -21,6 +21,19 @@
                     </div>
                 <?php endif ?>
 
+                <div class="category-legend">
+                    <ul>
+                        <?php foreach( $this['categories'] as $category ) : ?>
+                            <li>
+                                <div class="legend-wrapper">
+                                    <div class="preview-block" style="background-color: <?php echo $category->color ?>;"></div>
+                                    <span><?php echo $category->name ?></span>
+                                </div>
+                            </li>
+                        <?php endforeach ?>
+                    </ul>
+                </div>
+
                 <div class="hours-calendar" data-location-id="<?php echo $location->id ?>"></div>
 
                 <?php if ($location->description ) : ?>
