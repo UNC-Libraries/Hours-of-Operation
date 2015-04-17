@@ -42,6 +42,8 @@
     position: absolute;
     left: 0;
     width: 35%;
+    min-height: 750px;
+    padding-right: 5px;
 }
 
 #hoo-main #locations-list {
@@ -70,7 +72,7 @@
 
 #hoo-main #location-list-container #locations-list th.location-status {
     vertical-align: middle;
-    width: 30%;
+    width: 33%;
 }
 
 #hoo-main #location-list-container td {
@@ -99,11 +101,13 @@
 
 #hoo-main #location-list-container #locations-list td.location-status span.open {
     color: #006600;
-    font-size: 18px;
+    font-weight: bold;
+    font-size: 14px;
 }
 #hoo-main #location-list-container #locations-list td.location-status span.closed {
     color: #990000;
-    font-size: 18px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 #hoo-main #location-list-container .location-row:hover {
