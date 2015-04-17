@@ -1,5 +1,23 @@
 <ul>
     <li>
+        <label for="event_is_all_day" class="wpt-form-label wpt-form-textfield-label">Closed</label>
+        <input type="checkbox"
+               name="event[is_closed]"
+               id="event_is_closed"
+               class="wpt-form-checkbox form-checkbox checkbox"
+               value="1"
+               <?php if ( $this['event']->is_closed ) echo  'checked' ?>/>
+    </li>
+    <li>
+        <label for="event_is_all_day" class="wpt-form-label wpt-form-textfield-label">24 Hours</label>
+        <input type="checkbox"
+               name="event[is_all_day]"
+               id="event_is_all_day"
+               class="wpt-form-checkbox form-checkbox checkbox"
+               value="1"
+               <?php if ( $this['event']->is_all_day ) echo  'checked' ?>/>
+    </li>
+    <li>
         <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield date-field <?php if ( ! ($this['event']->is_closed || $this['event']->is_all_day ) ) echo 'is-hidden' ?>">
             <div class="form-item form-item-textfield">
                 <label for="event_start_date" class="wpt-form-label wpt-form-textfield-label">Date</label>
@@ -31,24 +49,6 @@
                        required />
             </div>
         </div>
-    </li>
-    <li>
-        <label for="event_is_all_day" class="wpt-form-label wpt-form-textfield-label">Closed</label>
-        <input type="checkbox"
-               name="event[is_closed]"
-               id="event_is_closed"
-               class="wpt-form-checkbox form-checkbox checkbox"
-               value="1"
-               <?php if ( $this['event']->is_closed ) echo  'checked' ?>/>
-    </li>
-    <li>
-        <label for="event_is_all_day" class="wpt-form-label wpt-form-textfield-label">24 Hours</label>
-        <input type="checkbox"
-               name="event[is_all_day]"
-               id="event_is_all_day"
-               class="wpt-form-checkbox form-checkbox checkbox"
-               value="1"
-               <?php if ( $this['event']->is_all_day ) echo  'checked' ?>/>
     </li>
     <li>
         <div class="form-item form-item-select">
