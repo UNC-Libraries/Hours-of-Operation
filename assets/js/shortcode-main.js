@@ -67,6 +67,7 @@ jQuery( function( $ ) {
 
     $hours_calendars.each( function( index, hour_cal ) {
         $( hour_cal ).fullCalendar( {
+            fixedWeekCount: false,
             aspectRatio: 1.4,
             header: {
                 left: '',
@@ -92,7 +93,7 @@ jQuery( function( $ ) {
                 });
             },
             timezone: 'local',
-            timeFormat: '',
+            allDayDefault: true,
             editable: false
         });
     } );

@@ -5,6 +5,33 @@
 
 #hoo-main {
     min-height: 750px;
+    width: 100%;
+    position: relative;
+    margin-bottom: 32px;
+}
+
+#hoo-main #panel-container {
+    top:32px;
+    position: absolute;
+    right: 0;
+    width: 65%;
+    border: 1px solid #aaa;
+    border-radius: 0 5px 5px 0;
+    box-shadow: 1px 1px 3px 0px #aaa;
+    height: 100%;
+}
+#hoo-main .panel {
+    border-radius: 0 5px 5px 0;
+    position: absolute;
+    box-sizing: border-box;
+    height: 100%;
+    background-color: #fff;
+    z-index: 88888;
+    display: none;
+    overflow: scroll;
+}
+#hoo-main .panel .content-wrapper {
+    padding: 10px;
 }
 
 #hoo-main .location-row:hover {
@@ -12,14 +39,21 @@
 }
 
 #hoo-main #location-list-container {
-    float: left;
+    position: absolute;
+    left: 0;
     width: 35%;
-    min-height: 750px;
 }
 
 #hoo-main #locations-list {
     width: 100%;
-    table-layout: fixed;
+    height: 100%
+}
+
+#hoo-main #location-list-container .location-list-footer {
+    position: relative;
+    bottom: 0;
+    height: 32px;
+    background-color: #666;
 }
 
 #hoo-main #location-list-container #locations-list .list-header {
@@ -36,7 +70,7 @@
 
 #hoo-main #location-list-container #locations-list th.location-status {
     vertical-align: middle;
-    width: 25%;
+    width: 30%;
 }
 
 #hoo-main #location-list-container td {
@@ -59,6 +93,9 @@
 #hoo-main #location-list-container td.location-status span {
     display: block;
 }
+#hoo-main #location-list-container td.location-status span.until {
+    font-size: 90%;
+}
 
 #hoo-main #location-list-container #locations-list td.location-status span.open {
     color: #006600;
@@ -79,27 +116,6 @@
     background-color: #ddddff;
 }
 
-#hoo-main #panel-container {
-    padding: 2px 2px 2px 0px;
-    margin: 32px 0px 0px 35%;
-    position: relative;
-    overflow: scroll;
-    border-top: 1px solid #aaa;
-    border-right: 1px solid #aaa;
-    border-bottom: 1px solid #aaa;
-    border-radius: 0 5px 5px 0;
-    box-shadow: 1px 1px 3px 0px #aaa;
-    min-height: 750px;
-}
-#hoo-main .panel {
-
-    padding: 10px;
-    min-height: 750px;
-    background-color: white;
-    position: absolute;
-    z-index: 88888;
-    display: none;
-}
 
 #hoo-main .panel .location-detail {
     height: 100%;
@@ -157,7 +173,11 @@
 }
 
 #hoo-main #map-canvas {
-    min-height: 750px;
+
+    border-radius: 0 5px 5px 0;
+    height: 100%;
+}
+#hoo-main #hoo-map {
 }
 
 
@@ -200,6 +220,10 @@
 
 #hoo-main .fc-button-content {
     padding: 0;
+}
+
+#hoo-main .fc-event {
+    box-shadow: 2px 2px 2px #706868;
 }
 
 .ui-panel-inner {

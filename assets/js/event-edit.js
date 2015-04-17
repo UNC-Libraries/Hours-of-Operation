@@ -49,6 +49,7 @@ jQuery(function($) {
                 );
             },
 
+            fixedWeekCount: false,
             timeFormat: '',
             editable: false,
 

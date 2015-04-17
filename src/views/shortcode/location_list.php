@@ -9,3 +9,4 @@
         <?php $this->include_file( 'shortcode/location_list_rows' ) ?>
     </tbody>
 </table>
+<div class="location-list-footer"></div>
