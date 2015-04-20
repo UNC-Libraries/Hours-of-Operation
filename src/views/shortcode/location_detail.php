@@ -43,7 +43,7 @@
                 <?php endif ?>
 
                 <?php if ( $location->url ) : ?>
-                    <p><a href="<?echo $location->url ?>"><?php echo $location->url ?></a></p>
+                    <p><a href="<?php echo $location->url ?>"><?php echo $location->url ?></a></p>
                 <?php endif ?>
 
                 <div class="contact">
