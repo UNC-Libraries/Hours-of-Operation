@@ -20,6 +20,7 @@
     box-shadow: 1px 1px 3px 0px #aaa;
     height: 100%;
 }
+
 #hoo-main .panel {
     border-radius: 0 5px 5px 0;
     position: absolute;
@@ -265,4 +266,16 @@
     width: 20px;
     height: 20px;
     border-width: 1px solid rgba(0, 0, 0, .2);
+}
+
+@media screen and (max-width: 800px) {
+
+    #hoo-main #panel-container {
+        display: none;
+    }
+
+    #hoo-main #location-list-container {
+        width: 100%;
+    }
+
 }
