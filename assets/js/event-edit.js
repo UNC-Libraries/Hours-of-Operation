@@ -34,7 +34,7 @@ jQuery(function($) {
                 var ajax_action  = 'action=location_events',
                     cal_start    = 'start=' + cal_start.format(),
                     cal_end      = 'end=' + cal_end.format(),
-                    event_inputs = $( ':input:visible,#event_id,#event_category,#event_location,#event_is_visible' ).serialize(); 
+                    event_inputs = $( ':input:visible,#event_id,#event_category,#event_location,#event_is_visible' ).serialize();
 
                 $.ajax(
                     {
@@ -68,14 +68,16 @@ jQuery(function($) {
                     $event_start_date.datepicker(
                         {
                             dateFormat: 'yy-mm-dd',
-                            onClose: function( select_date ) {
+                            onSelect: function( select_date ) {
+                                $preview_calendar.fullCalendar('gotoDate', $event_start_date.datetimepicker( 'getDate' ));
                                 $preview_calendar.fullCalendar( 'refetchEvents' );
                             }
                         } );
 
                     $rrule_until.datepicker( {
                         dateFormat: 'yy-mm-dd',
-                        onClose: function( select_date ) {
+                        onSelect: function( select_date ) {
+                            $preview_calendar.fullCalendar('gotoDate', $rrule_until.datetimepicker( 'getDate' ));
                             $preview_calendar.fullCalendar( 'refetchEvents' );
                         }
                     } );
