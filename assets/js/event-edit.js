@@ -96,7 +96,7 @@ jQuery(function($) {
 
                                     if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
                                         test_start.setHours( test_end.getHours(), test_end.getMinutes() );
-                                        $event_end_datetime.datetimepicker( 'setDate', test_start );
+                                        $event_start_datetime.datetimepicker( 'setDate', test_start );
                                     }
                                 }
                                 $preview_calendar.fullCalendar('gotoDate', $event_start_datetime.datetimepicker( 'getDate' ));
@@ -118,7 +118,7 @@ jQuery(function($) {
 
                                     if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
                                         test_end.setHours( test_start.getHours(), test_start.getMinutes() );
-                                        $event_start_datetime.datetimepicker( 'setDate', test_end );
+                                        $event_end_datetime.datetimepicker( 'setDate', test_end );
                                     }
 
                                     $preview_calendar.fullCalendar('gotoDate', $event_end_datetime.datetimepicker( 'getDate' ));
