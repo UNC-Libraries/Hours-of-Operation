@@ -30,6 +30,7 @@ class Shortcode {
            hoo_api will send some json and exit
            TODO: find a better way to do the api? :D
          */
+        add_action( 'wp', array( $this, 'api_headers' ) );
         add_shortcode( 'hoo-api', array( $this, 'hoo_api' ) );
         add_action( 'template_redirect', array( $this, 'hoo_api' ) );
     }
@@ -44,11 +45,22 @@ class Shortcode {
             default:
         }
     }
+
+    public function api_headers() {
+        global $post;
+        if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'hoo-api' ) ) {
+            header( 'Access-Control-Allow-Origin: *' );
+            header( 'Access-Control-Allow-Headers: *' );
+            header( 'Content-Type: application/json' );
+        }
+    }
+
     public function hoo_api() {
         global $post;
 
         // /if the page containts the hoo-api shortcode send json and exit :}
         if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'hoo-api' ) ) {
+
             $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
             $json_response = array();
             $date = isset( $_GET['date'] ) ? new \DateTime( $_GET['date'] ) : new \DateTime ( date( 'Y-m-d' ) );
@@ -88,7 +100,7 @@ class Shortcode {
 
     public function full( $attributes ) {
         $locations = Location::get_visible_locations( $this->entity_manager );
-        $categories = Category::get_visible_categories( $this->entity_manager ); 
+        $categories = Category::get_visible_categories( $this->entity_manager );
 
 
         $view = new View( 'shortcode/location' );
