@@ -43,8 +43,6 @@
     position: absolute;
     left: 0;
     width: 35%;
-    min-height: 750px;
-    padding-right: 5px;
 }
 
 #hoo-main #locations-list {
@@ -76,39 +74,48 @@
     width: 33%;
 }
 
-#hoo-main #location-list-container td {
+#hoo-main #location-list-container #locations-list td {
     border-bottom: 0 solid #fff;
-    padding: 10px 5px 10px 5px;
+    padding: 5px;
+}
+
+#hoo-main #location-list-container #locations-list td.location-name {
+    font-size: 100%;
+    vertical-align: middle;
+}
+
+#hoo-main #location-list-container #locations-list td.location-name a {
+    font-weight: bold;
 }
 
 #hoo-main #location-list-container #locations-list td.child {
     padding-left: 25px;
 }
 
-#hoo-main #location-list-container td.location-name {
-    font-weight: bold;
-    font-size: 16px;
-    vertical-align: middle;
+#hoo-main #location-list-container #locations-list td.child a {
+    font-weight: normal;
 }
-#hoo-main #location-list-container td.location-status {
+
+#hoo-main #location-list-container #locations-list td.location-status {
     text-align: center;
 }
-#hoo-main #location-list-container td.location-status span {
+#hoo-main #location-list-container #locations-list td.location-status span {
     display: block;
-}
-#hoo-main #location-list-container td.location-status span.until {
-    font-size: 90%;
 }
 
 #hoo-main #location-list-container #locations-list td.location-status span.open {
     color: #006600;
-    font-weight: bold;
-    font-size: 14px;
+    /*font-weight: bold;*/
+    font-size: 125%;
 }
 #hoo-main #location-list-container #locations-list td.location-status span.closed {
     color: #990000;
-    font-weight: bold;
-    font-size: 14px;
+    /*font-weight: bold;*/
+    font-size: 125%;
+}
+
+#hoo-main #location-list-container #locations-list td.location-status span.until {
+    font-size: 80%;
 }
 
 #hoo-main #location-list-container .location-row:hover {
