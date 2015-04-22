@@ -164,6 +164,11 @@ class Event {
         } else {
             $this->recurrence_rule = null;
         }
+
+        // end is set the same as start so add a day
+        if ( $this->is_all_day ) {
+            $this->end->modify('+1 day');
+        }
     }
 
     /** @ORM\PrePersist */
