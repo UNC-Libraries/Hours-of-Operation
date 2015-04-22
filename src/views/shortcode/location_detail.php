@@ -46,7 +46,7 @@
                     <p><a href="<?php echo $location->url ?>"><?php echo $location->url ?></a></p>
                 <?php endif ?>
 
-                <div class="contact">
+                <div class="contact"> 
                     <div class="address-picture-wrapper">
                         <?php if ( $location->image ) : ?>
                             <div class="location-image">
