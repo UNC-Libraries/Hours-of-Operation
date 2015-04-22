@@ -21,7 +21,9 @@
                     </div>
                 <?php endif ?>
 
-                <div class="category-legend">
+                <div class="hours-calendar" data-location-id="<?php echo $location->id ?>"></div>
+
+                <div id="category-legend">
                     <ul>
                         <?php foreach( $this['categories'] as $category ) : ?>
                             <li>
@@ -34,7 +36,6 @@
                     </ul>
                 </div>
 
-                <div class="hours-calendar" data-location-id="<?php echo $location->id ?>"></div>
 
                 <?php if ($location->description ) : ?>
                     <div class="location-description">
@@ -46,7 +47,7 @@
                     <p><a href="<?php echo $location->url ?>"><?php echo $location->url ?></a></p>
                 <?php endif ?>
 
-                <div class="contact"> 
+                <div class="contact">
                     <div class="address-picture-wrapper">
                         <?php if ( $location->image ) : ?>
                             <div class="location-image">

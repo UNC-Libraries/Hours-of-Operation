@@ -128,18 +128,26 @@
     background-color: #ddddff;
 }
 
-
 #hoo-main .panel .location-detail {
     height: 100%;
 }
 
-#hoo-main .panel .location-detail h2{
-    padding-right: 25px;
+#hoo-main .panel .location-detail h2 {
     margin-bottom: 20px;
+    text-shadow: none;
+}
+
+#hoo-main .panel .post-entry {
+    /*text-align: center;*/
 }
 
 #hoo-main .panel .location-detail h2 a {
     color: #3b9bdb;
+}
+
+#hoo-main .panel .location-detail .fc-center {
+   display: block;
+    /*text-align: center;*/
 }
 
 #hoo-main .panel .location-detail h2 span.close-panel {
@@ -248,14 +256,19 @@
 
 #category-legend {
     text-align: center;
+    margin-bottom: 10px;
+    background-color: #F0F0F0;
+    border: thin solid #E6E6E6;
+    padding: 5px 0px;
 }
+
 #category-legend li {
     display: inline-block;
 }
 
 #category-legend .legend-wrapper {
-    margin-right: 5px;
-}
+    margin-right: 5px
+;}
 
 #category-legend .legend-wrapper span {
     vertical-align: middle;
