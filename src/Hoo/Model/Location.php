@@ -125,7 +125,7 @@ class Location {
         $end = new \DateTime( $start->format( 'Y-m-d' ) );
         $end->modify( '+1 day' );
         $events = $this->get_event_instances( $start, $end );
-        return ( 1 == count( $events ) ) ? reset( $events ) : null;
+        return ( 1 <= count( $events ) ) ? reset( $events ) : null;
     }
 
     public function is_open() {
@@ -164,6 +164,7 @@ class Location {
 
         foreach( $events as $event ) {
             if ( $event->is_recurring ) {
+
                 $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end );
 
 
@@ -190,7 +191,7 @@ class Location {
                         $event_instances[$tmp_ymd] = $tmp_event;
                     }
                 }
-            } elseif ( $start <= $event->start && $end >= $event->end ) {
+            } elseif ( ( $start <= $event->start && $end >= $event->end ) || ( $start->format( 'Y-m-d' ) == $event->start->format( 'Y-m-d' ) && $event->is_all_day ) ) {
                 $event_ymd = $event->start->format( 'Y-m-d' );
                 $event_priority = $event->category->priority;
 
