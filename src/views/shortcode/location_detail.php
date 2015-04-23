@@ -36,15 +36,16 @@
                     </ul>
                 </div>
 
+                <h3 class="location-header"><?php echo $location->name ?></h3>
+
+                <?php if ( $location->url ) : ?>
+                    <p><a href="<?php echo $location->url ?>"><?php echo $location->url ?></a></p>
+                <?php endif ?>
 
                 <?php if ($location->description ) : ?>
                     <div class="location-description">
                         <?php echo $location->description ?>
                     </div>
-                <?php endif ?>
-
-                <?php if ( $location->url ) : ?>
-                    <p><a href="<?php echo $location->url ?>"><?php echo $location->url ?></a></p>
                 <?php endif ?>
 
                 <div class="contact">
@@ -68,7 +69,7 @@
                         </ul>
                     </div>
                     <?php if ( $location->is_handicap_accessible ) : ?>
-                        <div class="handicap">
+                        <div class="location-handicap">
                             <?php if ( $location->handicap_link ) : ?>
                                 <a href="<?php echo $location->handicap_link ?>">
                             <?php endif ?>
@@ -79,7 +80,7 @@
                             <?php if ( $location->handicap_link ) : ?>
                                 <a href="<?php echo $location->handicap_link ?>">
                             <?php endif ?>
-                            <span>Disability Access</span>
+                            <span>Disability Access Information</span>
                             <?php if ( $location->handicap_link ) : ?>
                                 </a>
                             <?php endif ?>
