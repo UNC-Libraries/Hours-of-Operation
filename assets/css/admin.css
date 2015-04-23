@@ -35,6 +35,10 @@
     display: inline;
 }
 
+.hoo-head .updated {
+    clear: left;
+}
+
 #wphead {
     border-bottom: none;
 }
