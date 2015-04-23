@@ -36,27 +36,27 @@
                     </ul>
                 </div>
 
-                <h3 class="location-header"><?php echo $location->name ?></h3>
+                <h3 id="location-header"><?php echo $location->name ?></h3>
 
                 <?php if ( $location->url ) : ?>
-                    <p><a href="<?php echo $location->url ?>"><?php echo $location->url ?></a></p>
+                    <p id="location-url"><a href="<?php echo $location->url ?>"><?php echo $location->url ?></a></p>
                 <?php endif ?>
 
                 <?php if ($location->description ) : ?>
-                    <div class="location-description">
+                    <div id="location-description">
                         <?php echo $location->description ?>
                     </div>
                 <?php endif ?>
 
-                <div class="contact">
-                    <div class="address-picture-wrapper">
+                <div id="contact">
+                    <div id="address-picture-wrapper">
                         <?php if ( $location->image ) : ?>
-                            <div class="location-image">
+                            <div id="location-image">
                                 <img src="<?php echo $location->image ?>"/>
                             </div>
                         <?php endif ?>
                     </div>
-                    <div class="location-address">
+                    <div id="location-address">
                         <h5>Address</h5>
                         <ul>
                             <a href="<?php echo $location->google_map_url() ?>" title="View on Google Maps">
@@ -69,7 +69,7 @@
                         </ul>
                     </div>
                     <?php if ( $location->is_handicap_accessible ) : ?>
-                        <div class="location-handicap">
+                        <div id="location-handicap">
                             <?php if ( $location->handicap_link ) : ?>
                                 <a href="<?php echo $location->handicap_link ?>">
                             <?php endif ?>
@@ -87,7 +87,7 @@
                         </div>
                     <?php endif ?>
                     <?php if ( $location->phone ) : ?>
-                        <div class="location-phone">
+                        <div id="location-phone">
                             <h5>Phone</h5>
                             <ul>
                                 <li><?php echo $location->phone ?></li>

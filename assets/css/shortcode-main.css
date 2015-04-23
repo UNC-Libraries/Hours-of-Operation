@@ -170,54 +170,53 @@
     display: block;
 }
 
-#hoo-main .panel .location-detail .location-header {
+#hoo-main .panel .location-detail #location-header {
     font-size: 1.5em;
-    padding: 10px;
+    padding: 10px 0px 5px 0px;
 }
 
-#hoo-main .panel .location-detail .location-url {
-    padding: 10px;
+#hoo-main .panel .location-detail #location-url {
+    padding: 5px 0px 5px 0px;
 }
 
-#hoo-main .panel .location-detail .location-desciption {
-    padding: 10px;
+#hoo-main .panel .location-detail #location-description {
+    padding: 5px 0px 10px 0px;
 }
 
-#hoo-main .panel .location-detail .contact {
-    padding: 10px 0 0 1px;
+#hoo-main .panel .location-detail #contact {
+    padding: 5px 0px;
     display: block;
 }
 
-#hoo-main .panel .location-detail .contact .address-picture-wrapper {
+#hoo-main .panel .location-detail #contact #address-picture-wrapper {
     float: left;
     width: 40%;
     min-height: 200px;
     border: 1px solid #eee;
     padding: 5px;
-    margin-right: 15px;
+    margin: 0px 15px 10px 0px;
     box-shadow: 0px 1px 3px #ccc;
 }
 
-#hoo-main .panel .location-detail .contact .location-address h5 {
+#hoo-main .panel .location-detail #contact #location-address h5 {
     margin-bottom: 5px;
 }
 
-#hoo-main .panel .location-detail .contact .location-handicap {
+#hoo-main .panel .location-detail #contact #location-handicap {
     margin: 10px 0px;
 }
 
-#hoo-main .panel .location-detail .contact .location-phone {
+#hoo-main .panel .location-detail #contact #location-phone {
     margin: 10px 0px;
 }
 
 #hoo-main #map-canvas {
-
     border-radius: 0 5px 5px 0;
     height: 100%;
 }
+
 #hoo-main #hoo-map {
 }
-
 
 .is-hidden {
     display: none;
@@ -286,7 +285,7 @@
 
 #category-legend .legend-wrapper {
     margin-right: 10px;
-;}
+}
 
 #category-legend .legend-wrapper span {
     vertical-align: middle;
