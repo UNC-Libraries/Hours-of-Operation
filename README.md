@@ -1,6 +1,6 @@
 # Hours of Operation
 ![HoO Logo](https://gitlab.lib.unc.edu/cappdev/hours-of-operation/raw/master/assets/images/hoo-200.png)
-A Wordpress plugin to help you manage the Hours of Operation for you business or insitution.
+A Wordpress plugin to help you manage the Hours of Operation for you business or institution.
     
 ## Hacking
 
