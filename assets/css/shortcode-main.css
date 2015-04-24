@@ -32,6 +32,7 @@
     overflow-x: hidden;
     overflow-y: auto;
 }
+
 #hoo-main .panel .content-wrapper {
     padding: 10px;
 }
@@ -62,9 +63,11 @@
     background-color: #666;
     color: #fff;
 }
+
 #hoo-main #location-list-container #locations-list th {
     padding: 5px;
 }
+
 #hoo-main #location-list-container #locations-list th.location-name {
     vertical-align: middle;
     text-align: left;
@@ -132,7 +135,7 @@
 }
 
 #hoo-main .panel .location-detail h2.post-entry {
-    margin-bottom: 20px;
+    margin: 0px 20px 20px 0px;
     text-shadow: none;
 }
 
@@ -160,10 +163,9 @@
 
 #hoo-main .panel .location-detail .location-notice {
     padding: 10px;
-    /*color: #990000;*/
     margin-bottom: 20px;
-    /*background-color: #F5E6E6;*/
     background-color: #FFF5CC;
+    box-shadow: 0px 1px 3px #ccc;
 }
 
 #hoo-main .panel .location-detail .hours-calendar {
@@ -300,8 +302,6 @@
     margin-right: auto;
     border-radius: 10px 10px 10px 10px; 
     border-width: 1px solid rgba(0, 0, 0, .2);
-    /*box-shadow: 1px 1px 1px #706868;
-    border: 1px solid #8A8A8A;*/
 }
 
 @media screen and (max-width: 800px) {
