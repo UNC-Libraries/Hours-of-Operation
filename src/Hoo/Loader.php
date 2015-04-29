@@ -9,6 +9,7 @@ use \Doctrine\ORM\EntityManager;
 class Loader {
 
     const SLUG = 'hoo';
+
     private $tables = array(
         'hoo_locations'  => 'Hoo\Model\Location',
         'hoo_addresses'  => 'Hoo\Model\Address',
@@ -72,8 +73,16 @@ class Loader {
     public function deactivate() {
     }
 
+    private function strip_wordpress_slashes_from_gpc() {
+        // apparently wordpress ignores magic quote settings
+        $_POST    = array_map( 'stripslashes_deep', $_POST );
+        $_GET     = array_map( 'stripslashes_deep', $_GET );
+        $_COOKIE  = array_map( 'stripslashes_deep', $_COOKIE );
+        $_REQUEST = array_map( 'stripslashes_deep', $_REQUEST );
+    }
 
     public function init_hooks() {
+        $this->strip_wordpress_slashes_from_gpc();
 
         wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js');
         wp_localize_script( 'hoo', 'HOO', array( 'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
