@@ -27,7 +27,7 @@
     box-sizing: border-box;
     height: 100%;
     background-color: #fff;
-    z-index: 88888;
+    z-index: 20;
     display: none;
     overflow-x: hidden;
     overflow-y: auto;
