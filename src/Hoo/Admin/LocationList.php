@@ -5,6 +5,7 @@ namespace Hoo\Admin;
 use Hoo\Utils;
 
 class LocationList extends \WP_List_Table {
+    private $entity_manager = null;
 
     public function __construct( $entity_manager ) {
         $this->entity_manager = $entity_manager;

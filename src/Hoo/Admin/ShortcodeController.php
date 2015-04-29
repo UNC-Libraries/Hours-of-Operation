@@ -7,6 +7,8 @@ use Hoo\Model\Location;
 use Hoo\Shortcode;
 
 class ShortcodeController {
+    private $entity_manager = null;
+    
     public function __construct( $entity_manager ) {
         $this->entity_manager = $entity_manager;
 

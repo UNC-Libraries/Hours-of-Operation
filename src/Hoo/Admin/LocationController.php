@@ -9,6 +9,8 @@ use \Hoo\View;
 defined( 'ABSPATH' ) or die();
 
 class LocationController {
+    private $entity_manager = null;
+
     protected $screen_hook_suffix = null;
 
     private $sub_pages = array(

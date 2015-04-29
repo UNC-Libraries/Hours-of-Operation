@@ -5,6 +5,8 @@ namespace Hoo\Admin;
 use Hoo\Utils;
 
 class EventList extends \WP_List_Table {
+    private $entity_manager = null;
+    
     public function __construct( $entity_manager, $location ) {
         $this->entity_manager = $entity_manager;
         $this->location = $location;

@@ -16,6 +16,8 @@ use Doctrine\Common\Collections\Criteria as Criteria;
 defined( 'ABSPATH' ) or die();
 
 class EventController {
+    private $entity_manager = null;
+
     private $sub_pages = array(
         'index' => array(
             'parent' => null,

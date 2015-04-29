@@ -8,6 +8,7 @@ use \Hoo\View;
 defined( 'ABSPATH' ) or die();
 
 class CategoryController {
+    private $entity_manager = null;
 
     private $sub_pages = array(
         'index' => array(
