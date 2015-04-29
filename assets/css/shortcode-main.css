@@ -244,6 +244,7 @@
     padding: 0;
 }
 #hoo-main .fc-event-container {
+    vertical-align: middle;
 }
 #hoo-main .fc-content {
     text-align: center;
