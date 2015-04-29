@@ -30,7 +30,6 @@
     z-index: 20;
     display: none;
     overflow-x: hidden;
-    overflow-y: auto;
 }
 
 #hoo-main .panel .content-wrapper {
@@ -270,7 +269,6 @@
 }
 
 .ui-panel-inner {
-    overflow: auto;
 }
 
 #category-legend {
