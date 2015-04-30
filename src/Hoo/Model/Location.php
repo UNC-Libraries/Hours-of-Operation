@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\Criteria as Criteria;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="hoo_locations")
+ * @ORM\Table(name="wp_hoo_locations")
  * @ORM\HasLifecycleCallbacks()
  */
 class Location {

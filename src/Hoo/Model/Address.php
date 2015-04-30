@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
    @ORM\Entity
-   @ORM\Table(name="hoo_addresses")
+   @ORM\Table(name="wp_hoo_addresses")
    @ORM\HasLifecycleCallbacks
  */
 

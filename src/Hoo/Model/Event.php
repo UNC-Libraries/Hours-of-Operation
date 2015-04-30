@@ -8,7 +8,7 @@ use \Hoo\Utils;
 
 /**
  *  @ORM\Entity
- *  @ORM\Table(name="hoo_events")
+ *  @ORM\Table(name="wp_hoo_events")
  *  @ORM\HasLifecycleCallbacks()
  */
 class Event {

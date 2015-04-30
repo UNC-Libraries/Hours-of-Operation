@@ -11,10 +11,10 @@ class Loader {
     const SLUG = 'hoo';
 
     private $tables = array(
-        'hoo_locations'  => 'Hoo\Model\Location',
-        'hoo_addresses'  => 'Hoo\Model\Address',
-        'hoo_events'     => 'Hoo\Model\Event',
-        'hoo_categories' => 'Hoo\Model\Category'
+        'wp_hoo_locations'  => 'Hoo\Model\Location',
+        'wp_hoo_addresses'  => 'Hoo\Model\Address',
+        'wp_hoo_events'     => 'Hoo\Model\Event',
+        'wp_hoo_categories' => 'Hoo\Model\Category'
     );
 
     /**
