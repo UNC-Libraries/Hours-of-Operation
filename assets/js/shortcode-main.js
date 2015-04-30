@@ -1,6 +1,6 @@
 jQuery( function( $ ) {
     var $hoo_list_rows    = $( '.location-row' ),
-        $hoo_list_rows_td = $('.location-row td' ),
+        $hoo_list_rows_td = $( '.location-row td' ),
         $hoo_panel_close  = $( '.location-detail .close-panel' ),
         $hours_calendars  = $( '.hours-calendar' ),
         $locations_list   = $( '#locations-list'),
@@ -59,7 +59,7 @@ jQuery( function( $ ) {
         location_markers[ location.dataset.id ] = create_location_marker( location );
 
         $( location ).on( 'mouseover', function () { location_markers[ location.dataset.id ].setAnimation( google.maps.Animation.BOUNCE ); } );
-        $( location ).on( 'mouseout', function () { location_markers[ location.dataset.id ].setAnimation( null); } );
+        $( location ).on( 'mouseout', function () { location_markers[ location.dataset.id ].setAnimation( null ); } );
     } );
 
     locations_map.fitBounds( locations_bounds );
