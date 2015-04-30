@@ -111,12 +111,10 @@ jQuery( function( $ ) {
             $prev_active = $( '.location-row.active' );
 
         if ( $prev_active[0] === $( this )[0] ) {
-            console.log('sup');
             $this_panel.hide( 'slide', { direction: 'left', easing: 'easeOutExpo' }, 500 );
             $prev_active.removeClass( 'active' );
         }
         else if ( $prev_active.length ) {
-            console.log($prev_active);
             $this_panel.show('fade', {
                 complete: function(){
                     $visible_panel.hide('fade');
