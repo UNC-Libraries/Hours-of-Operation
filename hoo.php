@@ -4,7 +4,7 @@
  *
  * @package   HoO
  * @author    UNC Libraries
- * @license   GPL-3.0+
+ * @license   GPL-2.0
  * @link      http://library.unc.edu
  * @copyright 2014 UNC Libraries
  *
@@ -16,8 +16,8 @@
  * Author:            @TODO
  * Author URI:        @TODO
  * Text Domain:       hoo-locale
- * License:           GPL-3.0
- * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
+ * License:           GPL-2.0
+ * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  * Domain Path:       /languages
  * GitHub Plugin URI: @TODO
  */

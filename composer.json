@@ -4,7 +4,7 @@
     "keywords": ["wordpress", "plugin", "unc", "hours", "dates"],
     "homepage": "http://www.example.com",
     "type": "wordpress-plugin",
-    "license": "GPL-3.0+",
+    "license": "GPL-2.0",
     "authors": [
         {
             "name": "Steve Erhart",
