@@ -4,51 +4,51 @@ jQuery( function( $ ) {
         $hoo_panel_close = $( '.location-detail .close-panel' ),
         $hours_calendars = $( '.hours-calendar' ),
         $locations_list = $( '#locations-list'),
-        $panel_container = $( '#panel-container' );
-    $hoo_main       = $( '#hoo-main'),
-    $hoo_map        = $( '#hoo-map'),
+        $panel_container = $( '#panel-container' ),
+        $hoo_main       = $( '#hoo-main'),
+        $hoo_map        = $( '#hoo-map'),
 
-    map_options = {
-        center: {
-            lat: 0,
-            lng: 0
-        },
-        zoom: 8,
-        disableDefaultUI: true
-    },
-
-
-    locations_map = new google.maps.Map( document.getElementById( 'map-canvas' ), map_options ),
-    locations_bounds = new google.maps.LatLngBounds(),
-    location_markers = {},
-
-    create_location_marker = function( location ) {
-        var lat = location.dataset.lat,
-            lon = location.dataset.lon,
-            lat_lon = new google.maps.LatLng( lat, lon ),
-
-            marker = new google.maps.Marker( {
-                map: locations_map,
-                draggable: false,
-                animation: google.maps.Animation.DROP,
-                position: lat_lon } ),
-
-            slideout_panel = function() {
-                $( '#' + location.dataset.panel ).show( 'slide', {direction: 'left', easing: 'easeOutBounce' } , 800);
-                $('.hours-calendar').fullCalendar( 'render' );
+        map_options = {
+            center: {
+                lat: 0,
+                lng: 0
             },
-            highlight_row = function() { $( '.location-row[data-id="' + location.dataset.id + '"]').addClass( 'highlight' ); },
-            remove_highlight = function() {$( '.location-row[data-id="' + location.dataset.id + '"]').removeClass( 'highlight' ); };
+            zoom: 8,
+            disableDefaultUI: true
+        },
 
-        if ( lat.length && lon.length ) {
-            locations_bounds.extend( lat_lon );
-        }
-        google.maps.event.addListener( marker, 'mouseover', highlight_row );
-        google.maps.event.addListener( marker, 'mouseout', remove_highlight );
-        google.maps.event.addListener( marker, 'click', slideout_panel );
 
-        return marker;
-    };
+        locations_map = new google.maps.Map( document.getElementById( 'map-canvas' ), map_options ),
+        locations_bounds = new google.maps.LatLngBounds(),
+        location_markers = {},
+
+        create_location_marker = function( location ) {
+            var lat = location.dataset.lat,
+                lon = location.dataset.lon,
+                lat_lon = new google.maps.LatLng( lat, lon ),
+
+                marker = new google.maps.Marker( {
+                    map: locations_map,
+                    draggable: false,
+                    animation: google.maps.Animation.DROP,
+                    position: lat_lon } ),
+
+                slideout_panel = function() {
+                    $( '#' + location.dataset.panel ).show( 'slide', {direction: 'left', easing: 'easeOutBounce' } , 800);
+                    $('.hours-calendar').fullCalendar( 'render' );
+                },
+                highlight_row = function() { $( '.location-row[data-id="' + location.dataset.id + '"]').addClass( 'highlight' ); },
+                remove_highlight = function() {$( '.location-row[data-id="' + location.dataset.id + '"]').removeClass( 'highlight' ); };
+
+            if ( lat.length && lon.length ) {
+                locations_bounds.extend( lat_lon );
+            }
+            google.maps.event.addListener( marker, 'mouseover', highlight_row );
+            google.maps.event.addListener( marker, 'mouseout', remove_highlight );
+            google.maps.event.addListener( marker, 'click', slideout_panel );
+
+            return marker;
+        };
 
     $hoo_main.height( $locations_list.height() );
     $hoo_map.height( $panel_container.height() );
