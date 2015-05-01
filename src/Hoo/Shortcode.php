@@ -125,9 +125,13 @@ class Shortcode {
 
     public function weekly( $attributes ) {
         $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
-        $location = isset( $attributes['location'] ) ? $locations_repo->findOneBy( array( 'id' => $attributes['location'], 'is_visible' => true ) ) : null;
+        $locations = isset( $attributes['location'] ) ?
+                     $locations_repo->findBy( array( 'id' => $attributes['location'], 'is_visible' => true ) ) :
+                     $locations_repo->findBy( array( 'is_visible' => true ) );
+        $locations_hours = array();
+        $view = new View( 'shortcode/weekly' );
 
-        if ( $location ) {
+        foreach ( $locations as $location ) {
             $start = new \DateTime( 'sunday last week' );
             $end = new \DateTime( 'sunday this week' );
             $interval = new \DateInterval( 'P1D' );
@@ -164,15 +168,10 @@ class Shortcode {
                 }
                 $day = $end++;
             }
-
-
-            $view = new View( 'shortcode/weekly' );
-            return $view->fetch( array( 'location' => $location,
-                                        'header' => $attributes['header'],
-                                        'hours'    => $hours ) );
-        } else {
-            return '';
+            $locations_hours[] = array( 'location' => $location, 'hours' => $hours );
         }
+        return $view->fetch( array( 'header' => $attributes['header'],
+                                    'locations' => $locations_hours ) );
     }
 }
 ?>
