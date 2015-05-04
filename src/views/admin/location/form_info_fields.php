@@ -2,6 +2,20 @@
     <li>
         <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
             <div class="form-item form-item-textfield">
+                <label for="location_alternate_name" class="wpt-form-label wpt-form-textfield-label">Short Name</label>
+                <input type="text"
+                       name="location[alternate_name]"
+                       id="location_alternate_name"
+                       class="wpt-form-textfield form-textfield textfield"
+                       size="60"
+                       maxlength="256"
+                       value="<?php echo $this['location']->alternate_name ?>"/>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="js-wpt-field wpt-field js-wpt-textfield wpt-textfield">
+            <div class="form-item form-item-textfield">
                 <label for="location_url" class="wpt-form-label wpt-form-textfield-label">URL</label>
                 <input type="url"
                        name="location[url]"
