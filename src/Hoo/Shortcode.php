@@ -58,7 +58,7 @@ class Shortcode {
     public function hoo_api() {
         global $post;
 
-        // /if the page containts the hoo-api shortcode send json and exit :}
+        // /if the page contains the hoo-api shortcode send json and exit :}
         if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'hoo-api' ) ) {
 
             $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
@@ -102,9 +102,14 @@ class Shortcode {
         $locations = Location::get_visible_locations( $this->entity_manager );
         $categories = Category::get_visible_categories( $this->entity_manager );
 
+        // get weekly hours for mobile view
+        $locations_hours = array();
+        foreach( $locations as $location ) {
+            $locations_hours[] = array( 'location' => $location, 'hours' => $location->get_weekly_hours() );
+        }
 
         $view = new View( 'shortcode/location' );
-        return $view->fetch( array( 'locations' => $locations,
+        return $view->fetch( array( 'locations' => $locations_hours,
                                     'categories' => $categories,
                                     'header' => $attributes['header'],
                                     'tagline' => $attributes['tagline'],
@@ -128,48 +133,13 @@ class Shortcode {
         $locations = isset( $attributes['location'] ) ?
                      $locations_repo->findBy( array( 'id' => $attributes['location'], 'is_visible' => true ) ) :
                      $locations_repo->findBy( array( 'is_visible' => true ) );
-        $locations_hours = array();
         $view = new View( 'shortcode/weekly' );
+        $locations_hours = array();
 
-        foreach ( $locations as $location ) {
-            $start = new \DateTime( 'sunday last week' );
-            $end = new \DateTime( 'sunday this week' );
-            $interval = new \DateInterval( 'P1D' );
-
-            $event_instances = $location->get_event_instances( $start, $end );
-
-            $weekdays = new \DatePeriod( $start, $interval, $end );
-            $weekly_events = array();
-
-            foreach ( $weekdays as $day ) {
-                $weekly_events[] = isset( $event_instances[ $day->format( 'Y-m-d' ) ] ) ?
-                                   sprintf( '%s - %s',
-                                            $event_instances[ $day->format( 'Y-m-d' ) ]->start->format( 'h:i a' ),
-                                            $event_instances[ $day->format( 'Y-m-d' ) ]->end->format( 'h:i a' ) ) :
-                                   'N/A';
-            }
-
-            $hours = array();
-            $day = 0;
-            while ( $day < 7 ) {
-                $start = $day; $end = $day;
-                while ( $end < 7 && ( $weekly_events[ $start ] == $weekly_events[ $end ] ) ) {
-                    $end++;
-                };
-
-                if ( 1 == $end - $start ) {
-                    $dow_text = date( 'l', strtotime( "sunday last week +$start days" ) );
-                    $hours[ $dow_text ] = $weekly_events[ $day ];
-                } else {
-                    $start_dow_text = date( 'D', strtotime( "sunday last week +$start days" ) );
-                    $end_dow_text = date( 'D', strtotime( sprintf( 'sunday last week +%s days', $end - 1 ) ) );
-                    $range_text = sprintf( '%s - %s', $start_dow_text, $end_dow_text );
-                    $hours[ $range_text ] = $weekly_events[ $day ];
-                }
-                $day = $end++;
-            }
-            $locations_hours[] = array( 'location' => $location, 'hours' => $hours );
+        foreach( $locations as $location ) {
+            $locations_hours[] = array( 'location' => $location, 'hours' => $location->get_weekly_hours() );
         }
+
         return $view->fetch( array( 'header' => $attributes['header'],
                                     'locations' => $locations_hours ) );
     }

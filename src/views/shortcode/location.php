@@ -16,7 +16,7 @@
             <?php $this->include_file( 'shortcode/location_list' ) ?>
         </div>
 
-        <div id="panel-container">
+        <div id="panel-container" class="desktop-only">
             <?php $this->include_file( 'shortcode/location_detail' ) ?>
 
             <div id="hoo-map">

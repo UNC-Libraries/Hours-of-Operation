@@ -99,6 +99,15 @@ jQuery( function( $ ) {
     } );
 
 
+    $( window ).resize( function() {
+
+        locations_map.fitBounds( locations_bounds );
+        google.maps.event.trigger( locations_map, 'resize' );
+
+        $hoo_main.height( $locations_list.height() );
+        $hoo_map.height( $panel_container.height() );
+    } );
+
     $hoo_panel_close.on( 'click', function( e) {
         $( this ).closest( '.panel' ).hide( 'slide', { direction: 'left', easing: 'easeOutExpo' }, 500 );
     } );

@@ -120,6 +120,45 @@ class Location {
                              array() );
     }
 
+    public function get_weekly_hours() {
+        $start = new \DateTime( 'sunday last week' );
+        $end = new \DateTime( 'sunday this week' );
+        $interval = new \DateInterval( 'P1D' );
+
+        $event_instances = $this->get_event_instances( $start, $end );
+
+        $weekdays = new \DatePeriod( $start, $interval, $end );
+        $weekly_events = array();
+
+        foreach ( $weekdays as $day ) {
+            $weekly_events[] = isset( $event_instances[ $day->format( 'Y-m-d' ) ] ) ?
+                               sprintf( '%s - %s',
+                                        $event_instances[ $day->format( 'Y-m-d' ) ]->start->format( 'h:i a' ),
+                                        $event_instances[ $day->format( 'Y-m-d' ) ]->end->format( 'h:i a' ) ) :
+                               'N/A';
+        }
+
+        $hours = array();
+        $day = 0;
+        while ( $day < 7 ) {
+            $start = $day; $end = $day;
+            while ( $end < 7 && ( $weekly_events[ $start ] == $weekly_events[ $end ] ) ) {
+                $end++;
+            };
+
+            if ( 1 == $end - $start ) {
+                $dow_text = date( 'l', strtotime( "sunday last week +$start days" ) );
+                $hours[ $dow_text ] = $weekly_events[ $day ];
+            } else {
+                $start_dow_text = date( 'D', strtotime( "sunday last week +$start days" ) );
+                $end_dow_text = date( 'D', strtotime( sprintf( 'sunday last week +%s days', $end - 1 ) ) );
+                $range_text = sprintf( '%s - %s', $start_dow_text, $end_dow_text );
+                $hours[ $range_text ] = $weekly_events[ $day ];
+            }
+            $day = $end++;
+        }
+        return $hours;
+    }
 
     public function get_hours_for_date( $start ) {
         $end = new \DateTime( $start->format( 'Y-m-d' ) );
@@ -164,7 +203,12 @@ class Location {
         foreach( $events as $event ) {
             if ( $event->is_recurring ) {
 
-                $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end );
+                // TODO: I believe this is a bug, need to see how or why this is already an object
+                if ( is_object( $event->recurrence_rule ) ) { 
+                    $event->recurrence_rule = new RRule( $event->recurrence_rule->getString(), $event->start, $event->end );
+                } else {
+                    $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end );
+                }
 
 
                 if ( $start && $end ) {

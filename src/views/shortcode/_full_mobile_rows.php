@@ -1,17 +1,12 @@
 <?php foreach( $this['locations'] as $location_data ) : ?>
     <?php $current_hours = $location_data['location']->is_open(); ?>
-    <tr class="location-row"
-        data-panel="panel-<?php echo $location_data['location']->id ?>"
-        data-lat="<?php echo $location_data['location']->address->lat ?>"
-        data-lon="<?php echo $location_data['location']->address->lon ?>"
-        data-id="<?php echo $location_data['location']->id ?>">
-
-        <td class="location-name<?php if ( $location_data['location']->parent ) echo ' child' ?>">
-            <a href="#location">
+    <tr>
+        <th>
+            <a href="<?php echo $location_data['location']->url ?>">
                 <?php echo $location_data['location']->name ?>
             </a>
-        </td>
-        <td class="location-status">
+        </th>
+        <th class="location-status">
             <?php if ( is_null( $current_hours ) ) : ?>
                 <span class="na">N/A</span>
             <?php elseif ( is_object( $current_hours ) ) : ?>
@@ -23,6 +18,12 @@
             <?php else : ?>
                 <span class="closed">Closed</span>
             <?php endif ?>
-        </td>
+        </th>
     </tr>
+    <?php foreach( $location_data['hours'] as $weekday => $cur_hours ) : ?>
+        <tr>
+            <td><?php echo $weekday ?></td>
+            <td><?php echo $cur_hours ?></td>
+        </tr>
+    <?php endforeach ?>
 <?php endforeach ?>
