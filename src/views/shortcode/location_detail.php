@@ -13,7 +13,7 @@
                     <span class="close-panel">&#x21e6;</span>
                 </h2>
 
-                <?php if ( isset( $location_data['location']->notice ) ) : ?>
+                <?php if ( ! empty( $location_data['location']->notice ) ) : ?>
                     <div class="location-notice">
                         <p>
                             <?php echo $location_data['location']->notice ?>
