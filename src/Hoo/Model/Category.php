@@ -104,6 +104,10 @@ class Category {
             }
         }
     }
+
+    public function __isset( $property ) {
+        return property_exists( $this, $property ) && isset( $this->$property );
+    }
 }
 
 ?>

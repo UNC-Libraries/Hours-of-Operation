@@ -403,6 +403,10 @@ class Location {
 
     }
 
+    public function __isset( $property ) {
+        return property_exists( $this, $property ) && isset( $this->$property );
+    }
+
     public function __construct( $initial_values = array(), $entity_manager = null ) {
         if ( $initial_values )  {
             $this->fromParams( $initial_values, $entity_manager );

@@ -119,6 +119,10 @@ class Address {
         return $this; // allow chaining
     }
 
+    public function __isset( $property ) {
+        return property_exists( $this, $property ) && isset( $this->$property );
+    }
+
     public function __toString(){
         return "";
     }
