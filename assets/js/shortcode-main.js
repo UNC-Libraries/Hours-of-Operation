@@ -23,8 +23,8 @@ jQuery( function( $ ) {
         location_markers = {},
 
         create_location_marker = function( location ) {
-            var lat = location.dataset.lat,
-                lon = location.dataset.lon,
+            var lat = location.getAttribute( 'data-lat' ),
+                lon = location.getAttribute( 'data-lon' ),
                 lat_lon = new google.maps.LatLng( lat, lon ),
 
                 marker = new google.maps.Marker( {
@@ -34,11 +34,11 @@ jQuery( function( $ ) {
                     position: lat_lon } ),
 
                 slideout_panel = function() {
-                    $( '#' + location.dataset.panel ).show( 'slide', {direction: 'left', easing: 'easeOutBounce' } , 800);
+                    $( '#' + location.getAttribute( 'data-panel' ) ).show( 'slide', {direction: 'left', easing: 'easeOutBounce' } , 800);
                     $('.hours-calendar').fullCalendar( 'render' );
                 },
-                highlight_row = function() { $( '.location-row[data-id="' + location.dataset.id + '"]').addClass( 'highlight' ); },
-                remove_highlight = function() {$( '.location-row[data-id="' + location.dataset.id + '"]').removeClass( 'highlight' ); };
+                highlight_row = function() { $( '.location-row[data-id="' + location.getAttribute( 'data-id' + '"]' ) ).addClass( 'highlight' ); },
+                remove_highlight = function() {$( '.location-row[data-id="' + location.getAttribute( 'data-id' ) + '"]').removeClass( 'highlight' ); };
 
             if ( lat.length && lon.length ) {
                 locations_bounds.extend( lat_lon );
@@ -56,10 +56,10 @@ jQuery( function( $ ) {
 
 
     $hoo_list_rows.each( function( index, location ) {
-        location_markers[ location.dataset.id ] = create_location_marker( location );
+        location_markers[ location.getAttribute( 'data-id' ) ] = create_location_marker( location );
 
-        $( location ).on( 'mouseover', function () { location_markers[ location.dataset.id ].setAnimation( google.maps.Animation.BOUNCE ); } );
-        $( location ).on( 'mouseout', function () { location_markers[ location.dataset.id ].setAnimation( null ); } );
+        $( location ).on( 'mouseover', function () { location_markers[ location.getAttribute( 'data-id' ) ].setAnimation( google.maps.Animation.BOUNCE ); } );
+        $( location ).on( 'mouseout', function () { location_markers[ location.getAttribute( 'data-id' ) ].setAnimation( null ); } );
     } );
 
     locations_map.fitBounds( locations_bounds );
@@ -143,7 +143,7 @@ jQuery( function( $ ) {
     if ( window.location.hash ) {
         var name_or_id = window.location.hash.substring(1),
             $panel = $('.panel[data-id=' + name_or_id + '],[data-short-name=' + name_or_id + ']').first();
-        
+
         $panel.show();
         $('.hours-calendar').fullCalendar( 'render' );
     }
