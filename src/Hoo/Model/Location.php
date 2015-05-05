@@ -131,17 +131,26 @@ class Location {
         $weekly_events = array();
 
         foreach ( $weekdays as $day ) {
-            $weekly_events[] = isset( $event_instances[ $day->format( 'Y-m-d' ) ] ) ?
-                               sprintf( '%s - %s',
-                                        $event_instances[ $day->format( 'Y-m-d' ) ]->start->format( 'h:i a' ),
-                                        $event_instances[ $day->format( 'Y-m-d' ) ]->end->format( 'h:i a' ) ) :
-                               'N/A';
+            if ( isset( $event_instances[ $day->format( 'Y-m-d' ) ] ) ) {
+                if ( $event_instances[ $day->format( 'Y-m-d' ) ]->is_closed ) {
+                    $weekly_events[] = 'Closed';
+                } elseif ( $event_instances[ $day->format( 'Y-m-d' ) ]->is_all_day ) {
+                    $weekly_events[] = '24 Hours';
+                } else {
+                    $weekly_events[] = sprintf( '%s - %s',
+                                                $event_instances[ $day->format( 'Y-m-d' ) ]->start->format( 'h:i a' ),
+                                                $event_instances[ $day->format( 'Y-m-d' ) ]->end->format( 'h:i a' ) );
+                }
+            } else {
+                $weekly_events[] = 'N/A';
+            }
         }
 
         $hours = array();
         $day = 0;
         while ( $day < 7 ) {
             $start = $day; $end = $day;
+            // keep going until the event hours are not the same
             while ( $end < 7 && ( $weekly_events[ $start ] == $weekly_events[ $end ] ) ) {
                 $end++;
             };
