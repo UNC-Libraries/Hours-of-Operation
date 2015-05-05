@@ -7,7 +7,7 @@
         data-id="<?php echo $location_data['location']->id ?>">
 
         <td class="location-name<?php if ( $location_data['location']->parent ) echo ' child' ?>">
-            <a href="#location">
+            <a href="#<?php echo $location_data['location']->alternate_name ?>">
                 <?php echo $location_data['location']->name ?>
             </a>
         </td>

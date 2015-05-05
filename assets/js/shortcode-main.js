@@ -138,7 +138,13 @@ jQuery( function( $ ) {
             $('.hours-calendar').fullCalendar( 'render' );
             $( this ).addClass( 'active' );
         }
-
     });
 
+    if ( window.location.hash ) {
+        var name_or_id = window.location.hash.substring(1),
+            $panel = $('.panel[data-id=' + name_or_id + '],[data-short-name=' + name_or_id + ']').first();
+        
+        $panel.show();
+        $('.hours-calendar').fullCalendar( 'render' );
+    }
 });

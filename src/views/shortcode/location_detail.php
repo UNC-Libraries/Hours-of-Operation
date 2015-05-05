@@ -1,5 +1,9 @@
 <?php foreach( $this['locations'] as $location_data ) : ?>
-    <div id="panel-<?php echo $location_data['location']->id ?>" class="panel">
+    <div id="panel-<?php echo $location_data['location']->id ?>"
+         data-id="<?php echo $location_data['location']->id ?>"
+         data-short-name="<?php echo $location_data['location']->alternate_name ?>"
+         class="panel">
+
         <div class="content-wrapper">
             <div class="location-detail">
                 <h2 class="post-entry">
