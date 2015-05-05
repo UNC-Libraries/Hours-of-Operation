@@ -317,13 +317,6 @@
 }
 
 @media screen and (max-width: 800px) {
-    #hoo-main .mobile-only {
-        display: table-cell !important;
-    }
-    #hoo-main .mobile-only {
-        display: table-row-group !important;
-    }
-
     #hoo-main .desktop-only {
         display: none !important;
     }
