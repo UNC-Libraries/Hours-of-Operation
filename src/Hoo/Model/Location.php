@@ -204,7 +204,7 @@ class Location {
             if ( $event->is_recurring ) {
 
                 // TODO: I believe this is a bug, need to see how or why this is already an object
-                if ( is_object( $event->recurrence_rule ) ) { 
+                if ( is_object( $event->recurrence_rule ) ) {
                     $event->recurrence_rule = new RRule( $event->recurrence_rule->getString(), $event->start, $event->end );
                 } else {
                     $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end );
@@ -346,6 +346,13 @@ class Location {
         return $locations;
     }
 
+    /** @ORM\PostPersist **/
+    public function set_alternate_name() {
+        if ( ! isset( $this->alternative_name ) ) {
+            $this->alternate_name = sanitize_title( $this->name );
+        }
+    }
+
     /** @ORM\PrePersist **/
     public function set_created_at() {
         $datetime = new \DateTime();
@@ -355,6 +362,7 @@ class Location {
 
     /** @ORM\PreUpdate **/
     public function set_updated_at() {
+        $this->alternate_name = sanitize_title( $this->alternate_name );
         $this->updated_at = new \DateTime();
     }
 
