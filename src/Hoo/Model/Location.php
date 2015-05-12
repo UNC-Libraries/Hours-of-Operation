@@ -128,18 +128,29 @@ class Location {
         $event_instances = $this->get_event_instances( $start, $end );
 
         $weekdays = new \DatePeriod( $start, $interval, $end );
+        $weekdays = iterator_to_array( $weekdays );
         $weekly_events = array();
 
-        foreach ( $weekdays as $day ) {
-            if ( isset( $event_instances[ $day->format( 'Y-m-d' ) ] ) ) {
-                if ( $event_instances[ $day->format( 'Y-m-d' ) ]->is_closed ) {
+        foreach ( $weekdays as $day_number => $day ) {
+            // TODO: refactor as this is kind of ugly
+            $day_instance = isset( $event_instances[ $day->format( 'Y-m-d' ) ] ) ? $event_instances[ $day->format( 'Y-m-d' ) ] : false;
+            $prev_day = isset( $weekdays[ $day_number - 1 ] ) && isset( $event_instances[ $weekdays[ $day_number - 1 ]->format( 'Y-m-d' ) ] ) ? $weekdays[ $day_number - 1 ] : false;
+            $next_day = isset( $weekdays[ $day_number + 1 ] ) && isset( $event_instances[ $weekdays[ $day_number + 1 ]->format( 'Y-m-d' ) ] ) ? $weekdays[ $day_number + 1 ] : false;
+
+            if ( $day_instance ) {
+                if ( $day_instance->is_closed ) {
                     $weekly_events[] = 'Closed';
-                } elseif ( $event_instances[ $day->format( 'Y-m-d' ) ]->is_all_day ) {
+                } elseif ( $day_instance->is_all_day ) {
                     $weekly_events[] = '24 Hours';
+                } elseif ( ( $prev_day && $event_instances[ $prev_day->format( 'Y-m-d' ) ]->is_all_day ) &&
+                    ( $next_day && $event_instances[ $next_day->format( 'Y-m-d' ) ]->is_all_day ) ) {
+                    $weekly_events[] = sprintf( '%s - %s', $day_instance->start->format( 'h:i a' ), $day_instance->end->format( 'h:i a' ) );
+                } elseif ( $prev_day && $event_instances[ $prev_day->format( 'Y-m-d' ) ]->is_all_day  ) {
+                    $weekly_events[] = sprintf( '24 Hours - %s', $day_instance->end->format( 'h:i a' ) );
+                } elseif ( $next_day && $event_instances[ $next_day->format( 'Y-m-d' ) ]->is_all_day ) {
+                    $weekly_events[] = sprintf( '%s - 24 Hours', $day_instance->start->format( 'h:i a' ) );
                 } else {
-                    $weekly_events[] = sprintf( '%s - %s',
-                                                $event_instances[ $day->format( 'Y-m-d' ) ]->start->format( 'h:i a' ),
-                                                $event_instances[ $day->format( 'Y-m-d' ) ]->end->format( 'h:i a' ) );
+                    $weekly_events[] = sprintf( '%s - %s', $day_instance->start->format( 'h:i a' ), $day_instance->end->format( 'h:i a' ) );
                 }
             } else {
                 $weekly_events[] = 'N/A';
