@@ -79,39 +79,6 @@ class Location {
     /** @ORM\column(name="updated_at", type="datetime") **/
     private $updated_at;
 
-    public function get_hours( \DateTime $start, \DateTime $end) {
-        $rrule_transformer = new RRuleTransformer();
-
-        $event_instances = array();
-        $event_dates = array();
-
-        foreach( $this->events as $event ) {
-            $rrule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
-
-            $cal_range = new BetweenConstraint( $start, $end, null, true ) ;
-            foreach( $rrule_transformer->transform( $rrule, null, $cal_range )->toArray() as $recurrence ) {
-                $event_instances[] = array( 'id' => $event->id,
-                                            'title' => $event->title,
-                                            'open' => $recurrence->getStart(),
-                                            'close' => $recurrence->getEnd(),
-
-                                            // the two are here solely for priority filtering and are removed before sending
-                                            'priority' => $event->category->priority ? $event->category->priority : 0,
-                                            'date' => $recurrence->getStart()->format( 'Y-m-d' ) );
-            }
-        }
-
-        foreach( $event_instances as &$event_instance ) {
-            if ( ! isset( $event_dates[ $event_instance['date'] ] ) ) {
-                $event_dates[ $event_instance['date'] ] =& $event_instance;
-            } elseif ( $event_dates[ $event_instance['date'] ]['priority'] > $event_instance['priority'] )
-                $event_dates[ $event_instance['date'] ] =& $event_instance;
-        }
-
-        $event_instances = array_values ( $event_dates );
-        return $event_instances;
-    }
-
     public function to_api_response() {
         $attributes = array( 'id', 'name', 'url', 'phone', 'notice', 'is_handicap_accessible', 'handicap_link' );
 
