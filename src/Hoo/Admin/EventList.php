@@ -38,7 +38,7 @@ class EventList extends \WP_List_Table {
                                         $this->get_sortable_columns() );
 
         // fetch events
-        $events_repo = $this->entity_manager->getRepository( '\Hoo\Model\Event' );
+        $events_repo = $this->entity_manager->getRepository( 'Hoo\Model\Event' );
 
         if ( isset( $_GET['orderby'] ) ) {
             $order_by = $_GET['orderby']; $order = $_GET['order'];
@@ -49,7 +49,7 @@ class EventList extends \WP_List_Table {
         if ( isset( $_GET['s'] ) ) {
             $events = $this->entity_manager->createQueryBuilder()
                                            ->select( array( 'e', 'c' ) )
-                                           ->from( '\Hoo\Model\Event', 'e')
+                                           ->from( 'Hoo\Model\Event', 'e')
                                            ->join( 'e.category', 'c' )
                                            ->where( 'e.location = :location' )
                                            ->andWhere( 'e.title LIKE :search')
@@ -63,7 +63,7 @@ class EventList extends \WP_List_Table {
         } else {
             $events = $this->entity_manager->createQueryBuilder()
                                            ->select( array( 'e', 'c') )
-                                           ->from( '\Hoo\Model\Event', 'e')
+                                           ->from( 'Hoo\Model\Event', 'e')
                                            ->where( 'e.location = :location' )
                                            ->join( 'e.category', 'c' )
                                            ->setParameter( 'location', $_GET['location_id'] )

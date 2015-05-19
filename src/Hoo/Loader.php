@@ -2,9 +2,9 @@
 
 namespace Hoo;
 
-use \Hoo\Admin\LocationController;
-use \Doctrine\ORM\Tools\Setup as ORMSetup;
-use \Doctrine\ORM\EntityManager;
+use Hoo\Admin\LocationController;
+use Doctrine\ORM\Tools\Setup as ORMSetup;
+use Doctrine\ORM\EntityManager;
 
 class Loader {
 

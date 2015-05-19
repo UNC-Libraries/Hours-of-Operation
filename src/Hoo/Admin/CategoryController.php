@@ -2,8 +2,8 @@
 
 namespace Hoo\Admin;
 
-use \Hoo\Model\Category;
-use \Hoo\View;
+use Hoo\Model\Category;
+use Hoo\View;
 
 defined( 'ABSPATH' ) or die();
 
@@ -111,7 +111,7 @@ class CategoryController {
     }
 
     public function edit() {
-        $category = $this->entity_manager->find( '\Hoo\Model\Category', $_REQUEST['category_id'] );
+        $category = $this->entity_manager->find( 'Hoo\Model\Category', $_REQUEST['category_id'] );
         $view = new View( 'admin/category/category' );
         $view_options = array('title'   => sprintf( 'Edit %s Category', $category->name ),
                               'action'  => 'update',
@@ -139,7 +139,7 @@ class CategoryController {
 
                 $category_id = $_POST['category_id'];
 
-                $category = $this->entity_manager->find( '\Hoo\Model\category', $category_id );
+                $category = $this->entity_manager->find( 'Hoo\Model\category', $category_id );
                 $this->entity_manager->persist( $category );
 
                 $category->remove();
@@ -211,7 +211,7 @@ class CategoryController {
         $categories_order = array_reverse( $_POST['category'] );
 
         foreach( $categories_order as $priority => $category_id ) {
-            $category = $this->entity_manager->find( '\Hoo\Model\Category', $category_id );
+            $category = $this->entity_manager->find( 'Hoo\Model\Category', $category_id );
             $category->priority = $priority;
             $this->entity_manager->flush();
         }
@@ -223,7 +223,7 @@ class CategoryController {
     public function ajax_category_delete() {
         $category_id = $_POST['category_id'];
 
-        $category = $this->entity_manager->find( '\Hoo\Model\Category', $category_id );
+        $category = $this->entity_manager->find( 'Hoo\Model\Category', $category_id );
         $this->entity_manager->remove( $category );
         $this->entity_manager->flush();
 
@@ -235,7 +235,7 @@ class CategoryController {
         $category_id = $_POST['category_id'];
         $checked = $_POST['checked'] === 'true' ? true : false;
 
-        $category = $this->entity_manager->find( '\Hoo\Model\Category', $category_id );
+        $category = $this->entity_manager->find( 'Hoo\Model\Category', $category_id );
         $category->is_visible = $checked;
         $this->entity_manager->flush();
 

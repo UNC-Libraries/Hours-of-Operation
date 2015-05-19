@@ -2,9 +2,10 @@
 
 namespace Hoo\Admin;
 
-use \Hoo\Model\Location;
-use \Hoo\Model\Address;
-use \Hoo\View;
+use Hoo\Model\Location;
+use Hoo\Model\Address;
+use Hoo\View;
+use Hoo\Utils;
 
 defined( 'ABSPATH' ) or die();
 
@@ -65,7 +66,7 @@ class LocationController {
             wp_enqueue_style( 'thickbox' );
             wp_enqueue_script( 'location-image' );
 
-            if ( \Hoo\Utils::check_user_role( 'administrator' ) ) { // only enqueue if we need to
+            if ( Utils::check_user_role( 'administrator' ) ) { // only enqueue if we need to
                 wp_enqueue_script( 'location-visibility' );
                 wp_enqueue_script( 'location-delete' );
                 wp_enqueue_script( 'location-order' );
@@ -116,7 +117,7 @@ class LocationController {
             'high',
             array( 'location' => $location ) );
 
-        $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+        $locations_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
         $parent_locations = $locations_repo->findBy( array(), array( 'position' => 'asc' ) );
         $parent_locations = array_filter( $parent_locations, function( $p_location ) use ( $location ) { return $location->id != $p_location->id;  } ); // can't be own parent :D
         $wp_editor_options = array( 'textarea_name' => 'location[description]',
@@ -156,7 +157,7 @@ class LocationController {
 
         switch( isset( $_POST['action'] ) && $_POST['action'] ) {
             case 'update':
-                $location = $this->entity_manager->find( '\Hoo\Model\Location', $_POST['location']['id'] );
+                $location = $this->entity_manager->find( 'Hoo\Model\Location', $_POST['location']['id'] );
                 $this->entity_manager->persist( $location );
                 $location->fromParams( $_POST, $this->entity_manager );
 
@@ -167,7 +168,7 @@ class LocationController {
             case 'delete':
                 $location_id = $_POST['location_id'];
 
-                $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
+                $location = $this->entity_manager->find( 'Hoo\Model\Location', $location_id );
                 $this->entity_manager->persist( $location );
 
                 $location->remove();
@@ -176,7 +177,7 @@ class LocationController {
                 wp_safe_redirect( admin_url( 'admin.php?page=hoo&updated=2' ) );
                 exit;
             default:
-                $location = $this->entity_manager->find( '\Hoo\Model\Location', $_GET['location_id'] );
+                $location = $this->entity_manager->find( 'Hoo\Model\Location', $_GET['location_id'] );
 
                 $this->add_meta_boxes( $location );
                 if ( isset ( $_GET['updated'] ) )
@@ -239,7 +240,7 @@ class LocationController {
         $locations_order = $_POST['location'];
 
         foreach( $locations_order as $position => $location_id ) {
-            $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
+            $location = $this->entity_manager->find( 'Hoo\Model\Location', $location_id );
             $location->position = $position;
             $this->entity_manager->flush();
         }
@@ -251,7 +252,7 @@ class LocationController {
     public function ajax_location_delete() {
         $location_id = $_POST['location_id'];
 
-        $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
+        $location = $this->entity_manager->find( 'Hoo\Model\Location', $location_id );
         $this->entity_manager->remove( $location );
         $this->entity_manager->flush();
 
@@ -263,7 +264,7 @@ class LocationController {
         $location_id = $_POST['location_id'];
         $checked = $_POST['checked'] === 'true' ? true : false;
 
-        $location = $this->entity_manager->find( '\Hoo\Model\Location', $location_id );
+        $location = $this->entity_manager->find( 'Hoo\Model\Location', $location_id );
         $location->is_visible = $checked;
         $this->entity_manager->flush();
 

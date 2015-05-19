@@ -48,7 +48,7 @@ class LocationList extends \WP_List_Table {
 
         // fetch locations
         $order_by = isset( $_REQUEST['orderby'] ) ? array( $_REQUEST['orderby'] => $_REQUEST['order'] ) : array( 'position' => 'asc' );
-        $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+        $locations_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
         $locations = $locations_repo->findBy( array(), $order_by );
 
         $this->items = $locations;

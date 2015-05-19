@@ -2,15 +2,15 @@
 
 namespace Hoo\Admin;
 
-use \Hoo\Model\Event;
-use \Hoo\Model\Category;
-use \Hoo\View;
-use \Hoo\Utils;
+use Hoo\Model\Event;
+use Hoo\Model\Category;
+use Hoo\View;
+use Hoo\Utils;
 
-use \Recurr\Rule as RRule;
-use \Recurr\Transformer\ArrayTransformer as RRuleTransformer;
-use \Recurr\Transformer\Constraint\BetweenConstraint;
-use \Recurr\Transformer\Constraint\BeforeConstraint;
+use Recurr\Rule as RRule;
+use Recurr\Transformer\ArrayTransformer as RRuleTransformer;
+use Recurr\Transformer\Constraint\BetweenConstraint;
+use Recurr\Transformer\Constraint\BeforeConstraint;
 use Doctrine\Common\Collections\Criteria as Criteria;
 
 defined( 'ABSPATH' ) or die();
@@ -93,7 +93,7 @@ class EventController {
                       'high',
                       array( 'event' => $event ) );
 
-        $category_repo = $this->entity_manager->getRepository( '\Hoo\Model\Category' );
+        $category_repo = $this->entity_manager->getRepository( 'Hoo\Model\Category' );
         $categories = $category_repo->findAll();
         add_meta_box( 'event-general',
                       'General',
@@ -120,7 +120,7 @@ class EventController {
     }
 
     public function index() {
-        $location = $this->entity_manager->find( '\Hoo\Model\Location', $_GET['location_id'] );
+        $location = $this->entity_manager->find( 'Hoo\Model\Location', $_GET['location_id'] );
 
         $view = new View( 'admin/event/index' );
         $view_options = array( 'title' => sprintf( '%s Hours Events', $location->name ),
@@ -144,7 +144,7 @@ class EventController {
 
         switch( isset( $_POST['action'] ) && $_POST['action'] ) {
             case 'update':
-                $event = $this->entity_manager->find( '\Hoo\Model\Event', $_POST['event']['id'] );
+                $event = $this->entity_manager->find( 'Hoo\Model\Event', $_POST['event']['id'] );
                 $event->fromParams( $_POST, $this->entity_manager );
                 $this->entity_manager->persist( $event );
                 $this->entity_manager->flush();
@@ -152,7 +152,7 @@ class EventController {
                 wp_safe_redirect( admin_url( sprintf( 'admin.php?page=%s&event_id=%s&updated=2', 'hoo-location-event-edit', $_POST['event']['id'] ) ) );
                 exit;
             case 'delete':
-                $event = $this->entity_manager->find( '\Hoo\Model\Event', $_POST['event']['id'] );
+                $event = $this->entity_manager->find( 'Hoo\Model\Event', $_POST['event']['id'] );
                 $this->entity_manager->persist( $event );
 
                 $event->remove();
@@ -162,7 +162,7 @@ class EventController {
                 exit;
             default:
 
-                $event = $this->entity_manager->find( '\Hoo\Model\Event', $_GET['event_id'] );
+                $event = $this->entity_manager->find( 'Hoo\Model\Event', $_GET['event_id'] );
                 $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end, get_option( 'timezone_string' ) );
 
                 $view = new View( 'admin/event/event' );
@@ -198,7 +198,7 @@ class EventController {
             exit;
         } else {
             $event = new Event();
-            $event->location = $this->entity_manager->find( '\Hoo\Model\Location', $_GET['location_id'] );
+            $event->location = $this->entity_manager->find( 'Hoo\Model\Location', $_GET['location_id'] );
 
             $view_options = array( 'page' => 'hoo-location-event-add',
                                    'columns' => 2 );
@@ -221,7 +221,7 @@ class EventController {
     public function ajax_location_event_delete() {
         $event_id = $_POST['event_id'];
 
-        $event = $this->entity_manager->find( '\Hoo\Model\Event', $event_id );
+        $event = $this->entity_manager->find( 'Hoo\Model\Event', $event_id );
         $this->entity_manager->remove( $event );
         $this->entity_manager->flush();
 
@@ -232,7 +232,7 @@ class EventController {
     public function ajax_location_events() {
         $location_id = $_GET['event']['location'];
 
-        $location_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+        $location_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
         $location = $location_repo->find( $location_id );
 
         wp_send_json( $location->get_fullcalendar_events( $_GET, $this->entity_manager ) );
@@ -241,7 +241,7 @@ class EventController {
     public function ajax_hour_events() {
         $location_id = $_GET['location_id'];
 
-        $location_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+        $location_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
         $location = $location_repo->find( $location_id );
 
         wp_send_json( $location->get_fullcalendar_events( $_GET, $this->entity_manager, false ) );
