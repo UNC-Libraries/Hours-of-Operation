@@ -66,7 +66,7 @@ class Location {
     protected $sublocations;
 
     /**
-       @ORM\ManyToOne(targetEntity="Location", inversedBy="sublocations")
+     *  @ORM\ManyToOne(targetEntity="Location", inversedBy="sublocations")
      **/
     protected $parent;
 
@@ -134,8 +134,12 @@ class Location {
         foreach ( $weekdays as $day_number => $day ) {
             // TODO: refactor as this is kind of ugly
             $day_instance = isset( $event_instances[ $day->format( 'Y-m-d' ) ] ) ? $event_instances[ $day->format( 'Y-m-d' ) ] : false;
-            $prev_day = isset( $weekdays[ $day_number - 1 ] ) && isset( $event_instances[ $weekdays[ $day_number - 1 ]->format( 'Y-m-d' ) ] ) ? $weekdays[ $day_number - 1 ] : false;
-            $next_day = isset( $weekdays[ $day_number + 1 ] ) && isset( $event_instances[ $weekdays[ $day_number + 1 ]->format( 'Y-m-d' ) ] ) ? $weekdays[ $day_number + 1 ] : false;
+            $prev_day = isset( $weekdays[ $day_number - 1 ] ) && isset( $event_instances[ $weekdays[ $day_number - 1 ]->format( 'Y-m-d' ) ] ) ?
+                        $weekdays[ $day_number - 1 ] :
+                        false;
+            $next_day = isset( $weekdays[ $day_number + 1 ] ) && isset( $event_instances[ $weekdays[ $day_number + 1 ]->format( 'Y-m-d' ) ] ) ?
+                        $weekdays[ $day_number + 1 ] :
+                        false;
 
             if ( $day_instance ) {
                 if ( $day_instance->is_closed ) {
@@ -157,6 +161,7 @@ class Location {
             }
         }
 
+        // go through each day in the week and group according to the text in $weekly_events
         $hours = array();
         $day = 0;
         while ( $day < 7 ) {
@@ -166,7 +171,7 @@ class Location {
                 $end++;
             };
 
-            if ( 1 == $end - $start ) {
+            if ( 1 == $end - $start ) { // not consecutive, just print the value
                 $dow_text = date( 'l', strtotime( "sunday last week +$start days" ) );
                 $hours[ $dow_text ] = $weekly_events[ $day ];
             } else {
@@ -218,7 +223,7 @@ class Location {
         $event_instances = array();
         $rrule_transformer = new RRuleTransformer();
 
-        $events = $this->events->filter(function( $event ) { return $event->is_visible ;} );
+        $events = $this->events->filter( function( $event ) { return $event->is_visible; } );
 
         foreach( $events as $event ) {
             if ( $event->is_recurring ) {
@@ -231,6 +236,7 @@ class Location {
                 }
 
 
+                // if we have a start and end date add a between contraint, otherwise get all events
                 if ( $start && $end ) {
                     $range = new BetweenConstraint( $start, $end, true ) ;
                     $recurrences = $rrule_transformer->transform( $event->recurrence_rule, 60, $range )->toArray();
@@ -247,11 +253,11 @@ class Location {
 
                     // check priority
                     if ( array_key_exists( $tmp_ymd, $event_instances ) ) {
-                        if ( $tmp_priority > $event_instances[$tmp_ymd]->category->priority ) {
-                            $event_instances[$tmp_ymd] = $tmp_event;
+                        if ( $tmp_priority > $event_instances[ $tmp_ymd ]->category->priority ) {
+                            $event_instances[ $tmp_ymd ] = $tmp_event;
                         }
                     } else {
-                        $event_instances[$tmp_ymd] = $tmp_event;
+                        $event_instances[ $tmp_ymd ] = $tmp_event;
                     }
                 }
             } elseif ( ( $start <= $event->start && $end >= $event->end ) || ( $start->format( 'Y-m-d' ) == $event->start->format( 'Y-m-d' ) && $event->is_all_day ) ) {
@@ -260,11 +266,11 @@ class Location {
 
                 // check priority
                 if ( array_key_exists( $event_ymd, $event_instances ) ) {
-                    if ( $event_priority > $event_instances[$event_ymd]->category->priority ) {
-                        $event_instances[$event_ymd] = $event;
+                    if ( $event_priority > $event_instances[ $event_ymd ]->category->priority ) {
+                        $event_instances[ $event_ymd ] = $event;
                     }
                 } else {
-                    $event_instances[$event_ymd] = $event;
+                    $event_instances[ $event_ymd ] = $event;
                 }
             }
         }
@@ -328,7 +334,7 @@ class Location {
                 $title = sprintf( "%s%s -\n24 Hours", $with_title? $instance['event']->title . "\n" : '', Utils::format_time( $instance['recurrence']->getStart() ) );
             } elseif ( $instance['event']->is_all_day ) {
                 $title = sprintf( "%sOpen\n24 Hours", $with_title ? $instance['event']->title . "\n" : '');
-            } elseif ($instance['event']->is_closed ) {
+            } elseif ( $instance['event']->is_closed ) {
                 $title = sprintf( "%sClosed", $with_title ? $instance['event']->title . "\n" : '');
             } else {
                 $title = $with_title ? $instance['event']->title . "\n" : '';
@@ -345,12 +351,11 @@ class Location {
     }
 
     public static function get_visible_locations( $entity_manager ) {
-        $locations_repo = $entity_manager->getRepository( '\Hoo\Model\Location' );
+        $locations_repo = $entity_manager->getRepository( 'Hoo\Model\Location' );
         $locations = $locations_repo->findBy( array( 'parent' => null, 'is_visible' => true ), array( 'position' => 'asc' ) );
 
         // quick hack to put the sublocations under the parent
-        $locations = array_reduce(
-
+        return array_reduce(
             $locations,
             function( $locations, $location ) {
                 if ( $location->address && $location->address->lat && $location->address->lon ) {
@@ -362,8 +367,6 @@ class Location {
                 return $locations;
             },
             array() );
-
-        return $locations;
     }
 
     /** @ORM\PostPersist **/
