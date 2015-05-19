@@ -219,12 +219,14 @@ class Location {
         return sprintf( $url_template, $ll );
     }
 
-    public function get_event_instances( $start = null, $end = null ) {
+    public function get_event_instances( $start = null, $end = null, $only_visible = true ) {
         $event_instances = array();
         $rrule_transformer = new RRuleTransformer();
 
-        $events = $this->events->filter( function( $event ) { return $event->is_visible; } );
-
+        $events = $only_visible ?
+                  $this->events->filter( function( $event ) { return $event->is_visible; } ) :
+                  $this->events;
+            
         foreach( $events as $event ) {
             if ( $event->is_recurring ) {
 
