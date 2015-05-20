@@ -37,8 +37,8 @@ jQuery( function( $ ) {
                     $( '#' + location.getAttribute( 'data-panel' ) ).show( 'slide', {direction: 'left', easing: 'easeOutBounce' } , 800);
                     $('.hours-calendar').fullCalendar( 'render' );
                 },
-                highlight_row = function() { $( '.location-row[data-id="' + location.getAttribute( 'data-id' + '"]' ) ).addClass( 'highlight' ); },
-                remove_highlight = function() {$( '.location-row[data-id="' + location.getAttribute( 'data-id' ) + '"]').removeClass( 'highlight' ); };
+                highlight_row = function() { $( '.location-row[data-id=' + location.getAttribute( 'data-id' ) + ']' ).addClass( 'highlight' ); },
+                remove_highlight = function() { $( '.location-row[data-id=' + location.getAttribute( 'data-id') + ']' ).removeClass( 'highlight' ); };
 
             if ( lat.length && lon.length ) {
                 locations_bounds.extend( lat_lon );
