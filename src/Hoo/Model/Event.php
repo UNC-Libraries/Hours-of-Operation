@@ -68,6 +68,26 @@ class Event {
                       'close'      => $no_hours ? null : $this->end );
     }
 
+    public function format_title( $prev_event, $next_event, $with_title ) {
+        if ( $prev_event && $prev_event->is_all_day && $next_event && $next_event->is_all_day ) {
+            $title = "{$this->start->format( 'g:i a')}\n{$this->end->format( 'g:i a')}";
+        } elseif ( $prev_event && $prev_event->is_all_day ) {
+            $title = "24 Hours - \n{$this->end->format( 'g:i a' )}";
+        } elseif ( $next_event && $next_event->is_all_day ) {
+            $title = "{$this->start->format( 'g:i a' )} - \n24 Hours";
+        } else {
+            $title = "{$this->start->format( 'g:i a')}\n{$this->end->format( 'g:i a')}";
+        }
+
+        if ( $this->is_all_day ) {
+            $title = "Open\n24 Hours";
+        } elseif ( $this->is_closed ) {
+            $title = 'Closed';
+        }
+
+        return ( $with_title ? "{$this->title}\n" : '' ) . $title;
+    }
+
     public function fromParams( $params, $entity_manager ) {
         $rrule = new RRule();
         $event_data = $params['event'];
@@ -166,7 +186,7 @@ class Event {
         }
 
         // end is set the same as start so add a day
-        if ( $this->is_all_day ) {
+        if ( $this->is_all_day || $this->is_closed ) {
             $this->end->modify('+1 day');
         }
     }

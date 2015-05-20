@@ -235,7 +235,7 @@ class EventController {
         $location_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
         $location = $location_repo->find( $location_id );
 
-        wp_send_json( $location->get_fullcalendar_events( $_GET, $this->entity_manager ) );
+        wp_send_json( $location->get_preview_events( $this->entity_manager, true ) );
     }
 
     public function ajax_hour_events() {
@@ -244,7 +244,7 @@ class EventController {
         $location_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
         $location = $location_repo->find( $location_id );
 
-        wp_send_json( $location->get_fullcalendar_events( $_GET, $this->entity_manager, false ) );
+        wp_send_json( $location->get_preview_events( $this->entity_manager ) );
     }
 }
 ?>

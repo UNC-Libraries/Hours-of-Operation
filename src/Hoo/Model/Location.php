@@ -193,7 +193,13 @@ class Location {
         $events = $only_visible ?
                   $this->events->filter( function( $event ) { return $event->is_visible; } ) :
                   $this->events;
-            
+
+        // we are creating a new event so make one and add it to the list
+        if ( isset( $_GET['event']['id'] ) && empty( $_GET['event']['id'] ) ) {
+            $new_event = new Event();
+            $this->events->add( $new_event );
+        }
+
         foreach( $events as $event ) {
             if ( $event->is_recurring ) {
 
@@ -246,6 +252,37 @@ class Location {
         return $event_instances;
     }
 
+    public function get_preview_events( $entity_manager, $with_title = false ) {
+        $cal_start = new \Datetime( $_GET['start'] );
+        $cal_end = new \DateTime( $_GET['end'] );
+        $preview_events = array();
+
+        // update the event being edited
+        if ( isset( $_GET['event']['id'] ) && $_GET['event']['id'] == $this->id ) {
+            $this->fromParams( $_GET, $entity_manager );
+        }
+
+        $events = $this->get_event_instances( $cal_start, $cal_end, false );
+        ksort( $events );
+        $events = array_values( $events );
+
+        foreach ( $events as $index => $event ) {
+
+            $prev_event = ( isset( $events[ $index - 1 ] ) && $event->start->diff( $events[ $index - 1 ]->start )->days <= 1 ) ?
+                          $events[ $index - 1 ] :
+                          null;
+            $next_event = ( isset( $events[ $index + 1 ] ) && $event->start->diff( $events[ $index + 1 ]->start )->days <= 1 ) ?
+                          $events[ $index + 1] :
+                          null;
+
+            $preview_events[] = array( 'id' => $event->id,
+                                       'title' => $event->format_title( $prev_event, $next_event, $with_title ),
+                                       'start' => $event->start->format( \DateTime::ISO8601 ),
+                                       'end' => $event->end->format( \DateTime::ISO8601 ),
+                                       'color' => $event->category->color );
+        }
+        return $preview_events;
+    }
 
     public function get_fullcalendar_events( $params, $entity_manager, $with_title = true ) {
         // TODO: convert this to how the is_open/get_instances works
@@ -262,8 +299,6 @@ class Location {
         }
 
         foreach( $this->events as $event ) {
-
-
             if ( isset( $params['event']['id'] ) && $params['event']['id'] == $event->id ) {
                 $event->fromParams( $params, $entity_manager );
             } else {
@@ -272,7 +307,6 @@ class Location {
                 } else {
                     $event->recurrence_rule = new RRule( null, $event->start, $event->end );
                 }
-
             }
             if ( ! $event->is_visible ) continue;
 
@@ -282,7 +316,6 @@ class Location {
             foreach( $recurrences as $recurrence ) {
                 $event_instances[] = array( 'event' => $event, 'recurrence' => $recurrence );
             }
-
         }
 
         $event_instances = Utils::remove_overlapping_events( $event_instances );
@@ -296,8 +329,7 @@ class Location {
             if ( $prev_all_day && $next_all_day ) {
                 $title = $with_title ? $instance['event']->title . "\n" : '';
                 $title .= Utils::format_time( $instance['recurrence']->getStart(), $instance['recurrence']->getEnd() );
-            }
-            elseif ( $prev_all_day ) {
+            } elseif ( $prev_all_day ) {
                 $title = sprintf( "%s24 Hours -\n%s", $with_title? $instance['event']->title . "\n" : '', Utils::format_time( $instance['recurrence']->getEnd() ) );
             } elseif ( $next_all_day )  {
                 $title = sprintf( "%s%s -\n24 Hours", $with_title? $instance['event']->title . "\n" : '', Utils::format_time( $instance['recurrence']->getStart() ) );
