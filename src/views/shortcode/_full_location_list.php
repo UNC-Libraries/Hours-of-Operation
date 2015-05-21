@@ -7,7 +7,7 @@
         </tr>
     </thead>
     <tbody class="desktop-only">
-        <?php $this->include_file( 'shortcode/location_list_rows' ) ?>
+        <?php $this->include_file( 'shortcode/_full_location_list_rows' ) ?>
     </tbody>
     <tbody class="mobile-only">
         <?php $this->include_file( 'shortcode/_full_mobile_rows' ) ?>

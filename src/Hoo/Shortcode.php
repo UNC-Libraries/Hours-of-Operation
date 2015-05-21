@@ -108,7 +108,7 @@ class Shortcode {
             $locations_hours[] = array( 'location' => $location, 'hours' => $location->get_weekly_hours() );
         }
 
-        $view = new View( 'shortcode/location' );
+        $view = new View( 'shortcode/full' );
         return $view->fetch( array( 'locations' => $locations_hours,
                                     'categories' => $categories,
                                     'header' => $attributes['header'],
