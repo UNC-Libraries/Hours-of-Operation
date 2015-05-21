@@ -61,7 +61,7 @@ class Shortcode {
         // /if the page contains the hoo-api shortcode send json and exit :}
         if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'hoo-api' ) ) {
 
-            $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+            $locations_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
             $json_response = array();
             $date = isset( $_GET['date'] ) ? new \DateTime( $_GET['date'] ) : new \DateTime ( date( 'Y-m-d' ) );
 
@@ -117,7 +117,7 @@ class Shortcode {
     }
 
     public function today( $attributes ) {
-        $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+        $locations_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
         $location = isset( $attributes['location'] ) ? $locations_repo->findOneBy( array( 'id' => $attributes['location'], 'is_visible' => true ) ) : null;
 
         if ( $location ) {
@@ -129,7 +129,7 @@ class Shortcode {
     }
 
     public function weekly( $attributes ) {
-        $locations_repo = $this->entity_manager->getRepository( '\Hoo\Model\Location' );
+        $locations_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
         $locations = isset( $attributes['location'] ) ?
                      $locations_repo->findBy( array( 'id' => $attributes['location'], 'is_visible' => true ) ) :
                      $locations_repo->findBy( array( 'is_visible' => true ) );
