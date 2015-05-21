@@ -89,8 +89,11 @@ class Shortcode {
 
     public function hoo( $attributes ) {
         $attributes = shortcode_atts( array( 'widget' => 'full', 'header' => null, 'tagline' => null, 'location' => null ), $attributes, 'hoo' );
+        /* NOTE: the widget attribute has to be a valid method name.
+           this does a string replace of '-' -> '_' to conenience.
+         */
 
-        if ( method_exists( $this, $attributes['widget'] ) && in_array( $attributes['widget'], self::$valid_widgets ) ) {
+        if ( method_exists( $this, str_replace( '-', '_', $attributes['widget'] ) ) && in_array( $attributes['widget'], self::$valid_widgets ) ) {
             $this->enqueue_script( $attributes['widget'] );
             return $this->$attributes['widget']( $attributes );
         } else {
