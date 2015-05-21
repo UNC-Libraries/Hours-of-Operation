@@ -5,10 +5,10 @@ use Hoo\Model\Location;
 use Hoo\Model\Category;
 
 class Shortcode {
-    private static $valid_widgets = array( 'full', 'today',  'weekly' );
-    private static $valid_widget_attributes = array( 'header' => array( 'full', 'weekly' ),
+    private static $valid_widgets = array( 'full', 'full-list-only', 'today',  'weekly' );
+    private static $valid_widget_attributes = array( 'header' => array( 'full', 'full-list-only', 'weekly' ),
                                                      'location' => array( 'weekly', 'today' ),
-                                                     'tagline' => array( 'full' ) );
+                                                     'tagline' => array( 'full', 'full-list-only' ) );
 
     static public function available_widgets() {
         return self::$valid_widgets;
@@ -42,7 +42,11 @@ class Shortcode {
                 wp_enqueue_style( 'shortcode-main' );
                 wp_enqueue_script( 'shortcode-main' );
                 break;
+            case 'full-list-only':
+                wp_enqueue_style( 'shortcode-full-list-only' );
+                break;
             default:
+                wp_enqueue_style( 'shortcode-full-list-only' );
         }
     }
 
@@ -92,10 +96,11 @@ class Shortcode {
         /* NOTE: the widget attribute has to be a valid method name.
            this does a string replace of '-' -> '_' to conenience.
          */
+        $method = str_replace( '-', '_', $attributes['widget'] );
 
-        if ( method_exists( $this, str_replace( '-', '_', $attributes['widget'] ) ) && in_array( $attributes['widget'], self::$valid_widgets ) ) {
+        if ( method_exists( $this, $method ) && in_array( $attributes['widget'], self::$valid_widgets ) ) {
             $this->enqueue_script( $attributes['widget'] );
-            return $this->$attributes['widget']( $attributes );
+            return $this->$method( $attributes );
         } else {
             return 'bad widget attribute!!';
         }
@@ -114,6 +119,22 @@ class Shortcode {
         $view = new View( 'shortcode/full' );
         return $view->fetch( array( 'locations' => $locations_hours,
                                     'categories' => $categories,
+                                    'header' => $attributes['header'],
+                                    'tagline' => $attributes['tagline'],
+                                    'now' => new \DateTime() ) );
+    }
+
+    public function full_list_only( $attributes ) {
+        $locations = Location::get_visible_locations( $this->entity_manager );
+
+        // get weekly hours for mobile view
+        $locations_hours = array();
+        foreach( $locations as $location ) {
+            $locations_hours[] = array( 'location' => $location, 'hours' => $location->get_weekly_hours() );
+        }
+
+        $view = new View( 'shortcode/full_list_only' );
+        return $view->fetch( array( 'locations' => $locations_hours,
                                     'header' => $attributes['header'],
                                     'tagline' => $attributes['tagline'],
                                     'now' => new \DateTime() ) );

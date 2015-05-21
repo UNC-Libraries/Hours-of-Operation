@@ -1,0 +1,92 @@
+@media screen and (min-width: 800px) {
+    #hoo-full-list-only th.desktop-only {
+        display: table-cell !important;
+    }
+
+    #hoo-full-list-only .desktop-only {
+        display: table-row-group !important;
+    }
+    #hoo-full-list-only .mobile-only {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #hoo-full-list-only .desktop-only {
+        display: none !important;
+    }
+
+    #hoo-full-list-only #location-list-container {
+        width: 100% !important;
+    }
+}
+
+#hoo-full-list-only {
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+#hoo-full-list-only #location-list-container #locations-list .list-header {
+    background-color: #666;
+    color: #fff;
+}
+
+#hoo-full-list-only #location-list-container #locations-list th {
+    padding: 5px;
+}
+
+#hoo-full-list-only #location-list-container #locations-list th.location-name {
+    vertical-align: middle;
+    text-align: left;
+}
+
+#hoo-full-list-only #location-list-container #locations-list th.location-status {
+    vertical-align: middle;
+    width: 33%;
+}
+
+#hoo-full-list-only #location-list-container #locations-list td {
+    border-bottom: 0 solid #fff;
+    padding: 5px;
+}
+
+#hoo-full-list-only #location-list-container #locations-list td.location-name {
+    font-size: 100%;
+    vertical-align: middle;
+}
+
+#hoo-full-list-only #location-list-container #locations-list td.location-name a {
+    font-weight: bold;
+}
+
+#hoo-full-list-only #location-list-container #locations-list td.child {
+    padding-left: 25px;
+}
+
+#hoo-full-list-only #location-list-container #locations-list td.child a {
+    font-weight: normal;
+}
+
+#hoo-full-list-only #location-list-container #locations-list td.location-status {
+    text-align: center;
+}
+#hoo-full-list-only #location-list-container #locations-list td.location-status span {
+    display: block;
+}
+
+#hoo-full-list-only #location-list-container #locations-list td.location-status span.open {
+    color: #006600;
+    font-size: 125%;
+}
+#hoo-full-list-only #location-list-container #locations-list td.location-status span.closed {
+    color: #990000;
+    font-size: 125%;
+}
+
+#hoo-full-list-only #location-list-container #locations-list td.location-status span.until {
+    font-size: 80%;
+}
+
+#hoo-full-list-only #location-list-container .location-row:hover {
+    background-color: #ddddff;
+}
