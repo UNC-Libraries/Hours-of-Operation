@@ -1,4 +1,4 @@
-<div id="hoo-full-list-only">
+<div id="hoo-main">
     <?php if ( isset( $this['header'] ) ) : ?>
         <h1 id="header">
             <?php echo $this['header'] ?>
