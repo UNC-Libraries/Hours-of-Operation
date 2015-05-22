@@ -7,6 +7,7 @@ use Hoo\Model\Category;
 class Shortcode {
     private static $valid_widgets = array( 'full', 'full-list-only', 'today',  'weekly' );
     private static $valid_widget_attributes = array( 'header' => array( 'full', 'full-list-only', 'weekly' ),
+                                                     'full_widget_url' => array( 'full-list-only' ),
                                                      'location' => array( 'weekly', 'today' ),
                                                      'tagline' => array( 'full', 'full-list-only' ) );
 
@@ -92,7 +93,8 @@ class Shortcode {
     }
 
     public function hoo( $attributes ) {
-        $attributes = shortcode_atts( array( 'widget' => 'full', 'header' => null, 'tagline' => null, 'location' => null ), $attributes, 'hoo' );
+        // NOTE: attributes have to be snake case...
+        $attributes = shortcode_atts( array( 'widget' => 'full', 'header' => null, 'tagline' => null, 'location' => null, 'full_widget_url' => null), $attributes, 'hoo' );
         /* NOTE: the widget attribute has to be a valid method name.
            this does a string replace of '-' -> '_' to conenience.
          */
@@ -108,7 +110,6 @@ class Shortcode {
 
     public function full( $attributes ) {
         $locations = Location::get_visible_locations( $this->entity_manager );
-        $categories = Category::get_visible_categories( $this->entity_manager );
 
         // get weekly hours for mobile view
         $locations_hours = array();
@@ -116,28 +117,27 @@ class Shortcode {
             $locations_hours[] = array( 'location' => $location, 'hours' => $location->get_weekly_hours() );
         }
 
+        $view_options = array( 'locations' => $locations_hours,
+                               'header' => $attributes['header'],
+                               'tagline' => $attributes['tagline'],
+                               'now' => new \DateTime() );
+
+        if ( isset ( $attributes['list-only'] ) && $attributes['list-only'] ) {
+            $view_options['list-only'] = true;
+            $view_options['full-widget-url'] = $attributes['full_widget_url'];
+        } else {
+            $view_options['categories']  = Category::get_visible_categories( $this->entity_manager );
+            $view_options['list-only'] = false;
+        }
+
+
         $view = new View( 'shortcode/full' );
-        return $view->fetch( array( 'locations' => $locations_hours,
-                                    'categories' => $categories,
-                                    'header' => $attributes['header'],
-                                    'tagline' => $attributes['tagline'],
-                                    'now' => new \DateTime() ) );
+        return $view->fetch( $view_options );
     }
 
     public function full_list_only( $attributes ) {
-        $locations = Location::get_visible_locations( $this->entity_manager );
-
-        // get weekly hours for mobile view
-        $locations_hours = array();
-        foreach( $locations as $location ) {
-            $locations_hours[] = array( 'location' => $location, 'hours' => $location->get_weekly_hours() );
-        }
-
-        $view = new View( 'shortcode/full_list_only' );
-        return $view->fetch( array( 'locations' => $locations_hours,
-                                    'header' => $attributes['header'],
-                                    'tagline' => $attributes['tagline'],
-                                    'now' => new \DateTime() ) );
+        $attributes['list-only'] = true;
+        return $this->full( $attributes );
     }
 
     public function today( $attributes ) {

@@ -1,4 +1,4 @@
-<div id="hoo-main">
+<div id="hoo-<?php echo $this['list-only'] ? 'full-list-only' : 'main' ?>">
     <?php if ( isset( $this['header'] ) ) : ?>
         <h1 id="header">
             <?php echo $this['header'] ?>
@@ -16,13 +16,15 @@
             <?php $this->include_file( 'shortcode/_full_location_list' ) ?>
         </div>
 
-        <div id="panel-container" class="desktop-only">
-            <?php $this->include_file( 'shortcode/_full_location_detail' ) ?>
+        <?php if ( ! $this['list-only'] ) : ?>
+            <div id="panel-container" class="desktop-only">
+                <?php $this->include_file( 'shortcode/_full_location_detail' ) ?>
 
-            <div id="hoo-map">
-                <div id="map-canvas"></div>
+                <div id="hoo-map">
+                    <div id="map-canvas"></div>
+                </div>
             </div>
-        </div>
+        <?php endif ?>
     <?php else : ?>
         <p>No complete locations to display.</p>
     <?php endif ?>

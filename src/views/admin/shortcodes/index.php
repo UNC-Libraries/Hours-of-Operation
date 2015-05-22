@@ -30,7 +30,7 @@ $this->capture();
                                        class="form-textfield textfield wpt-form-textfield shortcode_attribute"
                                        value=""
                                        placeholder="Header"
-                                       data-valid-widgets="full weekly"
+                                       data-valid-widgets="full full-list-only weekly"
                                        disabled />
                             </li>
                             <li>
@@ -39,7 +39,7 @@ $this->capture();
                                        id="hoo_tagline"
                                        value=""
                                        placeholder="Tagline"
-                                       data-valid-widgets="full"
+                                       data-valid-widgets="full full-list-only"
                                        class="shortcode_attribute"
                                        disabled />
                             </li>
@@ -52,6 +52,16 @@ $this->capture();
                                         </option>
                                     <?php endforeach ?>
                                 </select>
+                            </li>
+                            <li>
+                                <input type="text"
+                                       name="full_widget_url"
+                                       id="hoo_full_widget_url"
+                                       value=""
+                                       placeholder="Full Widget URL"
+                                       data-valid-widgets="full-list-only"
+                                       class="shortcode_attribute"
+                                       disabled />
                             </li>
                         </ul>
                         <pre class="shortcode"><code>[hoo]</code> </pre>
