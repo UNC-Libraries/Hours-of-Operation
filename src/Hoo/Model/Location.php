@@ -186,7 +186,7 @@ class Location {
         return sprintf( $url_template, $ll );
     }
 
-    public function get_event_instances( $start = null, $end = null, $only_visible = true, $entity_manager ) {
+    public function get_event_instances( $start = null, $end = null, $only_visible = true, $entity_manager = null ) {
         $event_instances = array();
         $rrule_transformer = new RRuleTransformer();
 
