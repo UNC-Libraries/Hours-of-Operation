@@ -186,21 +186,26 @@ class Location {
         return sprintf( $url_template, $ll );
     }
 
-    public function get_event_instances( $start = null, $end = null, $only_visible = true ) {
+    public function get_event_instances( $start = null, $end = null, $only_visible = true, $entity_manager ) {
         $event_instances = array();
         $rrule_transformer = new RRuleTransformer();
 
-        $events = $only_visible ?
-                  $this->events->filter( function( $event ) { return $event->is_visible; } ) :
-                  $this->events;
+        $this->events = $only_visible ?
+                        $this->events->filter( function( $event ) { return $event->is_visible; } ) :
+                        $this->events;
 
         // we are creating a new event so make one and add it to the list
         if ( isset( $_GET['event']['id'] ) && empty( $_GET['event']['id'] ) ) {
-            $new_event = new Event();
+            $new_event = new Event( $_GET, $entity_manager );
             $this->events->add( $new_event );
         }
 
-        foreach( $events as $event ) {
+        foreach( $this->events as $event ) {
+            // update the event being edited
+            if ( isset( $_GET['event']['id'] ) && $_GET['event']['id'] == $event->id ) {
+                $event->fromParams( $_GET, $entity_manager );
+            }
+
             if ( $event->is_recurring ) {
 
                 // TODO: I believe this is a bug, need to see how or why this is already an object
@@ -257,12 +262,7 @@ class Location {
         $cal_end = new \DateTime( $_GET['end'] );
         $preview_events = array();
 
-        // update the event being edited
-        if ( isset( $_GET['event']['id'] ) && $_GET['event']['id'] == $this->id ) {
-            $this->fromParams( $_GET, $entity_manager );
-        }
-
-        $events = $this->get_event_instances( $cal_start, $cal_end, false );
+        $events = $this->get_event_instances( $cal_start, $cal_end, false, $entity_manager );
         ksort( $events );
         $events = array_values( $events );
 
