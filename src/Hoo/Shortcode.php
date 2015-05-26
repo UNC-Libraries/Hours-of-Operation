@@ -77,6 +77,7 @@ class Shortcode {
                 $json_response['location'] = $location->to_api_response();
                 $json_response['location']['address'] = $location->address->to_api_response();
                 $json_response['hours'] = $hours ? $hours->to_api_response() : null;
+                $json_response['weekly'] = $location->get_weekly_hours();
 
             } else {
                 foreach ( $locations_repo->findBy( array( 'is_visible' => true ) ) as $location ) {
@@ -84,6 +85,7 @@ class Shortcode {
                     $json_response[]['location'] = $location->to_api_response();
                     $json_response[]['location']['address'] = $location->address->to_api_response();
                     $json_response[]['hours'] = $hours ? $hours->to_api_response() : null;
+                    $json_response[]['weekly'] = $location->get_weekly_hours();
                 }
             }
 
