@@ -2,14 +2,14 @@
 
 namespace Hoo\Model;
 
-use \Hoo\Utils;
+use Hoo\Utils;
 use Hoo\Model\Address;
-use \Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;
 
-use \Recurr\Rule as RRule;
-use \Recurr\Transformer\ArrayTransformer as RRuleTransformer;
-use \Recurr\Transformer\Constraint\BetweenConstraint;
-use \Recurr\Transformer\Constraint\BeforeConstraint;
+use Recurr\Rule as RRule;
+use Recurr\Transformer\ArrayTransformer as RRuleTransformer;
+use Recurr\Transformer\Constraint\BetweenConstraint;
+use Recurr\Transformer\Constraint\BeforeConstraint;
 use Doctrine\Common\Collections\Criteria as Criteria;
 
 /**

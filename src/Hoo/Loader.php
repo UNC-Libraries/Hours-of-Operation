@@ -45,7 +45,6 @@ class Loader {
 
         $this->entity_manager = $entity_manager;
 
-
         add_action( 'init', array( $this, 'init_hooks' ) );
     }
 
@@ -164,7 +163,6 @@ class Loader {
             $class_name = "\Hoo\Admin\\$class_name"; // need namespace I guess
             $this->$property_name = new $class_name( $this->entity_manager );
         }
-
 
     }
 

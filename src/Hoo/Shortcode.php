@@ -71,7 +71,19 @@ class Shortcode {
             $date = isset( $_GET['date'] ) ? new \DateTime( $_GET['date'] ) : new \DateTime ( date( 'Y-m-d' ) );
 
             if ( isset( $_GET['location_id'] ) ) {
-                $location = $locations_repo->findOneBy( array( 'id' => $_GET['location_id'], 'is_visible' => true ) );
+                $qb = $this->entity_manager->createQueryBuilder();
+                try {
+                    $location = $qb->select( array( 'location' ) )
+                                   ->from( 'Hoo\Model\Location', 'location' )
+                                   ->where( $qb->expr()->orX(
+                                       $qb->expr()->eq( 'location.id', ':id_or_name' ),
+                                       $qb->expr()->like( 'location.alternate_name', ':id_or_name' ) ) )
+                                   ->setParameter( 'id_or_name', $_GET['location_id'] )
+                                   ->getQuery()->getSingleResult();
+                } catch ( \Doctrine\ORM\NoResultException $e)  {
+                    wp_send_json_error( 'Not Found' );
+                }
+
                 $hours = $location->get_hours_for_date( $date );
 
                 $json_response['location'] = $location->to_api_response();
@@ -80,6 +92,7 @@ class Shortcode {
                 $json_response['weekly'] = $location->get_weekly_hours();
 
             } else {
+                $locations_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
                 foreach ( $locations_repo->findBy( array( 'is_visible' => true ) ) as $location ) {
                     $hours = $location->get_hours_for_date( $date );
                     $json_response[]['location'] = $location->to_api_response();
