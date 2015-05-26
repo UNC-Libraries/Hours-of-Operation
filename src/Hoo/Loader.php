@@ -54,6 +54,8 @@ class Loader {
        @return void
      */
     public function activate() {
+        if ( ! Utils::check_user_role( 'administrator' ) ) return;
+
         $schema_tool = new \Doctrine\ORM\Tools\SchemaTool( $this->entity_manager );
         $schema_manager = $this->entity_manager->getConnection()->getSchemaManager();
 
@@ -71,6 +73,8 @@ class Loader {
     }
 
     public function deactivate() {
+        if ( ! Utils::check_user_role( 'administrator' ) ) return;
+        // do nothing for now
     }
 
     private function strip_wordpress_slashes_from_gpc() {
