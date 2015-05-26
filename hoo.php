@@ -51,10 +51,10 @@ define( 'HOO__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 require_once( HOO__PLUGIN_DIR . 'vendor/autoload.php' );
 date_default_timezone_set( get_option( 'timezone_string' ) );
 
-$loader = new Hoo\Loader();
+add_action( 'plugins_loaded', array( 'Hoo\Loader', 'init' ) );
 
-register_activation_hook( __FILE__, array( $loader, 'activate' ) );
-register_deactivation_hook( __FILE__, array( $loader, 'deactivate' ) );
-
+register_activation_hook( __FILE__, array( 'Hoo\Loader', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'Hoo\Loader', 'deactivate' ) );
+register_uninstall_hook( __FILE__, array( 'Hoo\Loader', 'uninstall' ) );
 
 ?>

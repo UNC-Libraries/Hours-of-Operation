@@ -3,10 +3,12 @@
 namespace Hoo;
 
 use Hoo\Admin\LocationController;
+use Hoo\Utils;
 use Doctrine\ORM\Tools\Setup as ORMSetup;
 use Doctrine\ORM\EntityManager;
 
 class Loader {
+    protected static $instance;
 
     const SLUG = 'hoo';
 
@@ -47,20 +49,28 @@ class Loader {
         add_action( 'init', array( $this, 'init_hooks' ) );
     }
 
+    public static function init()
+    {
+        is_null( self::$instance ) && self::$instance = new self;
+        return self::$instance;
+    }
+
     /**
        activate the plugin
 
        load the model and create the db schema from annotations
        @return void
      */
-    public function activate() {
+    public static function activate() {
         if ( ! Utils::check_user_role( 'administrator' ) ) return;
 
-        $schema_tool = new \Doctrine\ORM\Tools\SchemaTool( $this->entity_manager );
-        $schema_manager = $this->entity_manager->getConnection()->getSchemaManager();
+        $instance = self::init();
 
-        foreach ( $this->tables as $table => $class_name ) {
-            $class = $this->entity_manager->getClassMetadata( $class_name );
+        $schema_tool = new \Doctrine\ORM\Tools\SchemaTool( $instance->entity_manager );
+        $schema_manager = $instance->entity_manager->getConnection()->getSchemaManager();
+
+        foreach ( $instance->tables as $table => $class_name ) {
+            $class = $instance->entity_manager->getClassMetadata( $class_name );
 
             if ( $schema_manager->tablesExist( array( $table ) ) ) {
                 // update schema?
@@ -68,13 +78,32 @@ class Loader {
             else {
                 $schema_tool->createSchema( array( $class ) );
             }
-
         }
     }
 
-    public function deactivate() {
+    public static function deactivate() {
         if ( ! Utils::check_user_role( 'administrator' ) ) return;
         // do nothing for now
+    }
+
+    public static function uninstall() {
+        if ( ! Utils::check_user_role( 'administrator' ) ) return;
+
+        $instance = self::init();
+        /*
+           register enum as a type as some tables in wp use enums
+           this is needed for http://www.doctrine-project.org/jira/browse/DDC-1273
+           more info: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/mysql-enums.html
+         */
+        $platform = $instance->entity_manager->getConnection()->getDatabasePlatform();
+        $platform->registerDoctrineTypeMapping('enum', 'string');
+
+        $schema_tool = new \Doctrine\ORM\Tools\SchemaTool( $instance->entity_manager );
+        $schema_manager = $instance->entity_manager->getConnection()->getSchemaManager();
+        $classes = array_map( function( $class_name ) use ($instance) { return $instance->entity_manager->getClassMetadata( $class_name ); },
+                              array_values( $instance->tables ) );
+        $schema_tool->dropSchema( $classes );
+
     }
 
     private function strip_wordpress_slashes_from_gpc() {
@@ -193,4 +222,3 @@ class Loader {
         wp_register_script( 'shortcode-main', HOO__PLUGIN_URL . 'assets/js/shortcode-main.js', array( 'g-maps', 'jquery', 'jquery-ui-tabs', 'jquery-effects-slide', 'jquery-effects-fade', 'full-calendar' ) );
     }
 }
-?>
