@@ -370,10 +370,12 @@ class Location {
             array() );
     }
 
-    /** @ORM\PostPersist **/
+    /** @ORM\PrePersist **/
     public function set_alternate_name() {
-        if ( ! isset( $this->alternative_name ) ) {
+        if ( empty( $this->alternate_name ) ){
             $this->alternate_name = sanitize_title( $this->name );
+        } else {
+            $this->alternate_name = sanitize_title( $this->alternate_name );
         }
     }
 
@@ -386,7 +388,11 @@ class Location {
 
     /** @ORM\PreUpdate **/
     public function set_updated_at() {
-        $this->alternate_name = sanitize_title( $this->alternate_name );
+        if ( empty( $this->alternate_name ) ){
+            $this->alternate_name = sanitize_title( $this->name );
+        } else {
+            $this->alternate_name = sanitize_title( $this->alternate_name );
+        }
         $this->updated_at = new \DateTime();
     }
 
