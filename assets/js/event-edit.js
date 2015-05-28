@@ -66,14 +66,13 @@ jQuery(function($) {
                      init date and time pickers
                      */
 
-                    $event_start_date.datepicker(
-                        {
-                            dateFormat: 'yy-mm-dd',
-                            onSelect: function( select_date ) {
-                                $preview_calendar.fullCalendar('gotoDate', $event_start_date.datetimepicker( 'getDate' ));
-                                $preview_calendar.fullCalendar( 'refetchEvents' );
-                            }
-                        } );
+                    $event_start_date.datepicker( {
+                        dateFormat: 'yy-mm-dd',
+                        onSelect: function( select_date ) {
+                            $preview_calendar.fullCalendar('gotoDate', $event_start_date.datetimepicker( 'getDate' ));
+                            $preview_calendar.fullCalendar( 'refetchEvents' );
+                        }
+                    } );
 
                     $rrule_until.datepicker( {
                         dateFormat: 'yy-mm-dd',
@@ -84,68 +83,65 @@ jQuery(function($) {
                     } );
 
 
-                    $event_start_datetime.datetimepicker(
-                        {
-                            dateFormat: 'yy-mm-dd',
-                            timeFormat: 'hh:mm tt',
-                            stepMinute: 15,
+                    $event_start_datetime.datetimepicker( {
+                        dateFormat: 'yy-mm-dd',
+                        timeFormat: 'hh:mm tt',
+                        stepMinute: 15,
 
-                            onSelect: function ( selected ) {
-                                if ( $event_end_datetime.val() != '' ) {
-                                    var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
-                                        test_end   = $event_end_datetime.datetimepicker( 'getDate' );
-
-                                    if ( test_start > test_end ) {
-                                        test_start.setHours( test_end.getHours(), test_end.getMinutes() );
-                                        $event_end_datetime.datetimepicker( 'setDate', test_start );
-                                    }
-                                }
-                                $preview_calendar.fullCalendar('gotoDate', $event_start_datetime.datetimepicker( 'getDate' ));
-                                $preview_calendar.fullCalendar( 'refetchEvents' );
-                            },
-                            onClose: function( selected ) {
-                                var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
-                                    test_end   = $event_end_datetime.datetimepicker( 'getDate' );
-
-                                    if ( test_start > test_end ) {
-                                        $event_end_datetime.datetimepicker( 'setDate', test_start );
-                                }
-                                $preview_calendar.fullCalendar( 'refetchEvents' );
-                            }
-                        } );
-
-                    $event_end_datetime.datetimepicker(
-                        {
-                            dateFormat: 'yy-mm-dd',
-                            timeFormat: 'hh:mm tt',
-                            stepMinute: 15,
-                            showButtonPanel: true,
-
-                            onSelect: function ( selected ) {
-                                if ( $event_start_datetime.val() != '' ) {
-                                    var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
-                                        test_end   = $event_end_datetime.datetimepicker( 'getDate' );
-
-                                    if ( test_start > test_end ) {
-                                        test_start.setHours( test_end.getHours(), test_end.getMinutes() );
-                                        $event_end_datetime.datetimepicker( 'setDate', test_start );
-                                    }
-
-                                    $preview_calendar.fullCalendar('gotoDate', $event_end_datetime.datetimepicker( 'getDate' ));
-                                    $preview_calendar.fullCalendar( 'refetchEvents' );
-                                }
-                            },
-                            onClose: function( selected ) {
+                        onSelect: function ( selected ) {
+                            if ( $event_end_datetime.val() != '' ) {
                                 var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
                                     test_end   = $event_end_datetime.datetimepicker( 'getDate' );
 
                                 if ( test_start > test_end ) {
                                     test_start.setHours( test_end.getHours(), test_end.getMinutes() );
-                                        $event_end_datetime.datetimepicker( 'setDate', test_start );
+                                    $event_end_datetime.datetimepicker( 'setDate', test_start );
                                 }
-                                $preview_calendar.fullCalendar( 'refetchEvents' );
                             }
-                        } );
+                            $preview_calendar.fullCalendar('gotoDate', $event_start_datetime.datetimepicker( 'getDate' ));
+                            $preview_calendar.fullCalendar( 'refetchEvents' );
+                        },
+                        onClose: function( selected ) {
+                            var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
+                                test_end   = $event_end_datetime.datetimepicker( 'getDate' );
+
+                                if ( test_start > test_end ) {
+                                    $event_end_datetime.datetimepicker( 'setDate', test_start );
+                            }
+                            $preview_calendar.fullCalendar( 'refetchEvents' );
+                        }
+                    } );
+
+                    $event_end_datetime.datetimepicker( {
+                        dateFormat: 'yy-mm-dd',
+                        timeFormat: 'hh:mm tt',
+                        stepMinute: 15,
+                        showButtonPanel: true,
+
+                        onSelect: function ( selected ) {
+                            if ( $event_start_datetime.val() != '' ) {
+                                var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
+                                    test_end   = $event_end_datetime.datetimepicker( 'getDate' );
+
+                                if ( test_start > test_end ) {
+                                    test_start.setHours( test_end.getHours(), test_end.getMinutes() );
+                                    $event_end_datetime.datetimepicker( 'setDate', test_start );
+                                }
+                            }
+                            $preview_calendar.fullCalendar('gotoDate', $event_end_datetime.datetimepicker( 'getDate' ));
+                            $preview_calendar.fullCalendar( 'refetchEvents' );
+                        },
+                        onClose: function( selected ) {
+                            var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
+                                test_end   = $event_end_datetime.datetimepicker( 'getDate' );
+
+                                if ( test_start > test_end ) {
+                                    test_start.setHours( test_end.getHours(), test_end.getMinutes() );
+                                    $event_end_datetime.datetimepicker( 'setDate', test_start );
+                            }
+                            $preview_calendar.fullCalendar( 'refetchEvents' );
+                        }
+                    } );
 
                     // title
                     $event_title.on( 'change', function() {
