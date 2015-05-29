@@ -49,7 +49,7 @@ jQuery(function($) {
                 );
             },
 
-            defaultDate: $event_start_datetime.val(),
+            defaultDate: $event_start_date.val(), 
             fixedWeekCount: false,
             timeFormat: '',
             editable: false,
@@ -82,18 +82,20 @@ jQuery(function($) {
                         }
                     } );
 
-
                     $event_start_datetime.datetimepicker( {
                         dateFormat: 'yy-mm-dd',
                         timeFormat: 'hh:mm tt',
                         stepMinute: 15,
 
                         onSelect: function ( selected ) {
-                            var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
-                                test_end   = $event_end_datetime.datetimepicker( 'getDate' );
+                            if ( $event_end_datetime.val() != '' ) {
+                                var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
+                                    test_end   = $event_end_datetime.datetimepicker( 'getDate' );
 
-                            if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
-                                $event_start_datetime.datetimepicker( 'setDate', test_end );
+                                if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
+                                    test_start.setHours( test_end.getHours(), test_end.getMinutes() );
+                                    $event_end_datetime.datetimepicker( 'setDate', test_start );
+                                }
                             }
                             $preview_calendar.fullCalendar('gotoDate', $event_start_datetime.datetimepicker( 'getDate' ));
                             $preview_calendar.fullCalendar( 'refetchEvents' );
@@ -102,10 +104,9 @@ jQuery(function($) {
                             var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
                                 test_end   = $event_end_datetime.datetimepicker( 'getDate' );
 
-                            if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
-                                $event_start_datetime.datetimepicker( 'setDate', test_end );
+                                if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
+                                    $event_end_datetime.datetimepicker( 'setDate', test_start );
                             }
-                            $preview_calendar.fullCalendar('gotoDate', $event_start_datetime.datetimepicker( 'getDate' ));
                             $preview_calendar.fullCalendar( 'refetchEvents' );
                         }
                     } );
@@ -117,11 +118,14 @@ jQuery(function($) {
                         showButtonPanel: true,
 
                         onSelect: function ( selected ) {
-                            var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
-                                test_end   = $event_end_datetime.datetimepicker( 'getDate' );
+                            if ( $event_start_datetime.val() != '' ) {
+                                var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
+                                    test_end   = $event_end_datetime.datetimepicker( 'getDate' );
 
-                            if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
-                                $event_end_datetime.datetimepicker( 'setDate', test_start );
+                                if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
+                                    test_end.setHours( test_start.getHours(), test_start.getMinutes() );
+                                    $event_start_datetime.datetimepicker( 'setDate', test_end );
+                                }
                             }
                             $preview_calendar.fullCalendar('gotoDate', $event_end_datetime.datetimepicker( 'getDate' ));
                             $preview_calendar.fullCalendar( 'refetchEvents' );
@@ -130,10 +134,9 @@ jQuery(function($) {
                             var test_start = $event_start_datetime.datetimepicker( 'getDate' ),
                                 test_end   = $event_end_datetime.datetimepicker( 'getDate' );
 
-                            if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
-                                $event_end_datetime.datetimepicker( 'setDate', test_start );
+                                if ( test_start > test_end || Math.round( Math.abs( ( test_end - test_start ) / 86400000 ) ) > 1 ) {
+                                    $event_start_datetime.datetimepicker( 'setDate', test_end );
                             }
-                            $preview_calendar.fullCalendar('gotoDate', $event_end_datetime.datetimepicker( 'getDate' ));
                             $preview_calendar.fullCalendar( 'refetchEvents' );
                         }
                     } );
