@@ -71,18 +71,8 @@ class Shortcode {
             $date = isset( $_GET['date'] ) ? new \DateTime( $_GET['date'] ) : new \DateTime ( date( 'Y-m-d' ) );
 
             if ( isset( $_GET['location_id'] ) ) {
-                $qb = $this->entity_manager->createQueryBuilder();
-                try {
-                    $location = $qb->select( array( 'location' ) )
-                                   ->from( 'Hoo\Model\Location', 'location' )
-                                   ->where( $qb->expr()->orX(
-                                       $qb->expr()->eq( 'location.id', ':id_or_name' ),
-                                       $qb->expr()->like( 'location.alternate_name', ':id_or_name' ) ) )
-                                   ->setParameter( 'id_or_name', $_GET['location_id'] )
-                                   ->getQuery()->getSingleResult();
-                } catch ( \Doctrine\ORM\NoResultException $e)  {
-                    wp_send_json_error( 'Not Found' );
-                }
+                $location = Location::get_location_by_id_or_shortname( $_GET['location_id'], $this->entity_manager );
+                if ( ! $location ) return wp_send_json_error( 'Not Found' );
 
                 $hours = $location->get_hours_for_date( $date );
 
@@ -157,21 +147,33 @@ class Shortcode {
 
     public function today( $attributes ) {
         $locations_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
-        $location = isset( $attributes['location'] ) ? $locations_repo->findOneBy( array( 'id' => $attributes['location'], 'is_visible' => true ) ) : null;
 
-        if ( $location ) {
-            $view = new View( 'shortcode/today' );
-            return $view->fetch( array( 'current_hours' => $location->is_open() ) );
+        if ( isset( $attributes['location'] ) ) {
+            $location = Location::get_location_by_id_or_shortname( $attributes['location'], $this->entity_manager );
+            if ( $location ) {
+                $view = new View( 'shortcode/today' );
+                return $view->fetch( array( 'current_hours' => $location->is_open() ) );
+            } else {
+                return 'Invalid Location';
+            }
         } else {
-            return '';
+            return 'No Location Specified';
         }
     }
 
     public function weekly( $attributes ) {
         $locations_repo = $this->entity_manager->getRepository( 'Hoo\Model\Location' );
-        $locations = isset( $attributes['location'] ) ?
-                     $locations_repo->findBy( array( 'id' => $attributes['location'], 'is_visible' => true ) ) :
-                     $locations_repo->findBy( array( 'is_visible' => true ) );
+        if ( isset( $attributes['location'] ) ) {
+            $location = Location::get_location_by_id_or_shortname( $attributes['location'], $this->entity_manager );
+            if ( $location ) {
+                $locations = array( $location );
+            } else {
+                return 'Invalid Location';
+            }
+        } else {
+            $locations = $locations_repo->findBy( array( 'is_visible' => true ) );
+        }
+
         $view = new View( 'shortcode/weekly' );
         $locations_hours = array();
 

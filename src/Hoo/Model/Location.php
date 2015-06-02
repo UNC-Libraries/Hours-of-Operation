@@ -351,6 +351,24 @@ class Location {
         return $events;
     }
 
+    public static function get_location_by_id_or_shortname( $id_or_name, $entity_manager ) {
+        $locations_repo = $entity_manager->getRepository( 'Hoo\Model\Location' );
+
+        $qb = $entity_manager->createQueryBuilder();
+        try {
+            $location = $qb->select( array( 'location' ) )
+                           ->from( 'Hoo\Model\Location', 'location' )
+                           ->where( $qb->expr()->orX(
+                               $qb->expr()->eq( 'location.id', ':id_or_name' ),
+                               $qb->expr()->like( 'location.alternate_name', ':id_or_name' ) ) )
+                           ->setParameter( 'id_or_name', $id_or_name )
+                           ->getQuery()->getSingleResult();
+        } catch ( \Doctrine\ORM\NoResultException $e)  {
+            return false;
+        }
+        return $location;
+    }
+
     public static function get_visible_locations( $entity_manager ) {
         $locations_repo = $entity_manager->getRepository( 'Hoo\Model\Location' );
         $locations = $locations_repo->findBy( array( 'parent' => null, 'is_visible' => true ), array( 'position' => 'asc' ) );
