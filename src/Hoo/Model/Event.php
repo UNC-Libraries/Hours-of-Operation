@@ -70,22 +70,24 @@ class Event {
 
     public function format_title( $prev_event, $next_event, $with_title ) {
         if ( $prev_event && $prev_event->is_all_day && $next_event && $next_event->is_all_day ) {
-            $title = "{$this->start->format( 'g:i a')}\n{$this->end->format( 'g:i a')}";
+            $title = "{$this->start->format( 'g:i a')}<br/>{$this->end->format( 'g:i a')}";
         } elseif ( $prev_event && $prev_event->is_all_day ) {
-            $title = "24 Hours - \n{$this->end->format( 'g:i a' )}";
+            $title = "24 Hours - <br/>{$this->end->format( 'g:i a' )}";
         } elseif ( $next_event && $next_event->is_all_day ) {
-            $title = "{$this->start->format( 'g:i a' )} - \n24 Hours";
+            $title = "{$this->start->format( 'g:i a' )} - </br>24 Hours";
         } else {
-            $title = "{$this->start->format( 'g:i a')}\n{$this->end->format( 'g:i a')}";
+            $title = "{$this->start->format( 'g:i a')}<br/>{$this->end->format( 'g:i a')}";
         }
 
         if ( $this->is_all_day ) {
-            $title = "Open\n24 Hours";
+            $title = "Open<br/>24 Hours";
         } elseif ( $this->is_closed ) {
             $title = 'Closed';
         }
 
-        return ( $with_title ? "{$this->title}\n" : '' ) . $title;
+        return ( $with_title ?
+                 "<a href=\"/wp-admin/admin.php?page=hoo-location-event-edit&event_id={$this->id}\">{$this->title}</a><br/>" :
+                 '' ) . $title;
     }
 
     public function fromParams( $params, $entity_manager ) {

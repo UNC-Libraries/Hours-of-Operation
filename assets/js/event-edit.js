@@ -49,6 +49,10 @@ jQuery(function($) {
                 );
             },
 
+            eventAfterRender: function ( event, element ) {
+                element.find( '.fc-title' ).html( event.title );
+            },
+
             defaultDate: $event_start_date.val(), 
             fixedWeekCount: false,
             timeFormat: '',
