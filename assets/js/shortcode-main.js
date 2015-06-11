@@ -75,6 +75,9 @@ jQuery( function( $ ) {
                 right: 'today prev,next'
             },
 
+            eventAfterRender: function ( event, element ) {
+                element.find( '.fc-title' ).html( event.title );
+            },
 
             events: function( cal_start, cal_end, tz, cb ) {
 
