@@ -10,16 +10,16 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Hours of Operation
- * Plugin URI:        @TODO
+ * Plugin URI:        https://github.com/UNC-Libraries/Hours-of-Operation
  * Description:       Allows you to manage the Hours of Operations for your business or institution
- * Version:           0.0.1
- * Author:            @TODO
- * Author URI:        @TODO
+ * Version:           1.0.0
+ * Author:            Steve Erhart, Steve Segedy
+ * Author URI:        library.unc.edu
  * Text Domain:       hoo-locale
  * License:           GPL-2.0
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  * Domain Path:       /languages
- * GitHub Plugin URI: @TODO
+ * GitHub Plugin URI: https://github.com/UNC-Libraries/Hours-of-Operation
 
    Copyright 2015  UNC Libraries  (email : erhart@unc.edu)
 
