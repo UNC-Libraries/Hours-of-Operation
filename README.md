@@ -21,10 +21,6 @@ Major features in HOO include:
 
 HOO was created by the Core Applications Development team at the University of North Carolina at Chapel Hill Library. 
 
-
-# License
-Hours of Operation is licensed under the [GNU General Public License, version 2](https://www.gnu.org/licenses/gpl-2.0.html).
-
 # How to Use HOO
 To install HOO in an existing Wordpress instance, simply download the plugin file and unzip it in your plugins directory. Activate it and look for the Hours of Operation menu in your administrative sidebar to get started. 
 
@@ -34,7 +30,7 @@ You will need to create at least one Location and provide latitude and longitude
 ## Displaying Hours
 When you are ready to display your hours, create a Wordpress page and add a HOO shortcode to it. For the main display with the Google map, use [hoo widget="full"]. See the Shortcodes submenu for other shortcode display options.
 
-##Uninstalling
+## Uninstalling
 If you need to completely delete HOO, deactivate the plugin and select the Delete option in the plugins menu to remove all data and database tables from your installation.  
 
 # Development
@@ -58,5 +54,7 @@ ln -s /<full-path-to-this-directory> /<full-path-to-your-wordpress-plugins-direc
 HoO uses [Doctrine 2 ORM](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest)
 and [Recurr](https://github.com/simshaun/recurr). I highly recommend getting familiar with them.
 
+# License
+Hours of Operation is licensed under the [GNU General Public License, version 2](https://www.gnu.org/licenses/gpl-2.0.html).
 
 
