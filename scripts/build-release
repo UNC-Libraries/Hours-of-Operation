@@ -1,0 +1,21 @@
+#!/bin/bash
+
+versionFile=hoo-version
+versionLabel=v$1
+releaseBranch=release-$versionLabel
+
+git checkout -b $releaseBranch master
+
+# get old version number and replace it with the new
+sed -i.backup -E "s/\= v[0-9.]+/\= $versionLabel/" $versionFile $versionFile
+rm $versionFile.backup
+
+git commit -am "Incrementing version number to $versionLabel"
+
+git checkout master
+git merge --no-ff $releaseBranch
+
+git tag $versionLabel
+git push origin $versionLabel
+
+git branch -D $releaseBranch
