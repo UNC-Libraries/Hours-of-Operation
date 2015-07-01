@@ -1,5 +1,5 @@
-# Hours of Operation (HOO) ![HoO Logo](https://gitlab.lib.unc.edu/cappdev/hours-of-operation/raw/master/assets/images/hoo-20.png)
-A Wordpress plugin to help you manage and display the hours of operation across a variety of locations and special events. Designed for libraries, Hoo is adaptable enough to work for any organization.
+# Hours of Operation (HOO) ![HoO Logo](https://github.com/UNC-Libraries/Hours-of-Operation/raw/master/assets/images/hoo-20.png)
+A Wordpress plugin to help you manage and display your hours of operation across a variety of locations and special events. Designed for libraries, Hoo is adaptable enough to work for any organization.
 
 Major features in HOO include: 
 
