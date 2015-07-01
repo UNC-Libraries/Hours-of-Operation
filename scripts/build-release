@@ -15,8 +15,8 @@ git commit -am "Incrementing version number to $versionLabel"
 git checkout master
 git merge --no-ff $releaseBranch
 
-git tag $versionLabel
 git tag -a $versionLabel -m 'version $1'
 git push origin $versionLabel
 
 git branch -D $releaseBranch
+ 
