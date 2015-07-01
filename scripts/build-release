@@ -7,7 +7,7 @@ releaseBranch=release-$versionLabel
 git checkout -b $releaseBranch master
 
 # get old version number and replace it with the new
-sed -i.backup -E "s/\= v[0-9.]+/\= $versionLabel/" $versionFile $versionFile
+sed -i.backup -E "s/\v[0-9.]+/$versionLabel/" $versionFile $versionFile
 rm $versionFile.backup
 
 git commit -am "Incrementing version number to $versionLabel"
