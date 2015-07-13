@@ -117,7 +117,7 @@ class Loader {
         $this->strip_wordpress_slashes_from_gpc();
 
         wp_enqueue_script( 'hoo', HOO__PLUGIN_URL . 'assets/js/hoo.js', array( 'jquery' ) );
-        wp_localize_script( 'hoo', 'HOO', array( 'ajaxurl'  => admin_url( 'admin-ajax.php' ), // need for frontpage ajax
+        wp_localize_script( 'hoo', 'HOO', array( 'ajaxurl'  => admin_url( 'admin-ajax.php', 'http' ), // need for frontpage ajax
                                                  'timezone' => get_option( 'timezone_string' ) ) );
 
         if ( is_admin() ) {

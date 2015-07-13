@@ -12,7 +12,7 @@
  * Plugin Name:       Hours of Operation
  * Plugin URI:        https://github.com/UNC-Libraries/Hours-of-Operation
  * Description:       Allows you to manage the Hours of Operations for your business or institution
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Steve Erhart, Steve Segedy
  * Author URI:        library.unc.edu
  * Text Domain:       hoo-locale
@@ -42,7 +42,7 @@
 // quit if called directly
 defined( 'ABSPATH' ) or die();
 
-define( 'HOO_VERSION', '0.0.1' );
+define( 'HOO_VERSION', '1.0.1' );
 define( 'HOO__PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'HOO__PLUGIN_ASSETS_URL', HOO__PLUGIN_URL . 'assets/');
 define( 'HOO__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
