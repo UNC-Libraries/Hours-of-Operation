@@ -254,6 +254,7 @@ class Location {
                 }
             }
         }
+        ksort( $event_instances );
         return $event_instances;
     }
 
