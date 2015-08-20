@@ -261,8 +261,9 @@ class Location {
         $cal_start = new \Datetime( $_GET['start'] );
         $cal_end = new \DateTime( $_GET['end'] );
         $preview_events = array();
+        $only_visible = ! $with_title;
 
-        $events = $this->get_event_instances( $cal_start, $cal_end, false, $entity_manager );
+        $events = $this->get_event_instances( $cal_start, $cal_end, $only_visible, $entity_manager );
         ksort( $events );
         $events = array_values( $events );
 
