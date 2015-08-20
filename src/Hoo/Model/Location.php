@@ -240,7 +240,7 @@ class Location {
                         $event_instances[ $tmp_ymd ] = $tmp_event;
                     }
                 }
-            } elseif ( ( $start >= $event->start && $end <= $event->end ) || ( $start->format( 'Y-m-d' ) == $event->start->format( 'Y-m-d' ) && $event->is_all_day ) ) {
+            } elseif ( ( $start <= $event->start && $end >= $event->end ) || ( $start->format( 'Y-m-d' ) == $event->start->format( 'Y-m-d' ) && $event->is_all_day ) ) {
                 $event_ymd = $event->start->format( 'Y-m-d' );
                 $event_priority = $event->category->priority;
 
