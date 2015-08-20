@@ -1,4 +1,4 @@
-<span id="hoo-today">
+<span class="hoo-today">
     <?php if ( is_null( $this['current_hours'] ) ) : ?>
         <span class="na">N/A</span>
     <?php elseif ( is_object( $this['current_hours'] ) ) : ?>
@@ -10,4 +10,4 @@
     <?php else : ?>
         <span class="closed">Closed</span>
     <?php endif ?>
-</p>
+</span>

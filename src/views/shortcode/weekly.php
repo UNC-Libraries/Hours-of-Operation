@@ -1,4 +1,4 @@
-<div id="hoo-weekly">
+<div class="hoo-weekly">
     <table class="weekly-hours">
         <?php if ( isset( $this['header'] ) ) : ?>
             <caption><?php echo $this['header'] ?></caption>
