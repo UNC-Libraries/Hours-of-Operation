@@ -190,10 +190,6 @@ class Location {
         $event_instances = array();
         $rrule_transformer = new RRuleTransformer();
 
-        $this->events = $only_visible ?
-                        $this->events->filter( function( $event ) { return $event->is_visible; } ) :
-                        $this->events;
-
         // we are creating a new event so make one and add it to the list
         if ( isset( $_GET['event']['id'] ) && empty( $_GET['event']['id'] ) ) {
             $new_event = new Event( $_GET, $entity_manager );
@@ -201,6 +197,7 @@ class Location {
         }
 
         foreach( $this->events as $event ) {
+            if ( $only_visible && ! $event->is_visible ) continue;
             // update the event being edited
             if ( isset( $_GET['event']['id'] ) && $_GET['event']['id'] == $event->id ) {
                 $event->fromParams( $_GET, $entity_manager );
