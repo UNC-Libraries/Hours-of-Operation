@@ -212,8 +212,8 @@ class Location {
                     $event->recurrence_rule = new RRule( $event->recurrence_rule, $event->start, $event->end );
                 }
 
-                if ( $event->recurrence_rule->getUntil() < $start ) continue;
-                if ( $event->start > $end ) continue;
+                if ( $event->recurrence_rule->getUntil() != null && $event->recurrence_rule->getUntil() < $start ) continue;
+                if ( $end != null && $event->start > $end ) continue;
 
                 // if we have a start and end date add a between contraint, otherwise get all events
                 if ( $start && $end ) {
