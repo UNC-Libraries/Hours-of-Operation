@@ -163,13 +163,18 @@ class Location {
         $now = new \DateTime();
         $now_start = new \DateTime( date( 'Y-m-d' ) );
         $now_ymd = $now_start->format( 'Y-m-d' );
-        $now_end = new \DateTime( $now_start->format( 'Y-m-d' ) );
-        $now_end->modify( '+1 day' );
-        $event_instances = $this->get_event_instances( $now_start, $now_end );
 
-        if ( count ( $event_instances ) > 0 ) {
+        $now_end = new \DateTime( $now_start->format( 'Y-m-d' ) );
+        $tom = new \DateTime( $now_start->format( 'Y-m-d' ) );
+        $tom->modify( '+1 day' );
+        $tom_ymd = $tom->format( 'Y-m-d' );
+        $now_end->modify( '+2 day' );
+        $event_instances = $this->get_event_instances( $now_start, $now_end );
+        ksort( $event_instances );
+
+        if ( array_key_exists( $now_ymd, $event_instances ) ) {
             // special cases
-            if ( $event_instances[ $now_ymd ]->is_all_day )
+            if ( $event_instances[ $now_ymd ]->is_all_day || ( array_key_exists( $tom_ymd, $event_instances ) && $event_instances[ $tom_ymd ]->is_all_day ) )
                 return '24 hours';
             elseif ( $event_instances[ $now_ymd ]->is_closed )
                 return false;
